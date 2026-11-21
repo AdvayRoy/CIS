@@ -1,0 +1,71 @@
+{
+  "brand": "CounterSign",
+  "tagline": "O singură plată. Exact așa cum s-a convenit.",
+  "env": {
+    "bank": "Simulare bancară",
+    "chain": "Demo pe lanț local"
+  },
+  "rail": {
+    "bank": "Transfer bancar",
+    "crypto": "Cumpărare cu tokenuri"
+  },
+  "field": {
+    "recipient": "Destinatar",
+    "amount": "Sumă",
+    "operation": "Operațiune",
+    "continuingAllowance": "Permisiune continuă",
+    "expiry": "Expiră",
+    "nonce": "Număr de unică folosință",
+    "domain": "Rețea",
+    "merchant": "Comerciant",
+    "rail": "Metodă de plată",
+    "payer": "De la",
+    "allowance": "Permisiune rămasă",
+    "balance": "Sold",
+    "executionCount": "Număr de executări"
+  },
+  "state": {
+    "awaiting_approval": "Așteaptă aprobarea dvs.",
+    "approved": "Aprobată",
+    "executing": "În curs de executare",
+    "rejected": "Oprită",
+    "settled": "Finalizată",
+    "declined": "Refuzată",
+    "expired": "Expirată",
+    "failed": "Eșuată"
+  },
+  "reason": {
+    "OK": "Executată exact așa cum a fost aprobată",
+    "NOT_FOUND": "Plata nu a fost găsită",
+    "NOT_APPROVED": "Această plată nu a fost aprobată",
+    "DECLINED": "Ați refuzat această plată",
+    "INVALID_SIGNATURE": "Aprobarea nu a putut fi verificată",
+    "EXPIRED": "Aprobarea a expirat",
+    "REPLAYED": "Această aprobare a fost deja folosită o dată",
+    "RECIPIENT_MISMATCH": "Destinatarul diferă de cel pe care l-ați aprobat",
+    "AMOUNT_MISMATCH": "Suma diferă de cea pe care ați aprobat-o",
+    "AMOUNT_EXCEEDS_LIMIT": "Suma depășește ceea ce ați aprobat",
+    "OPERATION_NOT_ALLOWED": "Operațiunea nu este cea pe care ați aprobat-o",
+    "CONTINUING_PERMISSION_NOT_ALLOWED": "A fost solicitată o permisiune continuă suplimentară",
+    "RAIL_MISMATCH": "Metodă de plată greșită",
+    "DOMAIN_MISMATCH": "Rețea sau contract greșit",
+    "INSUFFICIENT_FUNDS": "Fonduri insuficiente",
+    "EXECUTION_REVERTED": "Rețeaua a respins tranzacția",
+    "UNAUTHORIZED_CAPABILITY": "Nu este permis din acest context",
+    "RAIL_UNAVAILABLE": "Metodă de plată indisponibilă",
+    "DISCONNECTED": "Deconectat — se afișează ultima stare confirmată"
+  },
+  "connection": {
+    "connected": "Conectat",
+    "disconnected": "Deconectat",
+    "connecting": "Se conectează"
+  },
+  "language": {
+    "label": "Limbă",
+    "search": "Căutați o limbă",
+    "choose": "Alegeți limba",
+    "noResults": "Nicio limbă nu corespunde căutării",
+    "close": "Închide",
+    "fallbackNote": "Textul care nu este încă tradus este afișat în engleză."
+  }
+}

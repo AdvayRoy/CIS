@@ -1,0 +1,71 @@
+{
+  "brand": "CounterSign",
+  "tagline": "Бір төлем. Дәл келісілгендей.",
+  "env": {
+    "bank": "Банк симуляциясы",
+    "chain": "Жергілікті желідегі демо"
+  },
+  "rail": {
+    "bank": "Банк аударымы",
+    "crypto": "Токенмен сатып алу"
+  },
+  "field": {
+    "recipient": "Алушы",
+    "amount": "Сома",
+    "operation": "Операция",
+    "continuingAllowance": "Тұрақты рұқсат",
+    "expiry": "Жарамдылық мерзімі",
+    "nonce": "Бір реттік нөмір",
+    "domain": "Желі",
+    "merchant": "Сатушы",
+    "rail": "Төлем тәсілі",
+    "payer": "Кімнен",
+    "allowance": "Қалған рұқсат",
+    "balance": "Баланс",
+    "executionCount": "Орындалу саны"
+  },
+  "state": {
+    "awaiting_approval": "Сіздің растауыңызды күтуде",
+    "approved": "Расталды",
+    "executing": "Орындалуда",
+    "rejected": "Тоқтатылды",
+    "settled": "Аяқталды",
+    "declined": "Бас тартылды",
+    "expired": "Мерзімі өтті",
+    "failed": "Орындалмады"
+  },
+  "reason": {
+    "OK": "Дәл расталғандай орындалды",
+    "NOT_FOUND": "Төлем табылмады",
+    "NOT_APPROVED": "Бұл төлем расталмаған",
+    "DECLINED": "Сіз бұл төлемнен бас тарттыңыз",
+    "INVALID_SIGNATURE": "Растауды тексеру мүмкін болмады",
+    "EXPIRED": "Растаудың мерзімі өтті",
+    "REPLAYED": "Бұл растау бір рет пайдаланылып қойған",
+    "RECIPIENT_MISMATCH": "Алушы сіз растаған алушыдан өзгеше",
+    "AMOUNT_MISMATCH": "Сома сіз растаған сомадан өзгеше",
+    "AMOUNT_EXCEEDS_LIMIT": "Сома сіз растаған сомадан асады",
+    "OPERATION_NOT_ALLOWED": "Операция сіз растаған операция емес",
+    "CONTINUING_PERMISSION_NOT_ALLOWED": "Қосымша тұрақты рұқсат сұралды",
+    "RAIL_MISMATCH": "Төлем тәсілі қате",
+    "DOMAIN_MISMATCH": "Желі немесе келісімшарт қате",
+    "INSUFFICIENT_FUNDS": "Қаражат жеткіліксіз",
+    "EXECUTION_REVERTED": "Желі транзакцияны қабылдамады",
+    "UNAUTHORIZED_CAPABILITY": "Бұл контекстен рұқсат етілмейді",
+    "RAIL_UNAVAILABLE": "Төлем тәсілі қолжетімсіз",
+    "DISCONNECTED": "Байланыс жоқ — соңғы расталған күй көрсетілуде"
+  },
+  "connection": {
+    "connected": "Қосылған",
+    "disconnected": "Байланыс жоқ",
+    "connecting": "Қосылуда"
+  },
+  "language": {
+    "label": "Тіл",
+    "search": "Тілді іздеу",
+    "choose": "Тілді таңдаңыз",
+    "noResults": "Сұрауыңызға сәйкес тіл табылмады",
+    "close": "Жабу",
+    "fallbackNote": "Әлі аударылмаған мәтін ағылшын тілінде көрсетіледі."
+  }
+}
