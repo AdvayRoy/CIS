@@ -47,7 +47,7 @@ export function Receipt({ view, reasonText }: { view: AgreementView; reasonText:
       )}
       <dl className="mt-3">
         <Row label={t("receipt.executionCount")} testId="execution-count"><span className="tabular">{view.executionCount}</span></Row>
-        {shown && <Row label={t("receipt.payerBalance")} testId="payer-balance"><span className="tabular"><bdi>{money(shown.observed.payerBalance)}</bdi></span></Row>}
+        {shown && <Row label={t("receipt.payerBalance")} testId="payer-balance"><span className="tabular text-xl font-semibold"><bdi>{money(shown.observed.payerBalance)}</bdi></span></Row>}
       </dl>
 
       <button

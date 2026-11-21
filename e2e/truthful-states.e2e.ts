@@ -21,7 +21,7 @@ test("10 pending: awaiting and approved-but-unexecuted are not shown as success"
   await expect(desk.page.locator("body")).toContainText("ACC-MERCHANT-001");
   expect(successClaims(await bodyText(ph.page))).toEqual([]);
   expect(successClaims(await bodyText(desk.page))).toEqual([]);
-  await ph.page.getByRole("button", { name: /approve this payment/i }).click({ delay: 900 });
+  await ph.page.getByRole("button", { name: /approve this payment/i }).click({ delay: 1100 });
   await expect.poll(async () => (await getView(id)).state).toBe("approved");
   await ph.page.waitForTimeout(2500); // several polls: nothing may drift to success on its own
   expect(successClaims(await bodyText(ph.page)), "approved (pending execution) on phone").toEqual([]);
@@ -38,7 +38,7 @@ test("10 stopped: a rejected recipient substitution is shown as stopped, never a
   const desk = await desktop(browser, DESKTOPS[0]);
   const ph = await phone(browser, PHONES[0]);
   await desk.page.goto("/command"); await ph.page.goto(pair.approvePath);
-  await ph.page.getByRole("button", { name: /approve this payment/i }).click({ delay: 900 });
+  await ph.page.getByRole("button", { name: /approve this payment/i }).click({ delay: 1100 });
   await expect.poll(async () => (await getView(id)).state).toBe("approved");
 
   const ex = await executeApi(await getView(id), { recipient: "ACC-UNKNOWN-777" });
@@ -104,7 +104,7 @@ test("10 disconnected: offline is shown as disconnected, never as success; recon
   const desk = await desktop(browser, DESKTOPS[0]);
   const ph = await phone(browser, PHONES[0]);
   await desk.page.goto("/command"); await ph.page.goto(pair.approvePath);
-  await ph.page.getByRole("button", { name: /approve this payment/i }).click({ delay: 900 });
+  await ph.page.getByRole("button", { name: /approve this payment/i }).click({ delay: 1100 });
   await expect.poll(async () => (await getView(id)).state).toBe("approved");
   // wait until both views have polled the approved state ("Approved" alone is also a static stage label)
   await expect(ph.page.locator("body")).not.toContainText(/awaiting your approval/i);

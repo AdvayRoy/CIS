@@ -4,7 +4,9 @@ Setup (before the audience): `pnpm demo`, then open `/command` in one window, `/
 
 **0:00 The problem (30 s).** "You agree to pay 100 once. What actually executes can differ: another recipient, another amount, a standing permission, or twice. CounterSign makes the infrastructure enforce exactly what you approved." Say what it is not: no scam detection, no real bank.
 
-**0:30 Bank: approve (60 s).** `/lab`: **Propose 100.00 AED transfer** (to `ACC-MERCHANT-001`). `/command`: sign in as customer, select it, **Pair phone**, open the QR/link on the phone. Read the card aloud: recipient identifier, amount, one use, expiry. Approve. Desktop turns Approved within a second.
+**Shortest honest path (optional opener):** `/shop` → **Pay with CounterSign** → on `/command` pair the phone → press and hold Approve → the shop page shows Order confirmed and the balance on `/command` counts down to 900.00.
+
+**0:30 Bank: approve (60 s).** `/lab`: **Propose 100.00 AED transfer** (to `ACC-MERCHANT-001`). `/command`: sign in as customer, select it, **Pair phone**, open the QR/link on the phone. Read the card aloud: recipient identifier, amount, one use, expiry. Press and hold Approve. Desktop turns Approved within a second.
 
 **1:30 Bank: attack (60 s).** `/lab`: **Substitute recipient**. Desktop and phone show Stopped, the differing field highlighted, balance still 1,000.00. **Inflate amount ×5**: stopped again. Point at the evidence inspector: approved vs attempted, no receipt.
 

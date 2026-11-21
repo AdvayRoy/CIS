@@ -1,6 +1,6 @@
 # Evidence matrix
 
-Integrated `main` at `c887fd0` (after the glass redesign), production build started with `pnpm demo`, run 2026-11-21 09:06 UTC on the build VM (macOS, Chromium headless).
+Integrated `main` at `cebeaf0` (after the OKX-style redesign and `/shop` flow), production build started with `pnpm demo`, run 2026-11-21 09:06 UTC on the build VM (macOS, Chromium headless).
 
 | Command | Result |
 |---|---|
@@ -8,7 +8,7 @@ Integrated `main` at `c887fd0` (after the glass redesign), production build star
 | `pnpm test` (bank/auth, chain adapter, i18n dictionaries) | 235 passed, 52 skipped (per-locale `lab` dictionaries do not exist; operator page is English only) |
 | `cd contracts && forge test` | 21 passed |
 | `ACCEPTANCE=1 CS_BASE_URL=http://localhost:3000 pnpm exec vitest run tests/acceptance` | 37 passed |
-| `BASE_URL=http://localhost:3000 pnpm exec playwright test` | 16 passed |
+| `BASE_URL=http://localhost:3000 pnpm exec playwright test` | 17 passed (includes `e2e/shop.e2e.ts`: checkout → phone approval → shop-submitted payment → one execution) |
 
 | # | Acceptance check | Result | Where proven |
 |---|---|---|---|

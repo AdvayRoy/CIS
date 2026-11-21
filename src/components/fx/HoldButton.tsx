@@ -2,7 +2,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-const HOLD_MS = 650;
+const HOLD_MS = 800;
 
 // Press-and-hold confirmation. Keyboard activation (Enter/Space) confirms directly.
 export function HoldButton({ onConfirm, disabled, children, hint, className, ...rest }:
