@@ -181,7 +181,7 @@ export function ApproveScreen({ id }: { id: string }) {
               aria-live="polite"
               data-testid="state-banner"
               data-state={state}
-              className={cn("rounded-2xl border bg-surface p-5 transition-colors duration-300", TONE_BORDER[ui.tone], ui.tone === "coral" && "cs-stop")}
+              className={cn("rounded-2xl border bg-surface p-4 transition-colors duration-300", TONE_BORDER[ui.tone], ui.tone === "coral" && "cs-stop")}
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
@@ -198,8 +198,8 @@ export function ApproveScreen({ id }: { id: string }) {
                     <ui.Icon aria-hidden className={cn("size-5", ui.spin && "animate-spin")} strokeWidth={2.25} />
                   </motion.span>
                   <div className="min-w-0 flex-1">
-                    <h1 className={cn("break-words text-[26px] leading-[1.15]", TONE_HEAD[ui.tone])}>{c(`state.${state}`)}</h1>
-                    <p className="mt-1.5 text-sm leading-relaxed text-muted">{t(`status.${state}`)}</p>
+                    <h1 className={cn("break-words text-2xl leading-[1.15]", TONE_HEAD[ui.tone])}>{c(`state.${state}`)}</h1>
+                    <p className="mt-1 text-sm leading-snug text-muted">{t(`status.${state}`)}</p>
                   </div>
                 </motion.div>
               </AnimatePresence>
@@ -249,7 +249,7 @@ export function ApproveScreen({ id }: { id: string }) {
 
       {view && showActions && (
         <div
-          className="glass-bar sticky bottom-0 -mx-4 rounded-t-3xl border-t border-line px-4 pt-4"
+          className="sticky bottom-0 -mx-4 rounded-t-3xl border-t border-line bg-bg px-4 pt-4"
           style={{ paddingBottom: "max(env(safe-area-inset-bottom), 16px)" }}
         >
           {actionError && (
