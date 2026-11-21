@@ -1,0 +1,71 @@
+{
+  "brand": "CounterSign",
+  "tagline": "Bir töleg. Edil ylalaşylyşy ýaly.",
+  "env": {
+    "bank": "Bank simulýasiýasy",
+    "chain": "Ýerli tordaky demo"
+  },
+  "rail": {
+    "bank": "Bank geçirimi",
+    "crypto": "Token bilen satyn alyş"
+  },
+  "field": {
+    "recipient": "Alyjy",
+    "amount": "Möçber",
+    "operation": "Amal",
+    "continuingAllowance": "Dowamly rugsat",
+    "expiry": "Möhleti",
+    "nonce": "Bir gezeklik belgi",
+    "domain": "Tor",
+    "merchant": "Satyjy",
+    "rail": "Töleg usuly",
+    "payer": "Kimden",
+    "allowance": "Galan rugsat",
+    "balance": "Balans",
+    "executionCount": "Ýerine ýetirilen sany"
+  },
+  "state": {
+    "awaiting_approval": "Siziň tassyklamagyňyza garaşýar",
+    "approved": "Tassyklandy",
+    "executing": "Ýerine ýetirilýär",
+    "rejected": "Saklandy",
+    "settled": "Tamamlandy",
+    "declined": "Ret edildi",
+    "expired": "Möhleti gutardy",
+    "failed": "Şowsuz boldy"
+  },
+  "reason": {
+    "OK": "Edil tassyklanyşy ýaly ýerine ýetirildi",
+    "NOT_FOUND": "Töleg tapylmady",
+    "NOT_APPROVED": "Bu töleg tassyklanmady",
+    "DECLINED": "Siz bu tölegi ret etdiňiz",
+    "INVALID_SIGNATURE": "Tassyklamany barlap bolmady",
+    "EXPIRED": "Tassyklamanyň möhleti gutardy",
+    "REPLAYED": "Bu tassyklama eýýäm bir gezek ulanyldy",
+    "RECIPIENT_MISMATCH": "Alyjy siziň tassyklanyňyzdan tapawutlanýar",
+    "AMOUNT_MISMATCH": "Möçber siziň tassyklanyňyzdan tapawutlanýar",
+    "AMOUNT_EXCEEDS_LIMIT": "Möçber siziň tassyklanyňyzdan köp",
+    "OPERATION_NOT_ALLOWED": "Amal siziň tassyklan amalyňyz däl",
+    "CONTINUING_PERMISSION_NOT_ALLOWED": "Goşmaça dowamly rugsat soraldy",
+    "RAIL_MISMATCH": "Töleg usuly nädogry",
+    "DOMAIN_MISMATCH": "Tor ýa-da şertnama nädogry",
+    "INSUFFICIENT_FUNDS": "Serişde ýeterlik däl",
+    "EXECUTION_REVERTED": "Tor tranzaksiýany ret etdi",
+    "UNAUTHORIZED_CAPABILITY": "Bu kontekstden rugsat berilmeýär",
+    "RAIL_UNAVAILABLE": "Töleg usuly elýeterli däl",
+    "DISCONNECTED": "Aragatnaşyk ýok — iň soňky tassyklanan ýagdaý görkezilýär"
+  },
+  "connection": {
+    "connected": "Birikdirildi",
+    "disconnected": "Aragatnaşyk ýok",
+    "connecting": "Birikdirilýär"
+  },
+  "language": {
+    "label": "Dil",
+    "search": "Dil gözle",
+    "choose": "Diliňizi saýlaň",
+    "noResults": "Gözlegiňize laýyk dil tapylmady",
+    "close": "Ýap",
+    "fallbackNote": "Entek terjime edilmedik tekst iňlis dilinde görkezilýär."
+  }
+}

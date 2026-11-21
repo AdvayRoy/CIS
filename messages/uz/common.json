@@ -1,0 +1,71 @@
+{
+  "brand": "CounterSign",
+  "tagline": "Bitta toʻlov. Aynan kelishilganidek.",
+  "env": {
+    "bank": "Bank simulyatsiyasi",
+    "chain": "Lokal tarmoqdagi demo"
+  },
+  "rail": {
+    "bank": "Bank oʻtkazmasi",
+    "crypto": "Token bilan xarid"
+  },
+  "field": {
+    "recipient": "Qabul qiluvchi",
+    "amount": "Summa",
+    "operation": "Operatsiya",
+    "continuingAllowance": "Doimiy ruxsat",
+    "expiry": "Amal qilish muddati",
+    "nonce": "Bir martalik raqam",
+    "domain": "Tarmoq",
+    "merchant": "Sotuvchi",
+    "rail": "Toʻlov usuli",
+    "payer": "Kimdan",
+    "allowance": "Qolgan ruxsat",
+    "balance": "Balans",
+    "executionCount": "Bajarilishlar soni"
+  },
+  "state": {
+    "awaiting_approval": "Tasdiqlashingiz kutilmoqda",
+    "approved": "Tasdiqlangan",
+    "executing": "Bajarilmoqda",
+    "rejected": "Toʻxtatildi",
+    "settled": "Yakunlandi",
+    "declined": "Rad etildi",
+    "expired": "Muddati tugagan",
+    "failed": "Bajarilmadi"
+  },
+  "reason": {
+    "OK": "Aynan tasdiqlanganidek bajarildi",
+    "NOT_FOUND": "Toʻlov topilmadi",
+    "NOT_APPROVED": "Bu toʻlov tasdiqlanmagan",
+    "DECLINED": "Siz bu toʻlovni rad etdingiz",
+    "INVALID_SIGNATURE": "Tasdiqni tekshirib boʻlmadi",
+    "EXPIRED": "Tasdiq muddati tugagan",
+    "REPLAYED": "Bu tasdiqdan allaqachon bir marta foydalanilgan",
+    "RECIPIENT_MISMATCH": "Qabul qiluvchi siz tasdiqlaganidan farq qiladi",
+    "AMOUNT_MISMATCH": "Summa siz tasdiqlaganidan farq qiladi",
+    "AMOUNT_EXCEEDS_LIMIT": "Summa siz tasdiqlaganidan oshib ketdi",
+    "OPERATION_NOT_ALLOWED": "Operatsiya siz tasdiqlagan operatsiya emas",
+    "CONTINUING_PERMISSION_NOT_ALLOWED": "Qoʻshimcha doimiy ruxsat soʻraldi",
+    "RAIL_MISMATCH": "Toʻlov usuli notoʻgʻri",
+    "DOMAIN_MISMATCH": "Tarmoq yoki kontrakt notoʻgʻri",
+    "INSUFFICIENT_FUNDS": "Mablagʻ yetarli emas",
+    "EXECUTION_REVERTED": "Tarmoq tranzaksiyani rad etdi",
+    "UNAUTHORIZED_CAPABILITY": "Bu kontekstdan ruxsat etilmagan",
+    "RAIL_UNAVAILABLE": "Toʻlov usuli mavjud emas",
+    "DISCONNECTED": "Aloqa uzildi — oxirgi tasdiqlangan holat koʻrsatilmoqda"
+  },
+  "connection": {
+    "connected": "Ulangan",
+    "disconnected": "Aloqa uzilgan",
+    "connecting": "Ulanmoqda"
+  },
+  "language": {
+    "label": "Til",
+    "search": "Tilni qidirish",
+    "choose": "Tilni tanlang",
+    "noResults": "Qidiruvingizga mos til topilmadi",
+    "close": "Yopish",
+    "fallbackNote": "Hali tarjima qilinmagan matn ingliz tilida koʻrsatiladi."
+  }
+}

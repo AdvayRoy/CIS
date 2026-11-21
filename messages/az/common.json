@@ -1,0 +1,71 @@
+{
+  "brand": "CounterSign",
+  "tagline": "Bir ödəniş. Məhz razılaşdırıldığı kimi.",
+  "env": {
+    "bank": "Bank simulyasiyası",
+    "chain": "Lokal şəbəkədə demo"
+  },
+  "rail": {
+    "bank": "Bank köçürməsi",
+    "crypto": "Tokenlə alış"
+  },
+  "field": {
+    "recipient": "Alan",
+    "amount": "Məbləğ",
+    "operation": "Əməliyyat",
+    "continuingAllowance": "Davamlı icazə",
+    "expiry": "Etibarlılıq müddəti",
+    "nonce": "Birdəfəlik nömrə",
+    "domain": "Şəbəkə",
+    "merchant": "Satıcı",
+    "rail": "Ödəniş üsulu",
+    "payer": "Kimdən",
+    "allowance": "Qalan icazə",
+    "balance": "Balans",
+    "executionCount": "İcra sayı"
+  },
+  "state": {
+    "awaiting_approval": "Təsdiqinizi gözləyir",
+    "approved": "Təsdiqləndi",
+    "executing": "İcra olunur",
+    "rejected": "Dayandırıldı",
+    "settled": "Tamamlandı",
+    "declined": "İmtina edildi",
+    "expired": "Müddəti bitib",
+    "failed": "Uğursuz oldu"
+  },
+  "reason": {
+    "OK": "Məhz təsdiqləndiyi kimi icra olundu",
+    "NOT_FOUND": "Ödəniş tapılmadı",
+    "NOT_APPROVED": "Bu ödəniş təsdiqlənməyib",
+    "DECLINED": "Siz bu ödənişdən imtina etdiniz",
+    "INVALID_SIGNATURE": "Təsdiqi yoxlamaq mümkün olmadı",
+    "EXPIRED": "Təsdiqin müddəti bitib",
+    "REPLAYED": "Bu təsdiq artıq bir dəfə istifadə olunub",
+    "RECIPIENT_MISMATCH": "Alan sizin təsdiqlədiyinizdən fərqlidir",
+    "AMOUNT_MISMATCH": "Məbləğ sizin təsdiqlədiyinizdən fərqlidir",
+    "AMOUNT_EXCEEDS_LIMIT": "Məbləğ sizin təsdiqlədiyinizdən çoxdur",
+    "OPERATION_NOT_ALLOWED": "Əməliyyat sizin təsdiqlədiyiniz əməliyyat deyil",
+    "CONTINUING_PERMISSION_NOT_ALLOWED": "Əlavə davamlı icazə tələb olunub",
+    "RAIL_MISMATCH": "Yanlış ödəniş üsulu",
+    "DOMAIN_MISMATCH": "Yanlış şəbəkə və ya kontrakt",
+    "INSUFFICIENT_FUNDS": "Kifayət qədər vəsait yoxdur",
+    "EXECUTION_REVERTED": "Şəbəkə əməliyyatı rədd etdi",
+    "UNAUTHORIZED_CAPABILITY": "Bu kontekstdən icazə verilmir",
+    "RAIL_UNAVAILABLE": "Ödəniş üsulu əlçatan deyil",
+    "DISCONNECTED": "Bağlantı kəsilib — son təsdiqlənmiş vəziyyət göstərilir"
+  },
+  "connection": {
+    "connected": "Qoşulub",
+    "disconnected": "Bağlantı kəsilib",
+    "connecting": "Qoşulur"
+  },
+  "language": {
+    "label": "Dil",
+    "search": "Dil axtarın",
+    "choose": "Dilinizi seçin",
+    "noResults": "Axtarışınıza uyğun dil tapılmadı",
+    "close": "Bağla",
+    "fallbackNote": "Hələ tərcümə olunmamış mətn ingilis dilində göstərilir."
+  }
+}
