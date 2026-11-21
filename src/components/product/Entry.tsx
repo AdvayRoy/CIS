@@ -10,6 +10,7 @@ import { BANK_ACCOUNTS } from "@/shared/contract";
 import { LanguageSelector } from "@/components/i18n/LanguageSelector";
 import { ProductBar } from "@/components/product/Journey";
 import { AttemptField, Panel, TermsRule } from "@/components/product/entryPanels";
+import { StepsScroll } from "@/components/product/entrySteps";
 
 const label = "text-[11px] font-medium uppercase tracking-[0.14em] text-muted";
 
@@ -133,20 +134,7 @@ export function Entry() {
 
         <section aria-labelledby="journey-title">
           <h2 id="journey-title" className={label}>How one payment goes</h2>
-          <ol className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
-            {STEPS.map((s) => {
-              const inner = (<>
-                <span className="flex items-center justify-between">
-                  <span className="tabular flex size-8 items-center justify-center rounded-full border border-line text-xs text-fg">{s.n}</span>
-                  <s.icon aria-hidden className="size-5 text-muted transition-colors duration-200 group-hover:text-fg" />
-                </span>
-                <span className="mt-4 block text-[15px] font-medium text-fg">{s.title}</span>
-                <span className="mt-1.5 block text-[13px] leading-relaxed text-muted">{s.body}</span>
-                <span className="mt-auto flex items-center gap-1.5 pt-4 text-[13px] text-fg">{s.cta}<ArrowRight aria-hidden className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none rtl:rotate-180" /></span>
-              </>);
-              return <li key={s.n}><Link href={s.href} className="group flex h-full flex-col rounded-[16px] border border-line bg-surface p-5 transition-colors duration-200 hover:border-fg/25">{inner}</Link></li>;
-            })}
-          </ol>
+          <StepsScroll steps={STEPS} />
         </section>
 
         <footer className="border-t border-line pt-5 text-xs leading-relaxed text-muted">

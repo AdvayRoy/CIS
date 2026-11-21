@@ -14,19 +14,22 @@ const STEPS = [
 ];
 const N = STEPS.length;
 
-function Scene({ p, i }: { p: MotionValue<number>; i: number }) {
+function Scene({ p, i, intro }: { p: MotionValue<number>; i: number; intro: MotionValue<number> }) {
   const s = i / N;
   const e = (i + 1) / N;
   const first = i === 0;
   const last = i === N - 1;
-  const stops = first ? [0, e - 0.035, e - 0.005] : last ? [s - 0.005, s + 0.03, 1] : [s - 0.005, s + 0.03, e - 0.035, e - 0.005];
+  const stops = first ? [0, e - 0.03, e - 0.005] : last ? [s - 0.005, s + 0.025, 1] : [s - 0.005, s + 0.025, e - 0.03, e - 0.005];
   const opacity = useTransform(p, stops, first ? [1, 1, 0] : last ? [0, 1, 1] : [0, 1, 1, 0]);
   const y = useTransform(p, stops, first ? [0, 0, -28] : last ? [28, 0, 0] : [28, 0, 0, -28]);
-  const local = useTransform(p, [first ? 0 : s + 0.03, e - 0.06], [0, 1]);
+  const seg = useTransform(p, [first ? 0 : s + 0.02, e - (last ? 0.06 : 0.085)], [0, 1]);
+  // The first fragment starts assembling while the section scrolls into view, so the stage is never empty when it pins.
+  const lead = useTransform(intro, [0.45, 1], [0, 0.3]);
+  const local = useTransform(() => (first ? lead.get() + seg.get() * 0.7 : seg.get()));
   const G = STEPS[i].G;
   return (
     <motion.div style={{ opacity, y }} className="absolute inset-0 flex items-center justify-center px-8 pb-20 pt-16 xl:px-12">
-      <div className="w-full max-w-[440px]">
+      <div className="w-full max-w-[440px] xl:max-w-[464px]">
         <G p={local} />
       </div>
     </motion.div>
@@ -44,6 +47,7 @@ export function ScrollStory() {
   const [step, setStep] = useState(0);
   const full = useMotionValue(1);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const { scrollYProgress: intro } = useScroll({ target: ref, offset: ["start end", "start start"] });
   useMotionValueEvent(scrollYProgress, "change", (v) => {
     const next = Math.min(N - 1, Math.floor(v * N));
     setStep((s) => (s === next ? s : next));
@@ -63,17 +67,17 @@ export function ScrollStory() {
                 {STEPS.map((s, i) => {
                   const on = reduce || i === step;
                   return (
-                    <li key={s.k} className={cn("relative border-t border-line py-4 transition-opacity duration-300", !on && "lg:opacity-40")}>
+                    <li key={s.k} className={cn("relative border-t border-line py-4 transition-opacity duration-300", !on && "lg:opacity-40", reduce && "flex flex-col")}>
                       {!reduce && <StepBar p={scrollYProgress} i={i} />}
                       <div className="flex items-baseline gap-4">
-                        <span className="tabular w-6 text-[12px] text-muted">0{i + 1}</span>
+                        <span className="tabular w-6 shrink-0 text-[12px] text-muted">0{i + 1}</span>
                         <div className="min-w-0">
                           <p className="text-[17px] font-semibold tracking-tight">{s.t}</p>
                           <p className={cn("mt-1.5 text-[14px] leading-relaxed text-muted", !on && "lg:hidden")}>{s.d}</p>
                         </div>
                       </div>
-                      <Panel className={cn("mt-5 px-4 py-6 sm:p-8", !reduce && "lg:hidden")}>
-                        <div className="mx-auto w-full max-w-[440px]">
+                      <Panel className={cn("mt-5 px-4 py-6 sm:p-8", reduce ? "flex-1" : "lg:hidden")}>
+                        <div className="mx-auto flex h-full w-full max-w-[440px] flex-col justify-center">
                           <s.G p={full} />
                         </div>
                       </Panel>
@@ -92,7 +96,7 @@ export function ScrollStory() {
                 </Cap>
               </div>
               {STEPS.map((s, i) => (
-                <Scene key={s.k} p={scrollYProgress} i={i} />
+                <Scene key={s.k} p={scrollYProgress} i={i} intro={intro} />
               ))}
               <div className="absolute inset-x-8 bottom-7 xl:inset-x-10">
                 <div className="relative h-px bg-black/10">

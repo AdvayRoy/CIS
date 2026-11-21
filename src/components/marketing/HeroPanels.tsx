@@ -39,11 +39,13 @@ function Badge({ children, tone }: { children: React.ReactNode; tone: "coral" | 
 
 // Cursor rest position per step: [left %, row index].
 const CURSOR: ReadonlyArray<readonly [number, number]> = [
-  [58, 0],
+  [52, 0],
   [80, 1],
-  [70, 2],
+  [66, 2],
   [62, 3],
 ];
+// The cursor visits each row, then rests on the last one (where its tag is shown).
+const DWELL = [1300, 1300, 1300, 3200];
 
 /** "When a payment is attempted -> if the amount differs -> stop with a reason code -> record evidence." */
 export function RuleBuilder() {
@@ -51,9 +53,9 @@ export function RuleBuilder() {
   const [step, setStep] = useState(3);
   useEffect(() => {
     if (reduce) return;
-    const id = window.setInterval(() => setStep((s) => (s + 1) % CURSOR.length), 1900);
-    return () => window.clearInterval(id);
-  }, [reduce]);
+    const id = window.setTimeout(() => setStep((s) => (s + 1) % CURSOR.length), DWELL[step]);
+    return () => window.clearTimeout(id);
+  }, [reduce, step]);
   const at = reduce ? 3 : step;
   const [x, row] = CURSOR[at];
   const lift = (i: number) => (at === i ? LIFT : "shadow-[0_0_0_1px_rgba(19,19,18,0.04)]");
@@ -110,7 +112,14 @@ export function RuleBuilder() {
         <svg width="34" height="36" viewBox="0 0 34 36" className="drop-shadow-[0_4px_8px_rgba(19,19,18,0.25)]">
           <path d="M3 2 L3 30 L11 23 L17 35 L23 32 L17 21 L28 20 Z" fill={INK} stroke="#fff" strokeWidth="2" strokeLinejoin="round" />
         </svg>
-        <span className="absolute left-7 top-8 rounded-[10px] bg-white px-2.5 py-1 text-[12px] shadow-[0_8px_20px_-10px_rgba(19,19,18,0.4)] sm:text-[14px]">CounterSign</span>
+        <span
+          className={cn(
+            "absolute left-7 top-8 rounded-[10px] bg-white px-2.5 py-1 text-[12px] shadow-[0_8px_20px_-10px_rgba(19,19,18,0.4)] transition-opacity duration-300 sm:text-[14px]",
+            at === 3 ? "opacity-100" : "opacity-0",
+          )}
+        >
+          CounterSign
+        </span>
       </div>
     </div>
   );
@@ -140,13 +149,13 @@ const BANK = "M 60 112 C 150 112 180 220 260 220";
 const CRYPTO = "M 60 328 C 150 328 180 220 260 220";
 const OUT = "M 260 220 L 470 220";
 
-function RailChip({ className, dot, name, sub, value }: { className?: string; dot: "ink" | "mint" | "coral"; name: string; sub: string; value: string }) {
+function RailChip({ className, dot, name, sub, value, keepSub }: { className?: string; dot: "ink" | "mint" | "coral"; name: string; sub: string; value: string; keepSub?: boolean }) {
   return (
     <div className={cn("absolute flex items-center gap-2 rounded-[8px] bg-white px-2 py-1.5 shadow-[0_10px_24px_-14px_rgba(19,19,18,0.5),0_0_0_1px_rgba(19,19,18,0.05)] sm:gap-3 sm:px-3 sm:py-2", className)}>
       <span aria-hidden className={cn("size-2 shrink-0 rounded-full", dot === "ink" && "bg-[#131312]", dot === "mint" && "bg-mint ring-1 ring-[#131312]/50", dot === "coral" && "bg-coral")} />
       <span className="min-w-0 font-mono uppercase leading-tight">
         <span className="block text-[9px] font-semibold tracking-[0.06em] text-[#131312] sm:text-[11px]">{name}</span>
-        <span className="block text-[8px] tracking-[0.06em] text-[#66645E] sm:text-[9px]">{sub}</span>
+        <span className={cn("text-[8px] tracking-[0.06em] text-[#66645E] sm:block sm:text-[9px]", keepSub ? "block" : "hidden")}>{sub}</span>
       </span>
       <span className="tabular font-mono text-[9px] font-semibold text-[#131312] sm:text-[11px]">{value}</span>
     </div>
@@ -188,7 +197,7 @@ export function RailsGlobe() {
       <RailChip className="left-0 top-[25.5%] -translate-y-1/2" dot="mint" name="Bank rail" sub="Attempt · matched" value={`${SAMPLE.amount} ${SAMPLE.currency}`} />
       <RailChip className="left-0 top-[74.5%] -translate-y-1/2" dot="coral" name="Crypto rail" sub="Attempt · stopped" value={SAMPLE.changedAmount} />
       <RailChip className="right-0 top-1/2 -translate-y-1/2" dot="ink" name="Recipient" sub={SAMPLE.recipient} value={`+${SAMPLE.amount}`} />
-      <RailChip className="left-[52%] top-[66%]" dot="coral" name="Stopped" sub="AMOUNT_MISMATCH" value="0.00" />
+      <RailChip className="left-[50%] top-[64%] sm:left-[52%] sm:top-[66%]" dot="coral" name="Stopped" sub="AMOUNT_MISMATCH" value="0.00" keepSub />
     </div>
   );
 }
