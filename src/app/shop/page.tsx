@@ -17,7 +17,9 @@ export default function ShopPage() {
   const [id, setId] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const { data: view, connected } = usePoll<AgreementView>(() => api.agreement(id!), 1000, !!id);
+  const { data: polled, connected } = usePoll<AgreementView>(() => api.agreement(id!), 1000, !!id);
+  // Never render a previous order's state for the current order id.
+  const view = polled && polled.agreement.id === id ? polled : null;
   const submitted = useRef<string | null>(null);
   const shop = ov?.chain.protected?.shop;
   const chainUp = !!ov?.chain.available && !!shop;
@@ -45,7 +47,7 @@ export default function ShopPage() {
 
   const state = view?.state;
   const receipt = view?.evidence.find((e) => e.receipt)?.receipt;
-  const step = !id ? 0 : state === "awaiting_approval" ? 1 : state === "approved" || state === "executing" ? 2 : state === "settled" ? 3 : -1;
+  const step = !id || !view ? 0 : state === "awaiting_approval" ? 1 : state === "approved" || state === "executing" ? 2 : state === "settled" ? 3 : -1;
   const steps = ["Order placed", "Customer approves on their phone", "Shop submits the approved payment", "Paid"];
   const price = rail === "bank" ? "100.00 AED" : "100 CSUSD";
 
@@ -54,7 +56,7 @@ export default function ShopPage() {
       <section className="tilt rounded-[20px] border border-line bg-surface p-8">
         <p className="flex items-center gap-2 text-xs tracking-widest text-muted uppercase"><ShoppingBag aria-hidden className="size-4" />Demo Shop · merchant checkout fixture</p>
         <h1 className="mt-6 text-4xl font-semibold tracking-tight">Annual membership</h1>
-        <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">One payment of {price}. You approve the exact recipient and amount on your phone; the shop cannot change either afterwards or charge twice.</p>
+        <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">One payment of {rail === "bank" ? "exactly" : "at most"} {price}. You approve the recipient and the amount on your phone; the shop cannot change the recipient, take more than that, or charge twice.</p>
         <p className="ticker mt-8 text-6xl font-semibold"><span className="hero-amount">{rail === "bank" ? "100.00" : "100"}</span><span className="ms-2 text-xl font-normal text-muted">{rail === "bank" ? "AED" : "CSUSD"}</span></p>
         <div className="seg mt-8" role="group" aria-label="Payment method">
           <button type="button" aria-pressed={rail === "bank"} disabled={!!id} onClick={() => setRail("bank")}>Bank transfer</button>
@@ -97,7 +99,7 @@ export default function ShopPage() {
               <div className="mt-6 rounded-[14px] border border-line bg-white/5 p-4">
                 <p className="flex items-center gap-2 text-sm font-medium"><Smartphone aria-hidden className="size-4" />Waiting for the customer</p>
                 <p className="mt-1 text-xs leading-relaxed text-muted">Open your CounterSign account, pair your phone and approve this payment there. This shop page cannot approve it.</p>
-                <Link href="/command" className="btn-primary mt-3 inline-flex h-10 items-center rounded-full px-5 text-sm">Open CounterSign account</Link>
+                <Link href="/command" target="_blank" rel="noopener" className="btn-primary mt-3 inline-flex h-10 items-center rounded-full px-5 text-sm">Open CounterSign account</Link>
               </div>
             )}
             {step === -1 && view && (
@@ -106,7 +108,7 @@ export default function ShopPage() {
             {step === 3 && view && (
               <div className="sheen glow-mint mt-6 rounded-[14px] border border-mint/40 p-5">
                 <p className="text-xl font-semibold text-mint">Order confirmed</p>
-                <p className="mt-1 text-xs text-muted">Paid {formatUnitsStr(view.agreement.amount, view.agreement.asset.decimals)} {view.agreement.asset.code}, executed {view.executionCount} time.</p>
+                <p className="mt-1 text-xs text-muted">{view.agreement.rail === "bank" ? "Paid" : "Approved limit"} {formatUnitsStr(view.agreement.amount, view.agreement.asset.decimals)} {view.agreement.asset.code}, executed {view.executionCount} time.</p>
                 {receipt && <p className="ident mt-2 text-[11px] text-muted">{receipt.kind === "ledger" ? receipt.transferId : receipt.txHash}</p>}
               </div>
             )}

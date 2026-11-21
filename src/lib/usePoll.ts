@@ -13,7 +13,7 @@ export function usePoll<T>(fetcher: () => Promise<T>, intervalMs = 1000, enabled
     const tick = async () => {
       try { const d = await f.current(); if (!stop) { setData(d); setConnected(true); setError(null); } }
       catch (e) { const x = e as { code?: string; status?: number };
-        if (!stop) { if (!x.status) setConnected(false); setError({ code: x.code ?? "ERR", status: x.status ?? 0 }); } }
+        if (!stop) { if (!x.status) setConnected(false); if (x.status === 404) setData(null); setError({ code: x.code ?? "ERR", status: x.status ?? 0 }); } }
       if (!stop) timer = setTimeout(tick, intervalMs);
     };
     tick();
