@@ -12,7 +12,7 @@ export function AgreementList({ agreements, selectedId, onSelect }:
   return (
     <nav aria-label={t("list.title")} className="flex min-h-0 flex-col">
       <div className="flex items-baseline justify-between px-4 pt-5 pb-3">
-        <h2 className="text-[13px] font-medium tracking-wide text-muted uppercase">{t("list.title")}</h2>
+        <h2 className="text-sm text-muted">{t("list.title")}</h2>
         <span className="tabular text-xs text-muted">{agreements.length}</span>
       </div>
       {agreements.length === 0 ? (

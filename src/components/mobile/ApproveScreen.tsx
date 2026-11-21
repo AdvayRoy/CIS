@@ -158,7 +158,7 @@ export function ApproveScreen({ id }: { id: string }) {
         {!view && !offline && (notFound || loadError) && (
           <section role="alert" className="rounded-2xl border border-line bg-surface p-5" data-testid={notFound ? "not-found" : "load-error"}>
             <CircleAlert aria-hidden className="size-6 text-coral" />
-            <h1 className="mt-3 text-lg font-semibold">{t(notFound ? "notFound.title" : "loadError.title")}</h1>
+            <h1 className="font-sans mt-3 text-lg font-semibold">{t(notFound ? "notFound.title" : "loadError.title")}</h1>
             <p className="mt-1 text-sm text-muted">{t(notFound ? "notFound.body" : "loadError.body")}</p>
             <p className="ident mt-3 text-xs text-muted">{id}</p>
           </section>

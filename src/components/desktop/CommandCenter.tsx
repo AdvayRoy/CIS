@@ -110,8 +110,8 @@ export function CommandCenter() {
       <div className="flex min-w-0 flex-1 flex-col">
         <header className="glass-bar relative z-20 flex h-16 shrink-0 items-center gap-4 border-b border-line px-6">
           <div className="flex min-w-0 items-baseline gap-3">
-            <h1 className="text-[15px] font-semibold tracking-tight">{tc("brand")}</h1>
-            <p className="hidden truncate text-[13px] text-muted min-[1360px]:block">{tc("tagline")}</p>
+            <h1 className="font-sans text-[15px] font-semibold tracking-tight">{tc("brand")}</h1>
+            
           </div>
           <div className="ms-auto flex shrink-0 items-center gap-3">
             {!fixture && caps && !caps.customer && <SignIn onDone={() => setCapsTick((n) => n + 1)} />}
@@ -157,7 +157,7 @@ export function CommandCenter() {
                           <span>{tc(`rail.${view.agreement.rail}`)}</span><span aria-hidden>·</span>
                           <span>{tc(`env.${view.agreement.rail === "bank" ? "bank" : "chain"}`)}</span>
                         </p>
-                        <p className="tabular mt-1 text-6xl font-semibold tracking-tight"><span className="hero-amount">{fmtAmount(view.agreement.amount, view.agreement.asset.decimals)}</span>
+                        <p className="tabular mt-1 text-6xl font-medium tracking-tight"><span className="hero-amount">{fmtAmount(view.agreement.amount, view.agreement.asset.decimals)}</span>
                           <span className="ms-2 text-xl font-normal text-muted">{view.agreement.asset.code}</span></p>
                         <p className="mt-2 truncate text-[13px] text-muted">
                           {t("hero.to")} <span className="text-fg">{view.agreement.recipientDisplayName}</span>{" "}

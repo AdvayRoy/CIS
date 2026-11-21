@@ -30,7 +30,7 @@ export function EvidenceInspector({ view, evidence, stage, onStage }:
   return (
     <div className="flex h-full min-h-0 w-[340px] flex-col">
       <div className="flex h-14 shrink-0 items-center justify-between border-b border-line px-5">
-        <h2 className="text-[13px] font-medium tracking-wide text-muted uppercase">{t("inspector.title")}</h2>
+        <h2 className="text-sm text-muted">{t("inspector.title")}</h2>
       </div>
       {!view || !a ? <div className="p-5"><Notice>{t("inspector.empty")}</Notice></div> : (<>
         <div role="tablist" aria-label={t("inspector.title")} className="flex shrink-0 gap-1 border-b border-line p-2">
