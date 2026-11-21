@@ -9,6 +9,7 @@ import { cn } from "@/lib/cn";
 import { BANK_ACCOUNTS } from "@/shared/contract";
 import { LanguageSelector } from "@/components/i18n/LanguageSelector";
 import { ProductBar } from "@/components/product/Journey";
+import { AttemptField, Panel, TermsRule } from "@/components/product/entryPanels";
 
 const label = "text-[11px] font-medium uppercase tracking-[0.14em] text-muted";
 
@@ -44,7 +45,7 @@ function RuleDemo() {
   const s = SCENARIOS.find((x) => x.id === id) ?? SCENARIOS[0];
   const ok = s.changed === null;
   return (
-    <section aria-labelledby="rule-title" className="min-w-0 rounded-[16px] border border-line bg-surface p-5 sm:p-6">
+    <section aria-labelledby="rule-title" className="mx-auto w-full min-w-0 max-w-4xl rounded-[28px] border border-line bg-[#191918] p-5 sm:p-10">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 id="rule-title" className={label}>Try the rule</h2>
         <p className="text-xs text-muted">Illustration. The live rails are in Checkout and Lab.</p>
@@ -92,6 +93,10 @@ function RuleDemo() {
 
 export function Entry() {
   const tc = useTranslations("common");
+  const tagline = tc("tagline");
+  const cut = tagline.search(/[.!?\u061F\u3002]\s/);
+  const head = cut < 0 ? tagline : tagline.slice(0, cut + 1);
+  const tail = cut < 0 ? "" : tagline.slice(cut + 2);
   return (
     <MotionConfig reducedMotion="user">
       <ProductBar>
@@ -99,26 +104,32 @@ export function Entry() {
         <Link href="/lab" className="hidden items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-[13px] text-muted transition-colors duration-200 hover:bg-surface-2 hover:text-fg sm:inline-flex"><FlaskConical aria-hidden className="size-4" />Lab (operator)</Link>
       </ProductBar>
 
-      <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 sm:py-14">
-        <section className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
-          <div>
-            <p className={label}>Product demo</p>
-            <h1 className="mt-4 text-5xl leading-[1.04] sm:text-[64px]"><span className="hero-amount">{tc("tagline")}</span></h1>
-            <p className="mt-4 text-lg text-fg">This recipient. This amount. Once.</p>
-            <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
-              You approve the facts of one payment on your phone. The rail executes exactly those facts and refuses any request that differs, with evidence either way.
-            </p>
-            <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/shop" className="btn-primary inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm">Launch demo<ArrowRight aria-hidden className="size-4 rtl:rotate-180" /></Link>
-              <Link href="/command" className="inline-flex h-12 items-center gap-2 rounded-full border border-line px-6 text-sm text-fg transition-colors duration-200 hover:bg-surface-2"><ListChecks aria-hidden className="size-4" />View payments</Link>
-            </div>
-            <p className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-muted">
-              <Link href="/landing" className="underline-offset-4 transition-colors duration-200 hover:text-fg hover:underline">About CounterSign</Link>
-              <Link href="/evidence" className="underline-offset-4 transition-colors duration-200 hover:text-fg hover:underline">Evidence Lab</Link>
-            </p>
+      <main className="mx-auto flex w-full max-w-[1400px] flex-col gap-16 px-4 pb-10 pt-12 sm:gap-24 sm:px-6 sm:pt-20 lg:px-10">
+        <section className="flex flex-col items-center text-center">
+          <p className={label}>Product demo</p>
+          <h1 className="mt-5 font-sans text-[44px] font-medium leading-[1.04] tracking-[-0.035em] sm:text-[72px]">
+            <span className="hero-amount block">{head}</span>
+            {tail && <span className="block text-muted">{tail}</span>}
+          </h1>
+          <p className="mt-6 text-lg text-fg">This recipient. This amount. Once.</p>
+          <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
+            You approve the facts of one payment on your phone. The rail executes exactly those facts and refuses any request that differs, with evidence either way.
+          </p>
+          <div className="mt-8 flex flex-wrap justify-center gap-3">
+            <Link href="/shop" className="inline-flex h-12 items-center gap-2 rounded-full bg-mint px-6 text-sm font-semibold text-black hover:bg-fg">Launch demo<ArrowRight aria-hidden className="size-4 rtl:rotate-180" /></Link>
+            <Link href="/command" className="inline-flex h-12 items-center gap-2 rounded-full border border-line px-6 text-sm text-fg transition-colors duration-200 hover:bg-surface-2"><ListChecks aria-hidden className="size-4" />View payments</Link>
           </div>
-          <RuleDemo />
+          <p className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[13px] text-muted">
+            <Link href="/landing" className="underline-offset-4 transition-colors duration-200 hover:text-fg hover:underline">About CounterSign</Link>
+            <Link href="/evidence" className="underline-offset-4 transition-colors duration-200 hover:text-fg hover:underline">Evidence Lab</Link>
+          </p>
+          <div className="mt-12 grid w-full gap-4 text-start sm:mt-16 sm:gap-6 lg:grid-cols-2">
+            <Panel title="Approved terms"><TermsRule /></Panel>
+            <Panel title="Attempted payments"><AttemptField /></Panel>
+          </div>
         </section>
+
+        <RuleDemo />
 
         <section aria-labelledby="journey-title">
           <h2 id="journey-title" className={label}>How one payment goes</h2>
