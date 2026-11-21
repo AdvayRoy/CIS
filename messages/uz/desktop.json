@@ -1,0 +1,146 @@
+{
+  "title": "Boshqaruv markazi",
+  "nav": {
+    "payment": "Toʻlov",
+    "chain": "Tokenlar holati",
+    "bank": "Bank hisoblari",
+    "lab": "Demo-laboratoriya (operator)"
+  },
+  "status": {
+    "serverError": "Server xatosi",
+    "loading": "Joriy holat yuklanmoqda…",
+    "noData": "Serverga ulanib boʻlmadi. Tasdiqlangan holat hozircha yoʻq."
+  },
+  "fixture": {
+    "badge": "Sinov maʼlumotlari",
+    "banner": "Maket ishlab chiqish uchun sinov maʼlumotlari — bu haqiqiy holat emas. Haqiqiy tizimni koʻrish uchun ?fixture=1 ni olib tashlang."
+  },
+  "signIn": {
+    "label": "Demo-kirish · mijoz kaliti",
+    "action": "Kirish",
+    "failed": "Kalit qabul qilinmadi",
+    "active": "Mijoz sessiyasi (demo)"
+  },
+  "list": {
+    "title": "Kelishuvlar",
+    "empty": "Kelishuvlar hozircha yoʻq. Sotuvchi kelishuvni demo-laboratoriyada yaratadi va u shu yerda paydo boʻladi."
+  },
+  "empty": {
+    "title": "Koʻrsatish uchun toʻlov yoʻq",
+    "body": "Hozircha hech narsa soʻralmagan. Sotuvchi toʻlov taklif qilganda, u tasdiqlangan shartlari, barcha urinishlari va bajarish dalillari bilan shu yerda paydo boʻladi.",
+    "action": "Demo-laboratoriyani ochish"
+  },
+  "hero": {
+    "to": "oluvchi:"
+  },
+  "pair": {
+    "title": "Telefoningizda tasdiqlang",
+    "hint": "Faqat shu toʻlovga bogʻlangan qisqa muddatli havola yaratadi.",
+    "needSignIn": "Telefonni bogʻlash uchun mijoz sifatida kiring (yuqori oʻngda).",
+    "action": "Telefonni bogʻlash",
+    "again": "Yangi havola",
+    "error": "Bogʻlash havolasini yaratib boʻlmadi.",
+    "qrAlt": "Tasdiqlash havolasining QR kodi",
+    "expires": "Havola {time} gacha amal qiladi",
+    "expired": "Bu havolaning muddati tugagan. Yangisini yarating.",
+    "copy": "Havolani nusxalash",
+    "copied": "Nusxalandi"
+  },
+  "path": {
+    "approved": "Tasdiqlandi",
+    "attempted": "Urinish boʻldi",
+    "executed": "Bajarildi",
+    "signed": "Mijoz imzolagan",
+    "awaiting": "Hali tasdiqlanmagan",
+    "noAttempt": "Urinish kelib tushmadi",
+    "noAttemptHint": "Bu kelishuv boʻyicha bajarish urinishi kelib tushmagan.",
+    "matches": "Tasdiqlangan shartlarga mos",
+    "differs": "{count, plural, one {# ta maydon tasdiqlangandan farq qiladi} other {# ta maydon tasdiqlangandan farq qiladi}}",
+    "changed": "oʻzgargan",
+    "approvedWas": "tasdiqlangan:",
+    "none": "Yoʻq",
+    "notExecuted": "Hech narsa bajarilmagan",
+    "notExecutedHint": "Bu kelishuv boʻyicha reyestrda ham, tarmoqda ham natija yoʻq.",
+    "payerBalance": "Toʻlovchi balansi",
+    "receipt": "Kvitansiya",
+    "noReceipt": "Kvitansiya yoʻq"
+  },
+  "attempts": {
+    "label": "Urinishlar",
+    "item": "{n}-urinish"
+  },
+  "inspector": {
+    "title": "Dalillar",
+    "show": "Dalillar panelini koʻrsatish",
+    "hide": "Dalillar panelini yashirish",
+    "empty": "Dalillarini koʻrish uchun kelishuvni tanlang.",
+    "terms": "Tasdiqlangan shartlar",
+    "agreementId": "Kelishuv ID",
+    "displayOnly": "Faqat koʻrsatiladigan nom — tekshirilgan shaxs emas",
+    "itemId": "Mahsulot",
+    "token": "Token kontrakti",
+    "chainId": "Tarmoq {id}",
+    "signature": "Tasdiq imzosi",
+    "signer": "Imzolovchi",
+    "signatureValue": "EIP-712 imzosi",
+    "approvedAt": "Tasdiqlangan vaqt",
+    "signerNote": "Bogʻlangan tasdiqlash sessiyasi shu shartlarni tasdiqlaganidan keyin ishonchli demo imzolovchi imzolagan.",
+    "noSignature": "Imzo yoʻq. Holat: {state}.",
+    "attempt": "Ijrochi soʻragan",
+    "decision": "Qaror",
+    "accepted": "Qabul qilindi",
+    "rejected": "Rad etildi",
+    "diffs": "Farqlar ({count})",
+    "noDiffs": "Hech bir maydon tasdiqlangan shartlardan farq qilmaydi.",
+    "noReceipt": "Bu urinish boʻyicha kvitansiya yaratilmagan.",
+    "transferId": "Oʻtkazma ID",
+    "debit": "Yechildi",
+    "credit": "Tushdi",
+    "postedAt": "Oʻtkazilgan vaqt",
+    "txHash": "Tranzaksiya",
+    "block": "Blok",
+    "txStatus": "Holat",
+    "tx": {
+      "success": "Muvaffaqiyatli",
+      "reverted": "Bekor qilindi"
+    },
+    "revertReason": "Bekor qilish sababi",
+    "observed": "Urinishdan keyingi holat · {source}",
+    "recipientBalance": "Oluvchining balansi",
+    "observedAt": "Oʻqilgan vaqt",
+    "events": "Hodisalar",
+    "noEvents": "Hodisalar qayd etilmagan."
+  },
+  "chain": {
+    "title": "Token bilan xarid — oldin va keyin",
+    "block": "Blok {block}",
+    "unavailable": "Mahalliy tarmoq mavjud emas. Tokenlar holatini koʻrsatib boʻlmaydi.",
+    "noScenario": "Ssenariy holati olinmadi.",
+    "protected": {
+      "title": "Himoyalangan xarid",
+      "note": "Aniq ruxsat, xarid va ruxsatni olib tashlash bitta tranzaksiyada."
+    },
+    "vulnerable": {
+      "title": "Taqqoslash uchun zaif variant",
+      "note": "Ataylab qilingan taqqoslash: doimiy ruxsatga ega himoyalanmagan hisob."
+    },
+    "purchased": "Xarid qilindi",
+    "notPurchased": "Hali xarid qilinmagan",
+    "start": "Ssenariy boshi",
+    "now": "Hozirgi balans",
+    "allowance": "Doʻkon uchun qolgan ruxsat",
+    "unlimited": "Cheklanmagan",
+    "shopBalance": "Doʻkon balansi",
+    "attackerBalance": "Yechib oluvchining balansi",
+    "drain": "Keyingi yechib olish urinishi",
+    "drainNone": "Hali urinish boʻlmagan",
+    "drainSucceeded": "Muvaffaqiyatli — {amount} olindi",
+    "drainFailed": "Amalga oshmadi — {amount} soʻralgan",
+    "account": "Hisob"
+  },
+  "bank": {
+    "title": "Bank hisoblari",
+    "unavailable": "Bank simulyatsiyasi mavjud emas. Balanslarni koʻrsatib boʻlmaydi.",
+    "empty": "Hisoblar olinmadi."
+  }
+}
