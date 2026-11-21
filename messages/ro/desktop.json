@@ -1,0 +1,146 @@
+{
+  "title": "Centru de comandă",
+  "nav": {
+    "payment": "Plată",
+    "chain": "Starea tokenurilor",
+    "bank": "Conturi bancare",
+    "lab": "Laborator demo (operator)"
+  },
+  "status": {
+    "serverError": "Eroare de server",
+    "loading": "Se încarcă starea curentă…",
+    "noData": "Serverul nu poate fi contactat. Nu există încă o stare confirmată de afișat."
+  },
+  "fixture": {
+    "badge": "Date de test",
+    "banner": "Date de test pentru dezvoltarea aspectului — nu sunt starea reală. Eliminați ?fixture=1 pentru a vedea sistemul real."
+  },
+  "signIn": {
+    "label": "Autentificare demo · cheia clientului",
+    "action": "Autentificare",
+    "failed": "Cheia nu a fost acceptată",
+    "active": "Sesiune client (demo)"
+  },
+  "list": {
+    "title": "Acorduri",
+    "empty": "Niciun acord încă. Un comerciant creează unul din laboratorul demo și va apărea aici."
+  },
+  "empty": {
+    "title": "Nicio plată de afișat",
+    "body": "Nu s-a solicitat nimic încă. Când un comerciant propune o plată, aceasta apare aici cu termenii aprobați, fiecare încercare și dovezile de executare.",
+    "action": "Deschide laboratorul demo"
+  },
+  "hero": {
+    "to": "către"
+  },
+  "pair": {
+    "title": "Aprobați de pe telefon",
+    "hint": "Creează un link de scurtă durată, legat doar de această plată.",
+    "needSignIn": "Autentificați-vă ca client (dreapta sus) pentru a asocia un telefon.",
+    "action": "Asociază telefonul",
+    "again": "Link nou",
+    "error": "Linkul de asociere nu a putut fi creat.",
+    "qrAlt": "Cod QR pentru linkul de aprobare",
+    "expires": "Link valabil până la {time}",
+    "expired": "Acest link a expirat. Creați unul nou.",
+    "copy": "Copiază linkul",
+    "copied": "Copiat"
+  },
+  "path": {
+    "approved": "Aprobată",
+    "attempted": "Încercată",
+    "executed": "Executată",
+    "signed": "Semnată de client",
+    "awaiting": "Încă neaprobată",
+    "noAttempt": "Nicio încercare primită",
+    "noAttemptHint": "Nu s-a primit nicio încercare de executare pentru acest acord.",
+    "matches": "Corespunde termenilor aprobați",
+    "differs": "{count, plural, one {# câmp diferă față de aprobare} few {# câmpuri diferă față de aprobare} other {# de câmpuri diferă față de aprobare}}",
+    "changed": "modificat",
+    "approvedWas": "aprobat:",
+    "none": "Niciuna",
+    "notExecuted": "Nimic executat",
+    "notExecutedHint": "Nu există niciun rezultat în registru sau în lanț pentru acest acord.",
+    "payerBalance": "Soldul plătitorului",
+    "receipt": "Chitanță",
+    "noReceipt": "Fără chitanță"
+  },
+  "attempts": {
+    "label": "Încercări",
+    "item": "Încercarea {n}"
+  },
+  "inspector": {
+    "title": "Dovezi",
+    "show": "Afișează panoul de dovezi",
+    "hide": "Ascunde panoul de dovezi",
+    "empty": "Selectați un acord pentru a-i examina dovezile.",
+    "terms": "Termeni aprobați",
+    "agreementId": "ID acord",
+    "displayOnly": "Doar nume afișat — nu este o identitate verificată",
+    "itemId": "Articol",
+    "token": "Contractul tokenului",
+    "chainId": "Lanțul {id}",
+    "signature": "Semnătura aprobării",
+    "signer": "Semnatar",
+    "signatureValue": "Semnătură EIP-712",
+    "approvedAt": "Aprobat la",
+    "signerNote": "Semnat de semnatarul demo de încredere după ce sesiunea de aprobare asociată a confirmat acești termeni.",
+    "noSignature": "Fără semnătură. Stare: {state}.",
+    "attempt": "Solicitat de executor",
+    "decision": "Decizie",
+    "accepted": "Acceptată",
+    "rejected": "Respinsă",
+    "diffs": "Diferențe ({count})",
+    "noDiffs": "Niciun câmp nu diferă de termenii aprobați.",
+    "noReceipt": "Nu a fost emisă nicio chitanță pentru această încercare.",
+    "transferId": "ID transfer",
+    "debit": "Debitat",
+    "credit": "Creditat",
+    "postedAt": "Înregistrat la",
+    "txHash": "Tranzacție",
+    "block": "Bloc",
+    "txStatus": "Stare",
+    "tx": {
+      "success": "Reușită",
+      "reverted": "Anulată"
+    },
+    "revertReason": "Motivul anulării",
+    "observed": "Observat după încercare · {source}",
+    "recipientBalance": "Soldul destinatarului",
+    "observedAt": "Citit la",
+    "events": "Evenimente",
+    "noEvents": "Niciun eveniment înregistrat."
+  },
+  "chain": {
+    "title": "Achiziție cu tokenuri — înainte și după",
+    "block": "Blocul {block}",
+    "unavailable": "Lanțul local nu este disponibil. Starea tokenurilor nu poate fi afișată.",
+    "noScenario": "Nu a fost raportată nicio stare a scenariului.",
+    "protected": {
+      "title": "Achiziție protejată",
+      "note": "Aprobare exactă, achiziție și eliminarea aprobării într-o singură tranzacție."
+    },
+    "vulnerable": {
+      "title": "Comparație vulnerabilă",
+      "note": "Comparație intenționată: cont neprotejat cu o aprobare permanentă."
+    },
+    "purchased": "Achiziționat",
+    "notPurchased": "Încă neachiziționat",
+    "start": "Începutul scenariului",
+    "now": "Sold acum",
+    "allowance": "Permisiune rămasă pentru magazin",
+    "unlimited": "Nelimitată",
+    "shopBalance": "Soldul magazinului",
+    "attackerBalance": "Soldul destinatarului retragerii",
+    "drain": "Încercare ulterioară de retragere",
+    "drainNone": "Încă neîncercată",
+    "drainSucceeded": "Reușită — {amount} retrași",
+    "drainFailed": "Eșuată — {amount} solicitați",
+    "account": "Cont"
+  },
+  "bank": {
+    "title": "Conturi bancare",
+    "unavailable": "Simularea bancară nu este disponibilă. Soldurile nu pot fi afișate.",
+    "empty": "Niciun cont raportat."
+  }
+}
