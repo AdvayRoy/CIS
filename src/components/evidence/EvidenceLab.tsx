@@ -44,8 +44,8 @@ function Financial({ ov, rows }: { ov: Overview; rows: Row[] }) {
   const execSum = ov.agreements.reduce((s, a) => s + a.executionCount, 0);
   const over = ov.agreements.filter((a) => a.executionCount > 1).length;
   const receipts = rows.filter((r) => r.ev.receipt);
-  // "Legitimate" = the attempt equals the approved terms field-for-field (no diffs possible) and asks for no continuing allowance.
-  const legit = rows.filter(({ ev }) => ev.attempt.recipient === ev.agreement.recipient && ev.attempt.operation === ev.agreement.operation && ev.attempt.continuingAllowance === "0"
+  // "Legitimate" = made after the customer approved, and the attempt equals the approved terms field-for-field (no diffs possible) and asks for no continuing allowance.
+  const legit = rows.filter(({ view, ev }) => !!view.approval && ev.decision.decidedAt >= view.approval.approvedAt && ev.attempt.recipient === ev.agreement.recipient && ev.attempt.operation === ev.agreement.operation && ev.attempt.continuingAllowance === "0"
     && (ev.agreement.rail === "bank" ? ev.attempt.amount === ev.agreement.amount : BigInt(ev.attempt.amount) <= BigInt(ev.agreement.amount)));
   const legitFirst = legit.filter(({ ev }) => ev.decision.reason !== "REPLAYED");
   const legitOk = legitFirst.filter(({ ev }) => ev.decision.accepted).length;
@@ -67,7 +67,7 @@ function Financial({ ov, rows }: { ov: Overview; rows: Row[] }) {
         <Stat label="Authorization decisions" value={N === 0 ? "no executions yet" : String(N)} sub={`across ${A} agreement${A === 1 ? "" : "s"} in this session`} />
         <Stat label="Accepted" value={ratio(accepted.length, N)} sub="accepted decisions / all decisions" tone={N ? "text-mint" : undefined} />
         <Stat label="Rejected" value={ratio(rejected, N)} sub="rejected decisions / all decisions" tone={rejected ? "text-coral" : undefined} />
-        <Stat label="Legitimate payment success" value={ratio(legitOk, legitFirst.length)} sub="accepted / attempts matching the approved terms exactly (replays excluded)" tone={legitFirst.length ? "text-mint" : undefined} />
+        <Stat label="Legitimate payment success" value={ratio(legitOk, legitFirst.length)} sub="accepted / attempts made after customer approval that match the approved terms exactly (replays excluded)" tone={legitFirst.length ? "text-mint" : undefined} />
         <Stat label="Settled agreements" value={A === 0 ? "no agreements yet" : `${settled} / ${A}`} sub="state = settled / all agreements" />
         <Stat label="Executions recorded" value={A === 0 ? "no executions yet" : String(execSum)} sub={`sum of executionCount over ${A} agreement${A === 1 ? "" : "s"}; ${over} with count > 1`} tone={over ? "text-coral" : undefined} />
         <Stat label="Receipts" value={ratio(receipts.length, N)} sub={`${receipts.filter((r) => r.ev.receipt?.kind === "ledger").length} ledger, ${receipts.filter((r) => r.ev.receipt?.kind === "chain").length} chain / all decisions`} />
@@ -111,7 +111,7 @@ function Financial({ ov, rows }: { ov: Overview; rows: Row[] }) {
                   <td className={`${td} ticker`}>{fmtTok(s.customerBalance)}</td>
                   <td className={`${td} ticker`}>{fmtTok(s.shopBalance)}</td>
                   <td className={`${td} ticker`}>{fmtTok(s.attackerBalance)}</td>
-                  <td className={`${td} ticker ${s.allowance === "0" ? "text-mint" : "text-coral"}`}>{fmtTok(s.allowance)}</td>
+                  <td className={`${td} ticker max-w-[220px] break-all ${s.allowance === "0" ? "text-mint" : "text-coral"}`}>{fmtTok(s.allowance)}</td>
                   <td className={td}>{s.purchased ? "yes" : "no"}{s.lastPurchaseTx && <span className="ident block text-[10px] text-muted">{s.lastPurchaseTx}</span>}</td>
                   <td className={td}>{!s.drainAttempt ? <span className="text-muted">not attempted</span> : (
                     <><span className={s.drainAttempt.succeeded ? "text-coral" : "text-mint"}>{s.drainAttempt.succeeded ? "succeeded" : "reverted"}</span> · requested {fmtTok(s.drainAttempt.amountRequested)}

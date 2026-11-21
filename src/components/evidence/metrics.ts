@@ -95,6 +95,11 @@ export function securityCases(ov: Overview, rows: Row[]): CaseResult[] {
     const cont = rejections(rows, ["CONTINUING_PERMISSION_NOT_ALLOWED"]);
     const produce = "Buy with CSUSD in /shop, then run the drain on both accounts in /lab.";
     if (!ov.chain.available || !p) out.push({ key, name, expectation, status: "unverified", result: "Local chain not available in this session", evidence: [], at: null, produce: "Start the demo with Anvil (pnpm demo)." });
+    else if (!p.purchased) out.push({
+      key, name, expectation, status: "unverified",
+      result: `No protected purchase in this session, so there is no post-purchase allowance to test${p.drainAttempt ? " (a drain was attempted, but against an account that never granted an allowance)" : ""}`,
+      evidence: [], at: null, produce,
+    });
     else if (!p.drainAttempt) out.push({
       key, name, expectation, status: "unverified",
       result: `No drain attempted on the protected account yet (allowance read: ${p.allowance}${cont.length ? `; ${cont.length} continuing-permission attempt${cont.length === 1 ? "" : "s"} rejected` : ""})`,
