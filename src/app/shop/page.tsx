@@ -25,7 +25,7 @@ function Fact({ k, children, tone }: { k: string; children: React.ReactNode; ton
   return (
     <div className="grid gap-1 border-t border-line py-3 first:border-t-0 first:pt-0 last:pb-0 sm:grid-cols-[9.5rem_minmax(0,1fr)] sm:gap-4">
       <dt className={label}>{k}</dt>
-      <dd className={cn("min-w-0 text-sm leading-relaxed", tone === "mint" ? "text-mint" : tone === "coral" ? "text-coral" : tone === "amber" ? "text-amber" : "text-fg")}>{children}</dd>
+      <dd dir="auto" className={cn("min-w-0 text-start text-sm leading-relaxed", tone === "mint" ? "text-mint" : tone === "coral" ? "text-coral" : tone === "amber" ? "text-amber" : "text-fg")}>{children}</dd>
     </div>
   );
 }
@@ -155,7 +155,7 @@ export default function ShopPage() {
                 {step === 3 && view && (
                   <motion.div key="paid" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mt-6 rounded-[12px] border border-mint/50 p-5">
                     <p className="flex items-center gap-2 text-xl font-semibold text-mint"><Check aria-hidden className="size-5" />Order confirmed</p>
-                    <p className="tabular mt-1.5 text-xs text-muted">{view.agreement.rail === "bank" ? "Paid" : "Approved limit"} {fmt(view.agreement.amount)}, executed {view.executionCount} time.</p>
+                    <p dir="auto" className="tabular mt-1.5 text-start text-xs text-muted">{view.agreement.rail === "bank" ? "Paid" : "Approved limit"} {fmt(view.agreement.amount)}, executed {view.executionCount} time.</p>
                     {receipt && <p className="ident mt-2 text-[11px] text-muted">{receipt.kind === "ledger" ? receipt.transferId : receipt.txHash}</p>}
                   </motion.div>
                 )}
@@ -165,7 +165,7 @@ export default function ShopPage() {
                 <dl className="mt-6 border-t border-line pt-5">
                   <Fact k="You intended">
                     <span className="tabular">{fmt(view.agreement.amount)}</span> to <span className="ident text-[12px]">{view.agreement.recipient}</span>, once, no continuing permission.
-                    <span className="block text-xs text-muted">{view.approval ? "Approved on the paired phone." : tc(`state.${view.state}`)}</span>
+                    <span dir="auto" className="block text-xs text-muted">{view.approval ? "Approved on the paired phone." : tc(`state.${view.state}`)}</span>
                   </Fact>
                   <Fact k="Shop attempted">
                     {last ? <><span className="tabular">{fmt(last.attempt.amount)}</span> to <span className="ident text-[12px]">{last.attempt.recipient}</span></> : <span className="text-muted">Nothing submitted yet.</span>}
@@ -175,7 +175,7 @@ export default function ShopPage() {
                   </Fact>
                   <Fact k="Money">
                     <span className="tabular">{tc("field.executionCount")}: {view.executionCount}</span>
-                    <span className="tabular block text-xs text-muted">{last ? <>{tc("field.balance")} after the attempt: {fmt(last.observed.payerBalance)}</> : "No attempt has reached the rail."}</span>
+                    <span dir="auto" className="tabular block text-xs text-muted">{last ? <>{tc("field.balance")} after the attempt: {fmt(last.observed.payerBalance)}</> : "No attempt has reached the rail."}</span>
                   </Fact>
                 </dl>
               )}
