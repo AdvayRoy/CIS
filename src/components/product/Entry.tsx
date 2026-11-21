@@ -118,11 +118,11 @@ export function Entry() {
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href="/shop" className="inline-flex h-12 items-center gap-2 rounded-full bg-mint px-6 text-sm font-semibold text-black hover:bg-fg">Launch demo<ArrowRight aria-hidden className="size-4 rtl:rotate-180" /></Link>
-            <Link href="/command" className="inline-flex h-12 items-center gap-2 rounded-full border border-line px-6 text-sm text-fg transition-colors duration-200 hover:bg-surface-2"><ListChecks aria-hidden className="size-4" />View payments</Link>
+            <Link href="/command" className="inline-flex h-12 items-center gap-2 rounded-full border border-line px-6 text-sm text-fg transition-colors duration-200 hover:bg-surface-2"><ListChecks aria-hidden className="size-4" />Command centre</Link>
           </div>
           <p className="mt-6 flex flex-wrap justify-center gap-x-5 gap-y-2 text-[13px] text-muted">
             <Link href="/landing" className="underline-offset-4 transition-colors duration-200 hover:text-fg hover:underline">About CounterSign</Link>
-            <Link href="/evidence" className="underline-offset-4 transition-colors duration-200 hover:text-fg hover:underline">Evidence Lab</Link>
+            <Link href="/evidence" className="underline-offset-4 transition-colors duration-200 hover:text-fg hover:underline">Evidence</Link>
           </p>
           <div className="mt-12 grid w-full gap-4 text-start sm:mt-16 sm:gap-6 lg:grid-cols-2">
             <Panel title="Approved terms"><TermsRule /></Panel>

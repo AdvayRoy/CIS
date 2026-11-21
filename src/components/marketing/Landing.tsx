@@ -146,7 +146,7 @@ function Bento() {
                 Each attempt leaves a record of what was approved, what was attempted, what was enforced and what moved.
               </p>
               <Link href="/evidence" className="mt-7 inline-flex h-11 items-center gap-1.5 rounded-full bg-[#131312] px-5 text-[14px] font-semibold text-[#FAF9F5] hover:bg-black">
-                Open the Evidence Lab <ArrowUpRight aria-hidden className="size-4" />
+                See the evidence <ArrowUpRight aria-hidden className="size-4" />
               </Link>
             </div>
             <dl className="min-w-0 rounded-[20px] bg-white px-5 text-[14px] shadow-[0_24px_48px_-28px_rgba(19,19,18,0.35)] sm:px-6">
@@ -215,7 +215,7 @@ function Footer() {
           <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
             <Cta />
             <Link href="/command" className="text-[14px] text-fg hover:text-mint">Command centre</Link>
-            <Link href="/evidence" className="text-[14px] text-fg hover:text-mint">Evidence Lab</Link>
+            <Link href="/evidence" className="text-[14px] text-fg hover:text-mint">Evidence</Link>
           </div>
         </motion.div>
         <div className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6 text-[12px] text-muted">

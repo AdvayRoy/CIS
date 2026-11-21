@@ -82,7 +82,7 @@ export default function LabPage() {
           <p className="mt-2 text-sm text-muted">Bank simulation · Local-chain demo · <span className={connected === false ? "text-amber" : undefined}>{connected === false ? "disconnected" : connected ? "connected" : "connecting"}</span></p>
         </div>
         <div className="flex flex-wrap gap-3">
-          <Link href="/command" className="btn-primary inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm">Open customer view<ArrowRight aria-hidden className="size-4 rtl:rotate-180" /></Link>
+          <Link href="/command" className="btn-primary inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm">Open Command centre<ArrowRight aria-hidden className="size-4 rtl:rotate-180" /></Link>
           <Link href="/evidence" className="inline-flex h-11 items-center rounded-full border border-line px-5 text-sm transition-colors duration-200 hover:bg-surface-2">See the evidence</Link>
         </div>
       </header>
