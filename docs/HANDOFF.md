@@ -3,7 +3,7 @@
 - Mission: CounterSign 150-minute build. Start 2026-11-21 12:09 GST, deadline 14:39 GST.
 - Lead session: https://app.devin.ai/sessions/909e810d5e37432aab983f9f7d41b830
 - Contract: docs/CONTRACT.md (frozen at base commit).
-- Status (08:55 UTC, T+46): all six worker branches merged into `main`; acceptance green at `c887fd0` (see docs/EVIDENCE.md). No PR; work is on `main` because the repository started empty.
+- Status (08:55 UTC, T+46): all six worker branches merged into `main`; acceptance green at `cebeaf0` (see docs/EVIDENCE.md). No PR; work is on `main` because the repository started empty.
 - Run: `pnpm install`, Foundry installed, `pnpm demo` (production build, Anvil on 127.0.0.1:8545, app on :3000). `pnpm demo:reset` or the Reset button in `/lab`.
 - Environment variable names: see docs/CONTRACT.md (`CS_SESSION_SECRET`, `CS_*_KEY`, `CS_SIGNER_PRIVATE_KEY`, `CS_EXECUTOR_PRIVATE_KEY`, `CS_DB_PATH`, `ANVIL_RPC_URL`, `CS_CHAIN_DEPLOYMENT`). Local defaults are demo values; nothing secret is committed.
 - Preview: Devin session preview only (sign-in required, alive while the lead session is awake). No public URL; a phone on another network cannot reach it without a tunnel.
