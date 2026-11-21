@@ -106,6 +106,7 @@ export function Entry() {
           <nav aria-label="Product" className="hidden items-center sm:flex">
             <Link href="/shop" className={navLink}>Checkout</Link>
             <Link href="/command" className={navLink}>Payments</Link>
+            <Link href="/evidence" className={navLink}>Evidence</Link>
           </nav>
           <div className="ms-auto flex items-center gap-2">
             <LanguageSelector />

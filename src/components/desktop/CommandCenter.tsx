@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ArrowLeftRight, Coins, FlaskConical, Landmark, ShoppingBag, PanelRightClose, PanelRightOpen, ShieldCheck, WifiOff } from "lucide-react";
+import { ArrowLeftRight, Coins, ClipboardCheck, FlaskConical, Landmark, ShoppingBag, PanelRightClose, PanelRightOpen, ShieldCheck, WifiOff } from "lucide-react";
 import { api } from "@/lib/api";
 import { usePoll } from "@/lib/usePoll";
 import { cn } from "@/lib/cn";
@@ -104,6 +104,7 @@ export function CommandCenter() {
         <button type="button" className={navBtn} onClick={() => scrollTo("chain")} aria-label={t("nav.chain")} title={t("nav.chain")}><Coins aria-hidden className="size-[18px]" /></button>
         <button type="button" className={navBtn} onClick={() => scrollTo("bank")} aria-label={t("nav.bank")} title={t("nav.bank")}><Landmark aria-hidden className="size-[18px]" /></button>
         <Link href="/shop" className={cn(navBtn, "mt-auto")} aria-label="Demo Shop" title="Demo Shop"><ShoppingBag aria-hidden className="size-[18px]" /></Link>
+        <Link href="/evidence" className={navBtn} aria-label="Evidence" title="Evidence"><ClipboardCheck aria-hidden className="size-[18px]" /></Link>
         <Link href="/lab" className={navBtn} aria-label={t("nav.lab")} title={t("nav.lab")}><FlaskConical aria-hidden className="size-[18px]" /></Link>
       </aside>
 
