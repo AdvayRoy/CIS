@@ -96,7 +96,7 @@ export function CommandCenter() {
 
   return (
     <MotionConfig reducedMotion="user">
-    <div className="flex h-dvh min-h-0 w-full overflow-hidden text-fg">
+    <div className="flex h-[calc(100dvh-1.5rem)] min-h-0 w-full overflow-hidden text-fg">
       {/* Slim rail */}
       <aside className="glass-bar flex w-16 shrink-0 flex-col items-center gap-2 border-e border-line py-3">
         <div className="mb-2 flex size-9 items-center justify-center rounded-[14px] btn-primary" title={tc("brand")}><ShieldCheck aria-hidden className="size-5" /></div>

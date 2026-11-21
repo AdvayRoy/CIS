@@ -103,7 +103,17 @@ async function revertReasonOf(tx: { from: Hex; to: Hex; input: Hex; blockNumber:
 /** Send with explicit gas (no simulation gate) and wait for the mined receipt. */
 async function sendAndMine(d: Deployment, to: Hex, data: Hex) {
   const hash = await wallet(d.chainId).sendTransaction({ to, data, gas: GAS });
-  const receipt = await pub().waitForTransactionReceipt({ hash, pollingInterval: 50, timeout: 15_000 });
+  // Once a hash exists the transaction may still be mined, so a slow receipt must not be reported as a
+  // failure: keep reconciling by hash (up to ~2 minutes) before giving up.
+  let receipt: Awaited<ReturnType<ReturnType<typeof pub>["waitForTransactionReceipt"]>> | null = null;
+  for (let i = 0; i < 8 && !receipt; i++) {
+    try {
+      receipt = await pub().waitForTransactionReceipt({ hash, pollingInterval: 50, timeout: 15_000 });
+    } catch (e) {
+      if (i === 7) throw e;
+    }
+  }
+  if (!receipt) throw new Error("receipt unavailable");
   const reverted = receipt.status !== "success";
   const revertReason = reverted
     ? await revertReasonOf({ from: receipt.from, to, input: data, blockNumber: receipt.blockNumber })
