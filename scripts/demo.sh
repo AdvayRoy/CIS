@@ -14,7 +14,7 @@ rpc_up() { curl -s -o /dev/null -X POST -H 'content-type: application/json' \
 ANVIL_PID=""
 if rpc_up; then echo "[demo] reusing Anvil at $ANVIL_RPC_URL"
 elif command -v anvil >/dev/null; then
-  anvil --host 127.0.0.1 --port 8545 --silent & ANVIL_PID=$!
+  anvil --host 127.0.0.1 --port 8545 > data/anvil.log 2>&1 & ANVIL_PID=$!
   for _ in $(seq 1 50); do rpc_up && break; sleep 0.2; done
   echo "[demo] Anvil started (pid $ANVIL_PID), bound to 127.0.0.1 only"
 else echo "[demo] anvil not found: crypto rail will show as unavailable (install Foundry)"; fi
