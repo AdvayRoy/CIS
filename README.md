@@ -4,7 +4,7 @@
 
 CounterSign protects one narrow failure: a one-time payment that grants more authority than intended, changes destination after approval, or executes more than once. The customer approves structured facts; the infrastructure enforces exactly those facts.
 
-Hackathon prototype. It protects its supported execution paths only: one simulated bank ledger and one known token purchase on a private local chain. It does not detect scams in general, verify merchant honesty, access real banks, recover settled funds, or claim novelty.
+Hackathon prototype. It protects its supported execution paths only: one simulated bank ledger and one known token purchase on a private local chain. It does not detect scams in general, verify merchant honesty, access real banks, or recover settled funds. What is specific here: one approval is enforced the same way on a bank ledger and on-chain, and the token purchase leaves no standing allowance.
 
 ## Run
 
@@ -17,6 +17,8 @@ pnpm demo:reset    # restore the deterministic starting state (server must be ru
 
 Requires Node 20+, pnpm, and Foundry (`anvil`) for the crypto rail. Without Anvil the crypto rail is shown as unavailable; nothing is mocked in its place.
 
+- `/` entry page with the journey and live status
+- `/shop` merchant checkout fixture: start a payment (bank or token); after phone approval it submits exactly the approved terms
 - `/command` desktop product (customer view)
 - `/approve/[id]` phone approval (opened from the pairing QR/link on `/command`)
 - `/lab` operator-only demonstration controls and checkout fixture
@@ -50,3 +52,10 @@ One Next.js + TypeScript app (one long-running Node process) with a SQLite ledge
 ## Known limits
 
 See `docs/HANDOFF.md` for current status, the evidence matrix and what is simulated, unverified or deferred.
+
+## Built with Devin
+
+- One lead Devin session scaffolded the empty repo, froze the shared contract (`docs/CONTRACT.md`, `src/shared/contract.ts`) and owned integration.
+- Six parallel Devin worker sessions built desktop, mobile, bank/auth, crypto contracts, independent verification and localization on separate branches (`w/desktop`, `w/mobile`, `w/bank`, `w/crypto`, `w/verify`, `w/i18n`), each restricted to its own directories; the lead merged them.
+- Four read-only specialist sessions then reviewed the integrated build: product structure (`docs/PRODUCT.md`), design, security red team, and demo strategy. The lead implemented their findings.
+- A Devin testing agent drove the UI for the recorded run. Evidence and what is unverified: `docs/EVIDENCE.md`.
