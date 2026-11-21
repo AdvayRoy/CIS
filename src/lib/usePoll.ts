@@ -5,7 +5,8 @@ export function usePoll<T>(fetcher: () => Promise<T>, intervalMs = 1000, enabled
   const [data, setData] = useState<T | null>(null);
   const [connected, setConnected] = useState<boolean | null>(null); // null = first load pending
   const [error, setError] = useState<{ code: string; status: number } | null>(null);
-  const f = useRef(fetcher); f.current = fetcher;
+  const f = useRef(fetcher);
+  useEffect(() => { f.current = fetcher; });
   useEffect(() => {
     if (!enabled) return;
     let stop = false; let timer: ReturnType<typeof setTimeout>;
