@@ -14,14 +14,15 @@ function Fact({ label, children, diff, approvedText }: { label: string; children
   const t = useTranslations("desktop");
   return (
     <div className={cn("rounded-lg px-2 py-1.5", diff && "bg-coral/10 ring-1 ring-coral/40")}>
-      <div className="flex min-w-0 items-baseline justify-between gap-3">
+      {/* a value that does not fit beside its label drops to its own line; a changed field always stacks */}
+      <div className={cn("min-w-0", !diff && "flex flex-wrap items-baseline justify-between gap-x-3")}>
         <dt className={cn("shrink-0 text-[11px]", diff ? "text-coral" : "text-muted")}>
           {label}{diff && <span className="font-medium"> · {t("path.changed")}</span>}
         </dt>
-        <dd className="min-w-0 truncate text-end text-[13px]">{children}</dd>
+        <dd className={cn("truncate text-[13px]", diff ? "mt-0.5 min-w-0" : "ms-auto max-w-full text-end")}>{children}</dd>
       </div>
       {diff && approvedText && (
-        <dd className="mt-0.5 truncate text-end text-[11px] text-muted"><span>{t("path.approvedWas")} </span><span className="ident line-through">{approvedText}</span></dd>
+        <dd className="mt-0.5 truncate text-[11px] text-muted"><span>{t("path.approvedWas")} </span><span className="ident line-through">{approvedText}</span></dd>
       )}
     </div>
   );

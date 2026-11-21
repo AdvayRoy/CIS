@@ -30,14 +30,14 @@ export function FactRow({ label, children, testId }: { label: string; children: 
   );
 }
 
-/** A term the approval enforces: stated in full, marked as a protection. */
+/** A term the approval enforces. The sentence is the fact; the label stays for screen readers so the block fits above the action dock in longer languages. */
 function Guarantee({ label, children, testId }: { label: string; children: ReactNode; testId?: string }) {
   return (
-    <div className="flex min-w-0 gap-2.5 py-1.5" data-testid={testId}>
+    <div className="flex min-w-0 gap-2.5 py-0.5" data-testid={testId}>
       <ShieldCheck aria-hidden className="mt-0.5 size-4 shrink-0 text-mint" />
       <div className="min-w-0">
-        <dt className="text-[11px] text-muted">{label}</dt>
-        <dd className="text-sm leading-snug text-fg">{children}</dd>
+        <dt className="sr-only">{label}</dt>
+        <dd className="text-[13px] leading-snug text-fg">{children}</dd>
       </div>
     </div>
   );
@@ -55,17 +55,15 @@ export function PaymentCard({ view, remainingMs, envLabel }: { view: AgreementVi
 
   return (
     <section className="tilt rounded-[20px] border border-line bg-surface p-5" data-testid="payment-card">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <p className="text-xs text-muted">{t("card.payTo")}</p>
-          <h2 className="break-words text-xl font-semibold leading-snug" data-testid="merchant">{a.recipientDisplayName}</h2>
-        </div>
+      <div className="flex min-h-6 items-center justify-between gap-3">
+        <p className="min-w-0 text-xs text-muted">{t("card.payTo")}</p>
         {envLabel && (
-          <span className="shrink-0 rounded-full border border-line px-2.5 py-1 text-[11px] text-muted" data-testid="env-label">{envLabel}</span>
+          <span className="shrink-0 rounded-full border border-line px-2.5 py-0.5 text-[11px] text-muted" data-testid="env-label">{envLabel}</span>
         )}
       </div>
+      <h2 className="break-words text-xl font-semibold leading-snug" data-testid="merchant">{a.recipientDisplayName}</h2>
 
-      <div className="mt-4">
+      <div className="mt-2">
         <div className="flex items-center justify-between gap-3">
           <p className="text-xs text-muted">{a.rail === "bank" ? t("card.amountExact") : t("card.amountMax")}</p>
           {counting && remainingMs !== null && (
@@ -81,12 +79,12 @@ export function PaymentCard({ view, remainingMs, envLabel }: { view: AgreementVi
         </p>
       </div>
 
-      <dl className="mt-4">
+      <dl className="mt-3">
         <Fact label={t("card.recipient")} testId="recipient">
           <span className="ident text-[13px]">{a.recipient}</span>
           <span className="mt-1 block text-xs text-muted">{t("card.displayNameNote")}</span>
         </Fact>
-        <div className="mt-1 mb-2 rounded-[14px] border border-mint/25 bg-mint/[0.06] px-3 py-1.5">
+        <div className="mb-2 rounded-[14px] border border-mint/25 bg-mint/[0.06] px-3 py-2">
           <Guarantee label={t("card.oneUse")} testId="one-use">{t("card.oneUseValue")}</Guarantee>
           <Guarantee label={t("card.scope")} testId="scope">{t("card.scopeValue")}</Guarantee>
         </div>
