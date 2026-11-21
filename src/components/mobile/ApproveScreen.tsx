@@ -4,7 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { Ban, CheckCircle2, CircleAlert, Clock, Hourglass, Loader2, ShieldCheck, Smartphone, WifiOff, XCircle } from "lucide-react";
-import type { AgreementState, AgreementView } from "@/shared/contract";
+import { formatUnitsStr, type AgreementState, type AgreementView } from "@/shared/contract";
 import { api } from "@/lib/api";
 import { usePoll } from "@/lib/usePoll";
 import { cn } from "@/lib/cn";
@@ -28,15 +28,19 @@ const STATE_UI: Record<AgreementState, { tone: Tone; Icon: typeof Clock; spin?: 
   expired: { tone: "muted", Icon: Clock },
   failed: { tone: "coral", Icon: CircleAlert },
 };
-const TONE_TEXT: Record<Tone, string> = { mint: "text-mint", amber: "text-amber", coral: "text-coral", muted: "text-muted" };
-const TONE_GLOW: Record<Tone, string> = { mint: "glow-mint", amber: "", coral: "glow-coral cs-stop", muted: "" };
-const TONE_BORDER: Record<Tone, string> = { mint: "border-mint/40", amber: "border-amber/40", coral: "border-coral/40", muted: "border-line" };
+const TONE_HEAD: Record<Tone, string> = { mint: "text-mint", amber: "text-amber", coral: "text-coral", muted: "text-fg" };
+// Solid fills only for the two final outcomes; waiting and neutral states stay quiet.
+const TONE_TILE: Record<Tone, string> = { mint: "bg-mint text-bg", amber: "bg-amber/10 text-amber", coral: "bg-coral text-bg", muted: "bg-white/5 text-muted" };
+const TONE_BORDER: Record<Tone, string> = { mint: "border-mint/40", amber: "border-amber/30", coral: "border-coral/40", muted: "border-line" };
+const EASE = [0.165, 0.84, 0.44, 1] as const;
 
 export function ApproveScreen({ id }: { id: string }) {
   const t = useTranslations("mobile");
   const c = useTranslations("common");
   const reduce = useReducedMotion();
-  const dur = reduce ? 0 : 0.22;
+  const dur = reduce ? 0 : 0.28;
+  const move = { duration: dur, ease: EASE };
+  const rise = { initial: reduce ? false : { opacity: 0, y: 12 }, animate: { opacity: 1, y: 0 }, transition: { duration: reduce ? 0 : 0.36, ease: EASE } } as const;
 
   // ?fixture=1 is read after mount so the default (server) path never depends on it.
   const [fx, setFx] = useState<FixtureOptions | null | undefined>(undefined);
@@ -129,7 +133,7 @@ export function ApproveScreen({ id }: { id: string }) {
 
       <div className="flex flex-1 flex-col gap-3 pb-4 pt-3">
         {fx && (
-          <p className="rounded-xl border border-amber/40 bg-surface px-3 py-2 text-xs text-amber" data-testid="fixture-banner">
+          <p className="rounded-full border border-amber/30 px-3.5 py-1.5 text-xs text-amber" data-testid="fixture-banner">
             {t("fixture")}
           </p>
         )}
@@ -141,7 +145,7 @@ export function ApproveScreen({ id }: { id: string }) {
               role="alert"
               data-testid="disconnected"
               initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: dur }}
+              transition={move}
               className="overflow-hidden"
             >
               <div className="flex gap-3 rounded-2xl border border-amber/40 bg-surface p-3">
@@ -177,22 +181,25 @@ export function ApproveScreen({ id }: { id: string }) {
               aria-live="polite"
               data-testid="state-banner"
               data-state={state}
-              className={cn("rounded-2xl border bg-surface p-4 transition-colors duration-200", TONE_BORDER[ui.tone], TONE_GLOW[ui.tone])}
+              className={cn("rounded-2xl border bg-surface p-5 transition-colors duration-300", TONE_BORDER[ui.tone], ui.tone === "coral" && "cs-stop")}
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={state}
-                  initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }}
-                  transition={{ duration: dur }}
-                  className="flex items-start gap-3"
+                  initial={{ opacity: 0, y: reduce ? 0 : 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: reduce ? 0 : -8 }}
+                  transition={move}
+                  className="flex items-start gap-3.5"
                 >
-                  <motion.span className="mt-0.5 shrink-0" initial={{ scale: reduce ? 1 : 0.4 }} animate={{ scale: 1 }}
-                    transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 16 }}>
-                    <ui.Icon aria-hidden className={cn("size-6", TONE_TEXT[ui.tone], ui.spin && "animate-spin")} />
+                  <motion.span
+                    className={cn("flex size-11 shrink-0 items-center justify-center rounded-full", TONE_TILE[ui.tone])}
+                    initial={{ scale: reduce ? 1 : 0.6 }} animate={{ scale: 1 }}
+                    transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 24 }}
+                  >
+                    <ui.Icon aria-hidden className={cn("size-5", ui.spin && "animate-spin")} strokeWidth={2.25} />
                   </motion.span>
-                  <div className="min-w-0">
-                    <h1 className={cn("text-lg font-semibold leading-snug", TONE_TEXT[ui.tone])}>{c(`state.${state}`)}</h1>
-                    <p className="mt-0.5 text-sm text-muted">{t(`status.${state}`)}</p>
+                  <div className="min-w-0 flex-1">
+                    <h1 className={cn("break-words text-[26px] leading-[1.15]", TONE_HEAD[ui.tone])}>{c(`state.${state}`)}</h1>
+                    <p className="mt-1.5 text-sm leading-relaxed text-muted">{t(`status.${state}`)}</p>
                   </div>
                 </motion.div>
               </AnimatePresence>
@@ -202,15 +209,24 @@ export function ApproveScreen({ id }: { id: string }) {
             <AnimatePresence initial={false}>
               {(state === "rejected" || state === "failed") && view.evidence.length > 0 && (
                 <motion.div key="stopped" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
-                  transition={{ duration: dur }} className="overflow-hidden">
+                  transition={move} className="overflow-hidden">
                   <StoppedPanel evidence={view.evidence[view.evidence.length - 1]} reasonText={reasonText} />
                 </motion.div>
               )}
             </AnimatePresence>
 
-            {state !== "awaiting_approval" && <Receipt view={view} reasonText={reasonText} />}
+            <AnimatePresence initial={false}>
+              {state !== "awaiting_approval" && (
+                <motion.div key="receipt" initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }}
+                  transition={move} className="overflow-hidden">
+                  <Receipt view={view} reasonText={reasonText} />
+                </motion.div>
+              )}
+            </AnimatePresence>
 
-            <PaymentCard view={view} remainingMs={remainingMs} envLabel={envLabel} />
+            <motion.div {...rise}>
+              <PaymentCard view={view} remainingMs={remainingMs} envLabel={envLabel} />
+            </motion.div>
 
             {state === "awaiting_approval" && pairing === "unpaired" && (
               <section role="status" data-testid="not-paired" className="flex gap-3 rounded-2xl border border-amber/40 bg-surface p-4">
@@ -233,7 +249,7 @@ export function ApproveScreen({ id }: { id: string }) {
 
       {view && showActions && (
         <div
-          className="glass-bar sticky bottom-0 -mx-4 rounded-t-[28px] border-t border-line px-4 pt-4"
+          className="glass-bar sticky bottom-0 -mx-4 rounded-t-3xl border-t border-line px-4 pt-4"
           style={{ paddingBottom: "max(env(safe-area-inset-bottom), 16px)" }}
         >
           {actionError && (
@@ -242,6 +258,13 @@ export function ApproveScreen({ id }: { id: string }) {
             </p>
           )}
           {locallyExpired && <p role="status" className="mb-2 text-sm text-muted">{t("action.expiredLocal")}</p>}
+          {/* The exact terms being signed stay in view next to the control that signs them. */}
+          <div className="mb-3 flex items-baseline justify-between gap-4 px-1">
+            <p className="tabular shrink-0 text-base font-semibold">
+              <bdi>{t("card.amountValue", { amount: formatUnitsStr(view.agreement.amount, view.agreement.asset.decimals), asset: view.agreement.asset.code })}</bdi>
+            </p>
+            <p className="ident min-w-0 text-end text-[11px] leading-snug text-muted">{view.agreement.recipient}</p>
+          </div>
           <HoldButton
             data-testid="approve"
             onConfirm={() => act("approve")}
@@ -257,7 +280,7 @@ export function ApproveScreen({ id }: { id: string }) {
             data-testid="decline"
             onClick={() => act("decline")}
             disabled={!!busy || offline}
-            className="mt-2 flex min-h-12 w-full items-center justify-center gap-2 rounded-[18px] border border-line bg-white/5 px-4 text-base font-medium text-fg transition-opacity duration-200 disabled:opacity-40"
+            className="mt-2 flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-line bg-white/5 px-4 text-[15px] font-medium text-fg transition-opacity duration-200 disabled:opacity-40"
           >
             {busy === "decline" && <Loader2 aria-hidden className="size-5 animate-spin" />}
             {busy === "decline" ? t("action.declining") : t("action.decline")}
