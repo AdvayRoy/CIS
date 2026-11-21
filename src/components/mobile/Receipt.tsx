@@ -32,7 +32,7 @@ export function Receipt({ view, reasonText }: { view: AgreementView; reasonText:
 
   return (
     <section className="rounded-[20px] border border-line bg-surface p-5" data-testid="receipt">
-      <h2 className="text-xs text-muted">{t("receipt.title")}</h2>
+      <h2 className="text-xs text-muted">{settled ? t("receipt.title") : t("receipt.evidenceTitle")}</h2>
       {settled && accepted && (
         <motion.div
           initial={{ opacity: 0, scale: reduce ? 1 : 0.98 }} animate={{ opacity: 1, scale: 1 }}

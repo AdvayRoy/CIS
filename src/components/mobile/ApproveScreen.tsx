@@ -51,7 +51,8 @@ export function ApproveScreen({ id }: { id: string }) {
     [fx, fxState],
   );
   const view = fx ? fxView : poll.data;
-  const connected = fx ? !fx.offline : poll.connected;
+  // An HTTP error response still proves the server was reached.
+  const connected = fx ? !fx.offline : poll.connected ?? (poll.error && poll.error.status > 0 ? true : null);
   const offline = connected === false;
   const state = view?.state;
 
