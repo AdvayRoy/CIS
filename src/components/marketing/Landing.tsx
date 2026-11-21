@@ -23,7 +23,7 @@ function Cta({ className, children = "Launch the demo" }: { className?: string; 
       className={cn("inline-flex h-11 items-center justify-center gap-2 rounded-full bg-mint px-5 text-[14px] font-semibold text-black hover:bg-[#FAF9F5]", className)}
     >
       {children}
-      <ArrowRight aria-hidden className="size-4 rtl:rotate-180" />
+      <ArrowRight aria-hidden className="size-4" />
     </Link>
   );
 }
@@ -227,8 +227,8 @@ function Footer() {
     <footer className="border-t border-line bg-black">
       <div className={cn(WRAP, "py-20 sm:py-28")}>
         <motion.div {...reveal}>
-          <h2 className={cn(SERIF, "max-w-[14ch] text-[44px] leading-[1] tracking-tight sm:text-[88px]")}>
-            One payment. <span className="text-muted">Exactly as agreed.</span>
+          <h2 className={cn(SERIF, "text-[44px] leading-[1] tracking-tight sm:text-[76px] lg:text-[88px]")}>
+            <span className="block">One payment.</span> <span className="block text-muted">Exactly as agreed.</span>
           </h2>
           <p className="mt-6 max-w-[520px] text-[16px] leading-relaxed text-muted">
             Run a payment end to end in the working demo: place an order, approve it on the phone, then try to change it.
