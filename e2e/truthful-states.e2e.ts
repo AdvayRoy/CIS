@@ -106,6 +106,9 @@ test("10 disconnected: offline is shown as disconnected, never as success; recon
   await desk.page.goto("/command"); await ph.page.goto(pair.approvePath);
   await ph.page.getByRole("button", { name: /approve this payment/i }).click();
   await expect.poll(async () => (await getView(id)).state).toBe("approved");
+  // wait until both views have polled the approved state ("Approved" alone is also a static stage label)
+  await expect(ph.page.locator("body")).not.toContainText(/awaiting your approval/i);
+  await expect(desk.page.locator("body")).not.toContainText(/awaiting your approval/i);
   await expect(ph.page.locator("body")).toContainText(/approved/i);
 
   await ph.context.setOffline(true); await desk.context.setOffline(true);
