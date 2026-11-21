@@ -86,7 +86,7 @@ export function AttemptCard({ attempt, className }: { attempt: Attempt; classNam
         <Pill tone={bad ? "coral" : "mint"}>{bad ? "Does not match" : "Matches"}</Pill>
       </div>
       <div className="mt-4">
-        <Row k="Recipient" v={bad ? SAMPLE.otherRecipient : SAMPLE.recipient} ident state={bad ? "bad" : "ok"} />
+        <Row k="Recipient" v={SAMPLE.recipient} ident state="ok" />
         <Row k="Amount" v={`${bad ? SAMPLE.changedAmount : SAMPLE.amount} ${SAMPLE.currency}`} state={bad ? "bad" : "ok"} />
         <Row k="Continuing permission" v="None" state="ok" />
         <Row k="Use" v="Once" state="ok" />
@@ -123,7 +123,7 @@ export function PhoneApproval({ approved, className }: { approved?: boolean; cla
           )}
         >
           {approved ? <Check aria-hidden className="size-4" /> : <Fingerprint aria-hidden className="size-4" />}
-          {approved ? "Approved" : "Press and hold to approve"}
+          {approved ? "Approved" : "Press and hold"}
         </div>
       </div>
     </div>
@@ -132,7 +132,7 @@ export function PhoneApproval({ approved, className }: { approved?: boolean; cla
 
 function Node({ title, sub, value, tone }: { title: string; sub: string; value?: string; tone?: "mint" | "coral" }) {
   return (
-    <div className="min-w-0 flex-1 rounded-2xl border border-line bg-[#191918] p-4">
+    <div className="min-w-0 rounded-2xl border border-line bg-[#191918] p-4 sm:flex-1">
       <Label>{title}</Label>
       <p className="ident mt-2 text-[12px] text-muted">{sub}</p>
       {value && (
@@ -146,11 +146,11 @@ function Node({ title, sub, value, tone }: { title: string; sub: string; value?:
 
 function Wire({ on, tone }: { on: boolean; tone: "mint" | "coral" }) {
   return (
-    <div aria-hidden className="relative mx-1 h-px w-6 shrink-0 self-center bg-white/15 sm:w-10">
+    <div aria-hidden className="relative mx-auto h-5 w-px shrink-0 bg-white/15 sm:mx-1 sm:h-px sm:w-10 sm:self-center">
       <motion.span
-        className={cn("absolute inset-0 origin-left rtl:origin-right", tone === "mint" ? "bg-mint" : "bg-coral")}
+        className={cn("absolute inset-0", tone === "mint" ? "bg-mint" : "bg-coral")}
         initial={false}
-        animate={{ scaleX: on ? 1 : 0 }}
+        animate={{ opacity: on ? 1 : 0 }}
         transition={{ duration: 0.4, ease: EASE }}
       />
     </div>
@@ -163,13 +163,13 @@ export function FlowRail({ attempt, resolved = true, className }: { attempt: Att
   const done = resolved;
   return (
     <div className={cn("flex flex-col gap-3", className)}>
-      <div className="flex items-stretch">
+      <div className="flex flex-col items-stretch sm:flex-row">
         <Node title="Payer" sub={SAMPLE.payer} value={`${done && ok ? SAMPLE.balanceAfter : SAMPLE.balanceBefore} ${SAMPLE.currency}`} />
         <Wire on={done} tone={ok ? "mint" : "coral"} />
-        <div className={cn("flex w-[104px] shrink-0 flex-col items-center justify-center rounded-2xl border p-3 text-center sm:w-[132px]", done ? (ok ? "border-mint/60" : "border-coral/60") : "border-line")}>
+        <div className={cn("flex shrink-0 flex-row items-center justify-center gap-x-2 rounded-2xl border p-3 text-center sm:w-[132px] sm:flex-col", done ? (ok ? "border-mint/60" : "border-coral/60") : "border-line")}>
           <ShieldCheck aria-hidden className={cn("size-5", done ? (ok ? "text-mint" : "text-coral") : "text-muted")} />
-          <p className="mt-2 text-[12px] font-semibold">CounterSign</p>
-          <p className="mt-0.5 text-[11px] text-muted">{done ? (ok ? "Terms match" : "Terms differ") : "Checking terms"}</p>
+          <p className="text-[12px] font-semibold sm:mt-2">CounterSign</p>
+          <p className="text-[11px] text-muted sm:mt-0.5">{done ? (ok ? "Terms match" : "Terms differ") : "Checking terms"}</p>
         </div>
         <Wire on={done && ok} tone="mint" />
         <Node
@@ -193,7 +193,7 @@ export function FlowRail({ attempt, resolved = true, className }: { attempt: Att
               ? "Nothing moves until the attempt is checked against the approved terms."
               : ok
                 ? `Payer balance moves by ${SAMPLE.amount} ${SAMPLE.currency}. The permission is spent.`
-                : "Payer balance unchanged. Nothing reaches any recipient."}
+                : "Reason: AMOUNT_MISMATCH. Payer balance unchanged."}
           </span>
           <Pill tone={!done ? "amber" : ok ? "mint" : "coral"}>{!done ? "Waiting" : ok ? "Settled" : "Stopped"}</Pill>
         </motion.div>

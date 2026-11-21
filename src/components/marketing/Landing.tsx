@@ -51,12 +51,12 @@ function Nav() {
 function Hero() {
   const [attempt, setAttempt] = useState<Attempt>("match");
   return (
-    <section className="overflow-hidden pt-14 sm:pt-20">
+    <section className="pt-12 sm:pt-16">
       <div className={WRAP}>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE }}>
           <Label>Payment agreement enforcement</Label>
-          <h1 className="mt-5 max-w-[14ch] text-[52px] leading-[0.98] sm:text-[84px] lg:text-[112px]">
-            One payment. <span className="text-muted">Exactly as agreed.</span>
+          <h1 className="mt-5 text-[46px] leading-[1] sm:text-[76px] lg:text-[96px]">
+            <span className="block">One payment.</span> <span className="block text-muted">Exactly as agreed.</span>
           </h1>
           <p className="mt-6 max-w-[560px] text-[17px] leading-relaxed text-muted sm:text-[19px]">
             The customer approves one payment. CounterSign enforces the agreed recipient, amount and spending permissions, and stops anything else.
@@ -74,7 +74,7 @@ function Hero() {
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: EASE, delay: 0.12 }}
-          className="mt-14 scroll-mt-20 rounded-t-[24px] border border-b-0 border-line bg-[#0D0D0C] p-4 sm:mt-20 sm:p-8"
+          className="mt-12 scroll-mt-20 rounded-t-[24px] border border-b-0 border-line bg-[#0D0D0C] p-4 sm:mt-14 sm:p-8"
         >
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div role="group" aria-label="Choose what the app attempts" className="inline-flex rounded-full border border-line p-[3px]">
@@ -93,11 +93,11 @@ function Hero() {
             <Label>Illustration · sample values</Label>
           </div>
           <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-start">
-            <div>
+            <div className="min-w-0">
               <TermsCard checked />
               <p className="mt-3 text-[12px] text-muted">1 · What the customer intended</p>
             </div>
-            <div>
+            <div className="min-w-0">
               <AttemptCard attempt={attempt} />
               <p className="mt-3 text-[12px] text-muted">2 · What the app attempted</p>
             </div>
@@ -153,11 +153,35 @@ function Bento() {
           <Card className="md:col-span-2" icon={Repeat1} title="Once" body="The permission is spent when the payment settles. Sending it a second time moves nothing." />
           <Card className="md:col-span-2" icon={Fingerprint} title="Approved on the phone" body="The customer reads the terms on their own device and presses and holds to approve." />
           <Card className="md:col-span-2" icon={Landmark} title="Bank and crypto rails" body="The demo runs a simulated bank ledger and a local-chain test token under the same rule." />
-          <Card className="md:col-span-6" icon={FileCheck2} title="Evidence for every attempt" body="Each attempt leaves a record of what was approved, what was attempted, what was enforced and what moved.">
-            <Link href="/evidence" className="inline-flex items-center gap-1.5 text-[14px] text-fg hover:text-mint">
-              Open the Evidence Lab <ArrowUpRight aria-hidden className="size-4" />
-            </Link>
-          </Card>
+          <motion.article {...reveal} className="grid gap-8 rounded-2xl border border-line bg-[#191918] p-6 sm:p-7 md:col-span-6 md:grid-cols-2 md:items-center">
+            <div className="min-w-0">
+              <FileCheck2 aria-hidden className="size-5 text-muted" />
+              <h3 className="mt-5 text-[22px] font-semibold leading-tight tracking-tight">Evidence for every attempt</h3>
+              <p className="mt-2 max-w-[44ch] text-[14px] leading-relaxed text-muted">
+                Each attempt leaves a record of what was approved, what was attempted, what was enforced and what moved.
+              </p>
+              <Link href="/evidence" className="mt-6 inline-flex items-center gap-1.5 text-[14px] text-fg hover:text-mint">
+                Open the Evidence Lab <ArrowUpRight aria-hidden className="size-4" />
+              </Link>
+            </div>
+            <dl className="min-w-0 rounded-2xl border border-line bg-[#131312] px-5 text-[13px]">
+              {[
+                ["Approved", `${SAMPLE.amount} ${SAMPLE.currency}`, SAMPLE.recipient],
+                ["Attempted", `${SAMPLE.changedAmount} ${SAMPLE.currency}`, SAMPLE.recipient],
+                ["Enforced", "Stopped", "AMOUNT_MISMATCH"],
+                ["Moved", `0.00 ${SAMPLE.currency}`, "Payer balance unchanged"],
+              ].map(([k, v, sub], i) => (
+                <div key={k} className={cn("flex items-baseline justify-between gap-4 py-3", i > 0 && "border-t border-line")}>
+                  <dt className="text-muted">{k}</dt>
+                  <dd className="min-w-0 text-end">
+                    <span className={cn("tabular font-semibold", k === "Enforced" && "text-coral")}>{v}</span>
+                    <span className={cn("block text-[12px] text-muted", (k === "Enforced" || i < 2) && "ident")}>{sub}</span>
+                  </dd>
+                </div>
+              ))}
+              <p className="border-t border-line py-3 text-[11px] uppercase tracking-[0.14em] text-muted">Illustration · sample values</p>
+            </dl>
+          </motion.article>
         </div>
       </div>
     </section>
