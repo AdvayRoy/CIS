@@ -6,7 +6,7 @@ const add = (check, ok, name, msg) => {
   if (ok === null) t.skip++; else if (ok) t.pass++; else { t.fail++; t.failures.push(`${name} :: ${(msg ?? "").split("\n")[0].slice(0, 300)}`); }
 };
 try {
-  const v = JSON.parse(fs.readFileSync("test-results/acceptance.json", "utf8"));
+  const v = JSON.parse(fs.readFileSync("data/verify-out/acceptance.json", "utf8"));
   for (const f of v.testResults ?? []) for (const a of f.assertionResults ?? []) {
     const group = a.ancestorTitles?.[1] ?? a.ancestorTitles?.[0] ?? "?";
     const check = group.match(/^(\d+)/)?.[1] ?? "?";
