@@ -84,7 +84,7 @@ export function CommandCenter() {
   const summary: { label: string; value: string; tone: Tone }[] = view ? [
     { label: t("path.approved"), tone: view.approval ? "mint" : view.state === "awaiting_approval" ? "amber" : "muted",
       value: view.approval ? fmtAsset(view.agreement.amount, view.agreement.asset) : tc(`state.${view.state}`) },
-    { label: t("path.attempted"), tone: !evidence ? "muted" : evidence.decision.diffs.length ? "coral" : "mint",
+    { label: t("path.attempted"), tone: !evidence ? "muted" : evidence.decision.diffs.length ? "coral" : evidence.decision.accepted ? "mint" : "amber",
       value: evidence ? fmtAsset(evidence.attempt.amount, view.agreement.asset) : t("path.noAttempt") },
     { label: t("inspector.decision"), tone: !evidence ? "muted" : evidence.decision.accepted ? "mint" : "coral",
       value: evidence ? (evidence.decision.accepted ? t("inspector.accepted") : t("inspector.rejected")) : "—" },
