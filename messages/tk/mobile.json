@@ -1,0 +1,119 @@
+{
+  "title": "Tölegi tassyklamak",
+  "header": {
+    "approval": "Tölegi tassyklamak"
+  },
+  "loading": "Töleg serwerden ýüklenýär",
+  "notFound": {
+    "title": "Töleg tapylmady",
+    "body": "Bu salgy serwerdäki hiç bir tölege gabat gelmeýär. Satyjydan täze tassyklama salgysyny soraň."
+  },
+  "loadError": {
+    "title": "Tölegi ýükläp bolmady",
+    "body": "Serwer ýalňyşlyk gaýtardy. Bu sahypadan hiç zat tassyklanmady we tölenmedi."
+  },
+  "fixture": "Synag maglumatlary. Serwere birikdirilmedik.",
+  "disconnected": {
+    "title": "Aragatnaşyk ýok",
+    "body": "Serweriň tassyklan iň soňky ýagdaýy görkezilýär. Bu ekranda ondan täze zat ýok.",
+    "never": "Serwer bilen entek aragatnaşyk gurulmady. Tölegiň ýagdaýy tassyklanmady.",
+    "actions": "Aragatnaşyk dikeldilýänçä «Tassyklamak» we «Ret etmek» düwmeleri öçürilen."
+  },
+  "card": {
+    "payTo": "Töleg alyjy",
+    "displayNameNote": "Ady satyjy görkezdi, ol barlanmady. Hut şu kesgitleýji gözegçilikde saklanýar.",
+    "amountExact": "Takyk möçber",
+    "amountMax": "Iň ýokary möçber",
+    "amountValue": "{amount} {asset}",
+    "recipient": "Takyk alyjy",
+    "payer": "Kimden",
+    "rail": "Töleg usuly",
+    "oneUse": "Bir gezeklik çäk",
+    "oneUseValue": "Diňe bir töleg. Iki gezek ulanyp bolmaýar.",
+    "expiry": "Möhleti",
+    "expiresIn": "{time} soň gutarýar",
+    "expiryAt": "wagty: {time}",
+    "expiryReached": "Möhleti gutardy",
+    "scope": "Rugsadyň çägi",
+    "scopeValue": "Diňe şu töleg. Ondan soň hiç hili hemişelik rugsat galmaýar.",
+    "network": "Tor",
+    "networkValue": "Tor {chainId}",
+    "item": "Haryt"
+  },
+  "pairing": {
+    "checking": "Bu telefonyň birikdirilendigi barlanýar",
+    "unpairedTitle": "Bu telefon birikdirilmedik",
+    "unpairedBody": "Tassyklamak üçin şu enjamda açylan hakyky birikdirme salgysy gerek. Salgy ýok, nädogry ýa-da möhleti geçen, şonuň üçin bu sahypa tölegi diňe görkezip bilýär. Täze birikdirme salgysyny ýa-da QR kody soraň."
+  },
+  "action": {
+    "approve": "Şu tölegi tassyklamak",
+    "approving": "Tassyklama iberilýär",
+    "decline": "Ret etmek",
+    "declining": "Ret edilýär",
+    "failed": "Serwer bu hereketi kabul etmedi",
+    "expiredLocal": "Möhleti geçdi. Serweriň tassyklamasyna garaşylýar."
+  },
+  "status": {
+    "awaiting_approval": "Her bir jikme-jikligi barlaň. Siz tassyklaýançaňyz hiç zat tölenmeýär.",
+    "approved": "Siz hut şu şertleri tassykladyňyz. Töleg entek ýerine ýetirilmedi.",
+    "executing": "Töleg ýerine ýetirilýär. Ol entek tamamlanmady.",
+    "rejected": "Synanyşyk siziň tassyklan şertleriňize gabat gelmedi we saklandy.",
+    "settled": "Bir gezek tölendi, hut tassyklanyşy ýaly.",
+    "declined": "Siz ret etdiňiz. Hiç zat tölenmedi.",
+    "expired": "Tassyklama wagty gutardy. Bu tassyklama bilen hiç zat töläp bolmaýar.",
+    "failed": "Ýerine ýetirmek başa barmady. Aşakdaky subutnamalar töleg ulgamynyň näme hasaba alandygyny görkezýär."
+  },
+  "path": {
+    "label": "Tölegiň barşy",
+    "approved": "Tassyklandy",
+    "attempted": "Synanyşyk edildi",
+    "executed": "Ýerine ýetirildi",
+    "stopped": "Saklandy",
+    "failed": "Başa barmady"
+  },
+  "stopped": {
+    "title": "Näme üçin saklandy",
+    "approved": "Siz tassykladyňyz",
+    "attempted": "Synanyşykda soralan",
+    "noDiffs": "Bu synanyşyk üçin meýdanlarda tapawut habar berilmedi."
+  },
+  "receipt": {
+    "title": "Kwitansiýa",
+    "paid": "{amount} {asset} tölendi",
+    "to": "alyjy: {name}",
+    "evidenceShow": "Subutnamalary görkezmek",
+    "evidenceHide": "Subutnamalary gizlemek",
+    "evidenceTitle": "Subutnamalar",
+    "noEvidence": "Ýerine ýetiriş subutnamasy entek hasaba alynmady.",
+    "ledgerReceipt": "Reýestr kwitansiýasy",
+    "chainReceipt": "Tor kwitansiýasy",
+    "noReceipt": "Kwitansiýa ýok: bu synanyşyk boýunça hiç zat ýerine ýetirilmedi",
+    "transferId": "Geçirim ID",
+    "debit": "Pul alnan hasap",
+    "credit": "Pul geçirilen hasap",
+    "postedAt": "Hasaba alnan wagty",
+    "txHash": "Tranzaksiýa heşi",
+    "block": "Blok",
+    "chain": "Tor ID",
+    "txStatus": "Tranzaksiýanyň ýagdaýy",
+    "txSuccess": "Üstünlikli",
+    "txReverted": "Yzyna gaýtaryldy",
+    "revertReason": "Yzyna gaýtarmagyň sebäbi",
+    "observed": "Synanyşykdan soňky ýagdaý",
+    "payerBalance": "Siziň balansyňyz",
+    "recipientBalance": "Alyjynyň balansy",
+    "allowance": "Galan rugsat",
+    "allowanceNone": "Bu töleg usulyna degişli däl",
+    "executionCount": "Ýerine ýetiriş sany",
+    "observedAt": "Okalan wagty",
+    "approval": "Tassyklama",
+    "signer": "Gol çekiji",
+    "signature": "Gol",
+    "approvedAt": "Tassyklanan wagty",
+    "attempts": "Synanyşyklar",
+    "attemptN": "{n}-nji synanyşyk",
+    "accepted": "Kabul edildi",
+    "rejected": "Ret edildi",
+    "agreementId": "Töleg ID"
+  }
+}
