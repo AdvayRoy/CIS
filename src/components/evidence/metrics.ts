@@ -108,11 +108,23 @@ export function securityCases(ov: Overview, rows: Row[]): CaseResult[] {
       result: `No drain attempted on the protected account yet (allowance read: ${amt(p.allowance)}${cont.length ? `; ${cont.length} continuing-permission attempt${cont.length === 1 ? "" : "s"} rejected` : ""})`,
       evidence: p.lastPurchaseTx ? [{ label: "protected purchase tx", id: p.lastPurchaseTx }] : [], at: cont[0]?.ev.decision.decidedAt ?? null, produce,
     });
+    // /api/state carries no block number for the drain. The drain sweeps the customer's full balance at the time it is sent,
+    // so a reverted drain that requested exactly the current balance was sent after the latest purchase; one that requested
+    // a different amount predates it and proves nothing about the post-purchase allowance.
+    else if (!p.drainAttempt.succeeded && p.drainAttempt.amountRequested !== p.customerBalance) out.push({
+      key, name, expectation, status: "unverified",
+      result: `The recorded drain requested ${amt(p.drainAttempt.amountRequested)} but the customer balance is now ${amt(p.customerBalance)}, so it was sent before the latest protected purchase. No drain after the purchase in this session.`,
+      evidence: [
+        { label: "earlier drain tx (before the purchase, not counted)", id: p.drainAttempt.txHash },
+        ...(p.lastPurchaseTx ? [{ label: "protected purchase tx", id: p.lastPurchaseTx }] : []),
+      ],
+      at: null, produce: "Run the drain on the protected account again in /lab, after the purchase.",
+    });
     else {
       const ok = !p.drainAttempt.succeeded && p.allowance === "0";
       out.push({
         key, name, expectation, status: ok ? "observed" : "contradicted",
-        result: `Protected: allowance ${amt(p.allowance)}, drain ${p.drainAttempt.succeeded ? "SUCCEEDED" : "reverted"}${p.drainAttempt.revertReason ? ` (${p.drainAttempt.revertReason})` : ""}. Vulnerable comparison: ${v?.drainAttempt ? `allowance ${amt(v.allowance)}, drain ${v.drainAttempt.succeeded ? "succeeded" : "failed"}` : "not executed"}.`,
+        result: `Protected: allowance ${amt(p.allowance)}, drain of ${amt(p.drainAttempt.amountRequested)} (the full post-purchase balance) ${p.drainAttempt.succeeded ? "SUCCEEDED" : "reverted"}${p.drainAttempt.revertReason ? ` (${p.drainAttempt.revertReason})` : ""}. Vulnerable comparison: ${v?.drainAttempt ? `allowance ${amt(v.allowance)}, drain ${v.drainAttempt.succeeded ? "succeeded" : "failed"}` : "not executed"}.`,
         evidence: [
           { label: "protected drain tx", id: p.drainAttempt.txHash },
           ...(p.lastPurchaseTx ? [{ label: "protected purchase tx", id: p.lastPurchaseTx }] : []),
