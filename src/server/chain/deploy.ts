@@ -1,5 +1,5 @@
 // Deploys the local-chain demo fixtures and records an evm_snapshot for deterministic reset.
-import { createPublicClient, createTestClient, createWalletClient, http, parseUnits, type Hex } from "viem";
+import { createPublicClient, createTestClient, createWalletClient, getAddress, http, parseUnits, type Hex } from "viem";
 import {
   CounterSignAccountAbi, CounterSignAccountBytecode, DemoShopAbi, DemoShopBytecode,
   MockTokenAbi, MockTokenBytecode, VulnerableWalletAbi, VulnerableWalletBytecode,
@@ -29,7 +29,7 @@ export async function deployAll(): Promise<Deployment> {
   const deploy = async (hash: Hex) => {
     const r = await mined(hash);
     if (!r.contractAddress) throw new Error("no contract address in receipt");
-    return r.contractAddress;
+    return getAddress(r.contractAddress);
   };
 
   const owner = signerAddress();

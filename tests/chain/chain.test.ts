@@ -178,8 +178,7 @@ describe.skipIf(!anvilBin)("crypto rail (Anvil + ChainPort)", () => {
     expect(replay.evidence.receipt).toMatchObject({ status: "reverted", revertReason: "NonceUsed" });
     expect(replay.evidence.observed).toMatchObject({ payerBalance: units(900), executionCount: 1 });
 
-    const [a, b] = await Promise.all([approved(), approved()]);
-    void b;
+    const a = await approved();
     const twice = await Promise.all([chain.executeProtected(a, attemptFor(a)), chain.executeProtected(a, attemptFor(a))]);
     expect(twice.filter((x) => x.decision.accepted).length).toBe(1); // concurrent duplicate: one debit
     expect((await chain.scenarios()).protected!.customerBalance).toBe(units(800));
@@ -193,8 +192,8 @@ describe.skipIf(!anvilBin)("crypto rail (Anvil + ChainPort)", () => {
     expect(drained.attackerBalance).toBe("0");
     expect(drained.allowance).toBe("0");
     expect(drained.purchased).toBe(true);
-    expect(drained.lastPurchaseTx).toBe(twice.find((x) => x.decision.accepted)!.evidence.receipt!.kind === "chain"
-      ? (twice.find((x) => x.decision.accepted)!.evidence.receipt as { txHash: string }).txHash : null);
+    const winner = twice.find((x) => x.decision.accepted)!.evidence.receipt;
+    expect(winner?.kind === "chain" ? winner.txHash : null).toBe(drained.lastPurchaseTx);
   });
 
   it("vulnerable comparison: unlimited allowance stays and the same drain succeeds", async () => {

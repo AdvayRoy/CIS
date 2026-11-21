@@ -47,10 +47,12 @@ function wallet(chainId: number) {
 }
 
 /** Serialise every state-changing call: one executor key, one nonce sequence. */
-let queue: Promise<unknown> = Promise.resolve();
+// Kept on globalThis so separately bundled route handlers share the same queue.
+const shared = globalThis as unknown as { __csChainQueue?: Promise<unknown> };
 function serial<T>(fn: () => Promise<T>): Promise<T> {
-  const run = queue.then(fn, fn);
-  queue = run.catch(() => undefined);
+  const prev = shared.__csChainQueue ?? Promise.resolve();
+  const run = prev.then(fn, fn);
+  shared.__csChainQueue = run.catch(() => undefined);
   return run;
 }
 
