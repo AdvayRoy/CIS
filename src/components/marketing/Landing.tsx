@@ -4,12 +4,14 @@ import Link from "next/link";
 import { MotionConfig, motion } from "motion/react";
 import { ArrowRight, ArrowUpRight, FileCheck2, Fingerprint, Landmark, Repeat1, ShieldCheck, Target } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { EASE, Label, Pill, SAMPLE, SERIF } from "./pieces";
-import { ProductPanel, RailsGlobe, RuleBuilder } from "./HeroPanels";
+import { EASE, Pill, SAMPLE } from "./pieces";
+import { PANEL, ProductPanel, RailsGlobe, RuleBuilder, SampleNote } from "./HeroPanels";
 import { ScrollStory } from "./ScrollStory";
 
 const WRAP = "mx-auto w-full max-w-[1240px] px-5 sm:px-8";
-const H1 = "font-sans text-[46px] font-medium leading-[1.02] tracking-[-0.035em] sm:text-[76px] lg:text-[92px]";
+const H1 = "font-sans text-[38px] font-medium leading-[1.02] tracking-[-0.035em] sm:text-[76px] lg:text-[92px]";
+const H2 = "font-sans text-[32px] font-medium leading-[1.04] tracking-[-0.03em] sm:text-[52px] lg:text-[64px]";
+const EYEBROW = "text-[12px] font-medium uppercase tracking-[0.14em] text-[#66645E]";
 const reveal = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -31,7 +33,7 @@ function Cta({ className, children = "Launch the demo" }: { className?: string; 
 
 function Nav() {
   return (
-    <header className="sticky top-0 z-40 border-b border-black/10 bg-[#FAF9F5]/90 text-[#131312] backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-black/10 bg-[#FAF9F5] text-[#131312]">
       <div className={cn(WRAP, "flex h-14 items-center justify-between gap-4")}>
         <Link href="/landing" className="flex items-center gap-2 text-[16px] font-semibold tracking-tight">
           <ShieldCheck aria-hidden className="size-[18px]" />
@@ -94,69 +96,75 @@ function Hero() {
 
 function Card({ className, icon: Icon, title, body, children }: { className?: string; icon: typeof Target; title: string; body: string; children?: React.ReactNode }) {
   return (
-    <motion.article {...reveal} className={cn("flex flex-col rounded-2xl border border-line bg-[#191918] p-6 sm:p-7", className)}>
-      <Icon aria-hidden className="size-5 text-muted" />
-      <h3 className="mt-5 text-[22px] font-semibold leading-tight tracking-tight">{title}</h3>
-      <p className="mt-2 max-w-[44ch] text-[14px] leading-relaxed text-muted">{body}</p>
-      {children && <div className="mt-auto pt-6">{children}</div>}
+    <motion.article {...reveal} className={cn(PANEL, "flex flex-col p-6 sm:p-8", className)}>
+      <span aria-hidden className="grid size-10 place-items-center rounded-[12px] bg-white text-[#131312]">
+        <Icon className="size-5" />
+      </span>
+      <h3 className="mt-6 text-[22px] font-semibold leading-tight tracking-tight">{title}</h3>
+      <p className="mt-2 max-w-[44ch] text-[15px] leading-relaxed text-[#66645E]">{body}</p>
+      {children && <div className="mt-auto pt-8">{children}</div>}
     </motion.article>
   );
 }
 
 function Bento() {
   return (
-    <section className="border-t border-line py-20 sm:py-28">
+    <section className="bg-[#FAF9F5] pb-20 text-[#131312] sm:pb-28">
       <div className={WRAP}>
-        <motion.div {...reveal}>
-          <Label>What is enforced</Label>
-          <h2 className={cn(SERIF, "mt-4 max-w-[18ch] text-[40px] leading-[1.02] tracking-tight sm:text-[64px]")}>
-            The approval is the limit. <span className="text-muted">Nothing wider.</span>
+        <motion.div {...reveal} className="mx-auto max-w-[820px] text-center">
+          <p className={EYEBROW}>What is enforced</p>
+          <h2 className={cn(H2, "mt-4")}>
+            <span className="block">The approval is the limit.</span> <span className="block text-[#77756D]">Nothing wider.</span>
           </h2>
         </motion.div>
-        <div className="mt-12 grid gap-4 md:grid-cols-6">
+        <div className="mt-12 grid gap-4 sm:mt-16 sm:gap-6 md:grid-cols-6">
           <Card className="md:col-span-3" icon={Target} title="Exact recipient" body="The payment can only reach the account named in the agreement. A different destination is stopped.">
             <div className="flex flex-wrap items-center gap-2 text-[12px]">
-              <span className="ident rounded-full border border-line px-3 py-1.5">{SAMPLE.recipient}</span>
+              <span className="ident rounded-[10px] bg-white px-3 py-2">{SAMPLE.recipient}</span>
               <Pill tone="mint">Agreed</Pill>
-              <span className="ident rounded-full border border-line px-3 py-1.5 text-muted line-through">{SAMPLE.otherRecipient}</span>
+              <span className="ident rounded-[10px] bg-white px-3 py-2 text-[#66645E] line-through">{SAMPLE.otherRecipient}</span>
               <Pill tone="coral">Stopped</Pill>
             </div>
+            <SampleNote className="mt-5" />
           </Card>
           <Card className="md:col-span-3" icon={ShieldCheck} title="Exact amount" body="Not a cap, not a range. The figure the customer saw is the only figure that can move.">
-            <p className="tabular text-[56px] font-semibold leading-none tracking-tight sm:text-[72px]">
-              {SAMPLE.amount} <span className="text-[18px] font-medium text-muted">{SAMPLE.currency}</span>
+            <p className="tabular text-[56px] font-medium leading-none tracking-[-0.03em] sm:text-[80px]">
+              {SAMPLE.amount} <span className="text-[18px] font-medium tracking-normal text-[#66645E]">{SAMPLE.currency}</span>
             </p>
+            <SampleNote className="mt-5" />
           </Card>
           <Card className="md:col-span-2" icon={Repeat1} title="Once" body="The permission is spent when the payment settles. Sending it a second time moves nothing." />
           <Card className="md:col-span-2" icon={Fingerprint} title="Approved on the phone" body="The customer reads the terms on their own device and presses and holds to approve." />
           <Card className="md:col-span-2" icon={Landmark} title="Bank and crypto rails" body="The demo runs a simulated bank ledger and a local-chain test token under the same rule." />
-          <motion.article {...reveal} className="grid gap-8 rounded-2xl border border-line bg-[#191918] p-6 sm:p-7 md:col-span-6 md:grid-cols-2 md:items-center">
+          <motion.article {...reveal} className={cn(PANEL, "grid gap-8 p-6 sm:p-8 md:col-span-6 md:grid-cols-2 md:items-center lg:p-12")}>
             <div className="min-w-0">
-              <FileCheck2 aria-hidden className="size-5 text-muted" />
-              <h3 className="mt-5 text-[22px] font-semibold leading-tight tracking-tight">Evidence for every attempt</h3>
-              <p className="mt-2 max-w-[44ch] text-[14px] leading-relaxed text-muted">
+              <span aria-hidden className="grid size-10 place-items-center rounded-[12px] bg-white">
+                <FileCheck2 className="size-5" />
+              </span>
+              <h3 className="mt-6 text-[28px] font-medium leading-tight tracking-[-0.02em] sm:text-[36px]">Evidence for every attempt</h3>
+              <p className="mt-3 max-w-[44ch] text-[15px] leading-relaxed text-[#66645E]">
                 Each attempt leaves a record of what was approved, what was attempted, what was enforced and what moved.
               </p>
-              <Link href="/evidence" className="mt-6 inline-flex items-center gap-1.5 text-[14px] text-fg hover:text-mint">
+              <Link href="/evidence" className="mt-7 inline-flex h-11 items-center gap-1.5 rounded-full bg-[#131312] px-5 text-[14px] font-semibold text-[#FAF9F5] hover:bg-black">
                 Open the Evidence Lab <ArrowUpRight aria-hidden className="size-4" />
               </Link>
             </div>
-            <dl className="min-w-0 rounded-2xl border border-line bg-[#131312] px-5 text-[13px]">
+            <dl className="min-w-0 rounded-[20px] bg-white px-5 text-[14px] shadow-[0_24px_48px_-28px_rgba(19,19,18,0.35)] sm:px-6">
               {[
                 ["Approved", `${SAMPLE.amount} ${SAMPLE.currency}`, SAMPLE.recipient],
                 ["Attempted", `${SAMPLE.changedAmount} ${SAMPLE.currency}`, SAMPLE.recipient],
                 ["Enforced", "Stopped", "AMOUNT_MISMATCH"],
                 ["Moved", `0.00 ${SAMPLE.currency}`, "Payer balance unchanged"],
               ].map(([k, v, sub], i) => (
-                <div key={k} className={cn("flex items-baseline justify-between gap-4 py-3", i > 0 && "border-t border-line")}>
-                  <dt className="text-muted">{k}</dt>
+                <div key={k} className={cn("flex items-baseline justify-between gap-4 py-3.5", i > 0 && "border-t border-black/10")}>
+                  <dt className="text-[#66645E]">{k}</dt>
                   <dd className="min-w-0 text-end">
-                    <span className={cn("tabular font-semibold", k === "Enforced" && "text-coral")}>{v}</span>
-                    <span className={cn("block text-[12px] text-muted", (k === "Enforced" || i < 2) && "ident")}>{sub}</span>
+                    <span className={cn("tabular font-semibold", k === "Enforced" && "text-[#B8203A]")}>{v}</span>
+                    <span className={cn("block text-[12px] text-[#66645E]", (k === "Enforced" || i < 2) && "ident")}>{sub}</span>
                   </dd>
                 </div>
               ))}
-              <p className="border-t border-line py-3 text-[11px] uppercase tracking-[0.14em] text-muted">Illustration · sample values</p>
+              <SampleNote className="border-t border-black/10 py-3.5" />
             </dl>
           </motion.article>
         </div>
@@ -176,15 +184,15 @@ function Editorial() {
   return (
     <section className="bg-[#FAF9F5] py-20 text-[#131312] sm:py-28">
       <div className={WRAP}>
-        <motion.h2 {...reveal} className={cn(SERIF, "max-w-[16ch] text-[40px] leading-[1.02] tracking-tight sm:text-[72px]")}>
-          Four questions every payment should answer.
+        <motion.h2 {...reveal} className={cn(H2, "mx-auto max-w-[1000px] text-center")}>
+          <span className="block">Four questions.</span> <span className="block text-[#77756D]">Answered for every payment.</span>
         </motion.h2>
-        <div className="mt-14 grid gap-x-8 gap-y-10 border-t border-black/15 pt-10 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-4 sm:mt-16 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {QUESTIONS.map((x, i) => (
-            <motion.div key={x.n} {...reveal} transition={{ duration: 0.4, ease: EASE, delay: i * 0.06 }}>
-              <p className="tabular text-[13px] font-medium text-black/50">{x.n}</p>
-              <h3 className="mt-3 text-[20px] font-semibold leading-snug tracking-tight">{x.q}</h3>
-              <p className="mt-3 text-[15px] leading-relaxed text-black/65">{x.a}</p>
+            <motion.div key={x.n} {...reveal} transition={{ duration: 0.4, ease: EASE, delay: i * 0.06 }} className={cn(PANEL, "p-6 sm:p-7")}>
+              <p className="tabular grid size-10 place-items-center rounded-[12px] bg-white text-[13px] font-semibold">{x.n}</p>
+              <h3 className="mt-6 text-[20px] font-semibold leading-snug tracking-tight">{x.q}</h3>
+              <p className="mt-2 text-[15px] leading-relaxed text-[#66645E]">{x.a}</p>
             </motion.div>
           ))}
         </div>
@@ -198,7 +206,7 @@ function Footer() {
     <footer className="border-t border-line bg-black">
       <div className={cn(WRAP, "py-20 sm:py-28")}>
         <motion.div {...reveal}>
-          <h2 className={cn(SERIF, "text-[44px] leading-[1] tracking-tight sm:text-[76px] lg:text-[88px]")}>
+          <h2 className={H1}>
             <span className="block">One payment.</span> <span className="block text-muted">Exactly as agreed.</span>
           </h2>
           <p className="mt-6 max-w-[520px] text-[16px] leading-relaxed text-muted">

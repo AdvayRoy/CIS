@@ -72,7 +72,14 @@ export function TermsRule() {
       <span aria-hidden className="absolute bottom-5 start-4 top-5 w-px bg-[#131312]/15 sm:start-[18px]" />
       <motion.li variants={row} className="flex items-center gap-3">
         <span className={cn(node, "bg-[#131312] text-[#BCFF2F]")}><Inbox aria-hidden className="size-4" /></span>
-        <span className={chip}>When a payment is approved</span>
+        <span className="relative">
+          <span className={cn(chip, "block")}>When a payment is approved</span>
+          <motion.span aria-hidden className="pointer-events-none absolute -bottom-5 start-[calc(100%-18px)] flex items-start"
+            animate={reduced ? undefined : { x: [0, 6, 0], y: [0, 4, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
+            <svg viewBox="0 0 24 24" className="size-6 drop-shadow-[0_2px_3px_rgb(19_19_18/0.3)]"><path d="M4 2l15.5 9.2-7 1.6-3.4 6.6z" fill="#131312" stroke="#fff" strokeWidth="1.2" strokeLinejoin="round" /></svg>
+            <span className="mt-4 rounded-full bg-white px-2.5 py-1 text-[12px] font-medium text-[#131312] shadow-[0_6px_16px_-8px_rgb(19_19_18/0.4)]">You</span>
+          </motion.span>
+        </span>
       </motion.li>
       <motion.li variants={row} className="flex items-center gap-3">
         <span className={cn(node, "bg-[#DCD9D1] text-[#131312]")}><GitBranch aria-hidden className="size-4" /></span>
@@ -80,14 +87,7 @@ export function TermsRule() {
           <span className={word}>If the</span>
           <span className={cn(chip, "text-[#6B6962]")}>Amount</span>
           <span className={word}>is exactly</span>
-          <span className="relative">
-            <span className={cn(chip, "tabular block font-medium")}>100.00 AED</span>
-            <motion.span aria-hidden className="pointer-events-none absolute -bottom-9 start-[58%] flex items-start"
-              animate={reduced ? undefined : { x: [0, 6, 0], y: [0, 4, 0] }} transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}>
-              <svg viewBox="0 0 24 24" className="size-6 drop-shadow-[0_2px_3px_rgb(19_19_18/0.3)]"><path d="M4 2l15.5 9.2-7 1.6-3.4 6.6z" fill="#131312" stroke="#fff" strokeWidth="1.2" strokeLinejoin="round" /></svg>
-              <span className="mt-4 rounded-full bg-white px-2.5 py-1 text-[12px] font-medium text-[#131312] shadow-[0_6px_16px_-8px_rgb(19_19_18/0.4)]">You</span>
-            </motion.span>
-          </span>
+          <span className={cn(chip, "tabular font-medium")}>100.00 AED</span>
         </span>
       </motion.li>
       <motion.li variants={row} className="flex items-center gap-3 ps-6 sm:ps-10">
@@ -130,10 +130,10 @@ function seg(px: number, py: number, ax: number, ay: number, bx: number, by: num
   const t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)));
   return Math.hypot(px - ax - t * dx, py - ay - t * dy);
 }
-const inCheck = (x: number, y: number) => Math.min(seg(x, y, -0.2, 0.0, -0.06, 0.16), seg(x, y, -0.06, 0.16, 0.22, -0.2)) < 0.062;
+const inCheck = (x: number, y: number) => Math.min(seg(x, y, -0.22, -0.04, -0.07, 0.14), seg(x, y, -0.07, 0.14, 0.24, -0.26)) < 0.085;
 const DOTS = (() => {
   const out: { cx: number; cy: number; r: number; solid: boolean }[] = [];
-  const N = 38;
+  const N = 46;
   for (let j = 0; j < N; j++) for (let i = 0; i < N; i++) {
     const x = ((i + (j % 2 ? 0.5 : 0)) / (N - 1)) * 2 - 1;
     const y = (j / (N - 1)) * 2 - 1;
@@ -142,15 +142,15 @@ const DOTS = (() => {
     const solid = inShield(x, y);
     if (solid && inCheck(x, y)) continue;
     const depth = Math.sqrt(1 - d * d);
-    out.push({ cx: R2(200 + x * 190), cy: R2(200 + y * 190), r: R2(solid ? 2.9 : 0.7 + depth * 1.1), solid });
+    out.push({ cx: R2(200 + x * 190), cy: R2(200 + y * 190), r: R2(solid ? 2.5 : 0.7 + depth * 1.1), solid });
   }
   return out;
 })();
 
 const TAGS = [
-  { n: "01", pos: "start-[2%] top-[14%] sm:start-[4%]", dot: "end-[-14px]", ...ATTEMPTS[0] },
+  { n: "01", pos: "start-[2%] top-[3%] sm:start-[4%] sm:top-[14%]", dot: "end-[-14px]", ...ATTEMPTS[0] },
   { n: "02", pos: "end-[2%] top-[40%] sm:end-[3%]", dot: "start-[-14px]", ...ATTEMPTS[1] },
-  { n: "03", pos: "start-[3%] bottom-[10%] sm:start-[8%]", dot: "end-[-14px]", ...ATTEMPTS[2] },
+  { n: "03", pos: "start-[3%] bottom-[2%] sm:start-[8%] sm:bottom-[10%]", dot: "end-[-14px]", ...ATTEMPTS[2] },
 ];
 
 // Fragment 2: attempted payments around the approval, each with its decision.
