@@ -15,13 +15,15 @@ export const JOURNEY: { id: JourneyStep; label: string; href: string }[] = [
   { id: "evidence", label: "Evidence", href: "/evidence" },
 ];
 
-export function ProductBar({ current, context, children }: { current?: JourneyStep; context?: string; children?: React.ReactNode }) {
+// `newTab`: set while the page must stay mounted (an order in flight on /shop), so journey links open beside it.
+export function ProductBar({ current, context, newTab, children }: { current?: JourneyStep; context?: string; newTab?: boolean; children?: React.ReactNode }) {
+  const out = newTab ? { target: "_blank", rel: "noopener" } : {};
   const tc = useTranslations("common");
   const at = JOURNEY.findIndex((s) => s.id === current);
   return (
     <header className="sticky top-0 z-20 border-b border-line bg-bg">
       <div className="mx-auto flex min-h-14 w-full max-w-6xl flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2 sm:px-6">
-        <Link href="/" className="flex shrink-0 items-center gap-2.5">
+        <Link href="/" {...out} className="flex shrink-0 items-center gap-2.5">
           <span className="btn-primary flex size-8 items-center justify-center rounded-[10px]"><ShieldCheck aria-hidden className="size-[18px]" /></span>
           <span className="text-[15px] font-semibold tracking-tight">{tc("brand")}</span>
           {context && <span className="hidden text-[13px] text-muted sm:inline">/ {context}</span>}
@@ -31,7 +33,7 @@ export function ProductBar({ current, context, children }: { current?: JourneySt
             {JOURNEY.map((s, i) => (
               <li key={s.id} className="flex items-center">
                 {i > 0 && <ChevronRight aria-hidden className="mx-0.5 size-3 text-muted/60 rtl:rotate-180" />}
-                <Link href={s.href} aria-current={i === at ? "step" : undefined}
+                <Link href={s.href} {...out} aria-current={i === at ? "step" : undefined}
                   className={cn("rounded-full px-2.5 py-1 transition-colors duration-200",
                     i === at ? "bg-fg font-medium text-bg" : i < at ? "text-fg hover:bg-surface-2" : "text-muted hover:bg-surface-2 hover:text-fg")}>
                   {s.label}

@@ -78,7 +78,7 @@ export default function ShopPage() {
 
   return (
     <MotionConfig reducedMotion="user" transition={{ duration: 0.3, ease: EASE }}>
-      <ProductBar current={journey} context="Demo Shop" />
+      <ProductBar current={journey} context="Demo Shop" newTab={!!id && step !== 3 && step !== -1} />
       <main className="mx-auto grid w-full max-w-6xl items-start gap-5 px-4 py-6 sm:px-6 sm:py-10 md:grid-cols-[minmax(0,1.05fr)_minmax(0,0.95fr)]">
         <section className={card} aria-labelledby="order-title">
           <p className={label}>Demo Shop · Order</p>
