@@ -4,10 +4,13 @@ import { useState } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ArrowRight, Check, FlaskConical, ListChecks, ShieldCheck, ShoppingBag, Smartphone, X } from "lucide-react";
+import { ArrowRight, Check, ClipboardCheck, FlaskConical, ListChecks, ShieldAlert, ShoppingBag, Smartphone, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { BANK_ACCOUNTS } from "@/shared/contract";
 import { LanguageSelector } from "@/components/i18n/LanguageSelector";
+import { ProductBar } from "@/components/product/Journey";
+
+const label = "text-[11px] font-medium uppercase tracking-[0.14em] text-muted";
 
 type Field = "recipient" | "amount" | "permission" | "use";
 type Scenario = { id: string; label: string; reason: string; changed: Field | null; value?: string; outcome: string };
@@ -28,17 +31,12 @@ const SCENARIOS: Scenario[] = [
 ];
 
 const STEPS = [
-  { n: 1, icon: ShoppingBag, title: "A merchant asks for one payment", body: "Checkout creates a request with a recipient identifier, an exact amount and an expiry.", href: "/shop", cta: "Checkout" },
-  { n: 2, icon: Smartphone, title: "You approve the facts on your phone", body: "Scan the code, read the recipient, the amount, the one-use limit and the expiry, then press and hold.", href: null, cta: "Opened from the QR code" },
-  { n: 3, icon: Check, title: "The rail executes exactly that", body: "The request is compared with what you approved. A match is paid once and leaves no permission behind.", href: "/command", cta: "Payments" },
-  { n: 4, icon: FlaskConical, title: "Anything else is stopped", body: "Change the recipient or the amount, ask for a standing permission or send it twice: no money moves.", href: "/lab", cta: "Lab (operator)" },
+  { n: 1, icon: ShoppingBag, title: "A merchant asks for one payment", body: "Checkout creates a request with a recipient identifier, an exact amount and an expiry.", href: "/shop", cta: "Open checkout" },
+  { n: 2, icon: Smartphone, title: "You approve the facts on your phone", body: "Scan the code, read the recipient, the amount, the one-use limit and the expiry, then press and hold.", href: "/command", cta: "Pair a phone" },
+  { n: 3, icon: Check, title: "The rail executes exactly that", body: "The request is compared with what you approved. A match is paid once and leaves no permission behind.", href: "/command", cta: "Watch payments" },
+  { n: 4, icon: ShieldAlert, title: "Anything else is stopped", body: "Change the recipient or the amount, ask for a standing permission or send it twice: no money moves.", href: "/lab", cta: "Lab (operator)" },
+  { n: 5, icon: ClipboardCheck, title: "Evidence either way", body: "Each attempt records what was approved, what was requested, the decision and the balances read afterwards.", href: "/evidence", cta: "Open evidence" },
 ] as const;
-
-const AUDIENCES = [
-  { who: "Payer", what: "One approval screen with the exact recipient, amount and one-use limit, and a receipt that shows what executed." },
-  { who: "Merchant", what: "A payment that executed as approved, with a record of the terms both sides saw." },
-  { who: "Bank, wallet or exchange", what: "An evidence record per payment: what was agreed, what was requested, what executed or why it stopped." },
-];
 
 function RuleDemo() {
   const tc = useTranslations("common");
@@ -46,9 +44,9 @@ function RuleDemo() {
   const s = SCENARIOS.find((x) => x.id === id) ?? SCENARIOS[0];
   const ok = s.changed === null;
   return (
-    <section aria-labelledby="rule-title" className="rounded-[24px] border border-line bg-surface p-5 sm:p-6">
+    <section aria-labelledby="rule-title" className="min-w-0 rounded-[16px] border border-line bg-surface p-5 sm:p-6">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 id="rule-title" className="text-sm text-muted">Try the rule</h2>
+        <h2 id="rule-title" className={label}>Try the rule</h2>
         <p className="text-xs text-muted">Illustration. The live rails are in Checkout and Lab.</p>
       </div>
       <div role="radiogroup" aria-label="Request sent to the rail" className="mt-4 flex flex-wrap gap-2">
@@ -62,8 +60,8 @@ function RuleDemo() {
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-2">
         {(["approved", "requested"] as const).map((side) => (
-          <div key={side} className="rounded-[16px] border border-line bg-white/5 p-4">
-            <p className="text-xs text-muted">{side === "approved" ? "You approved" : "Request sent to the rail"}</p>
+          <div key={side} className="min-w-0 rounded-[12px] border border-line p-4">
+            <p className={label}>{side === "approved" ? "You approved" : "Request sent to the rail"}</p>
             <dl className="mt-2 space-y-1.5 text-[13px]">
               {FIELDS.map((f) => {
                 const differs = side === "requested" && s.changed === f;
@@ -81,8 +79,8 @@ function RuleDemo() {
       </div>
       <div role="status" aria-live="polite" className="mt-3 min-h-14">
         <AnimatePresence mode="wait" initial={false}>
-          <motion.p key={s.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.18 }}
-            className={cn("flex items-center gap-3 rounded-[16px] border px-4 py-3 text-sm", ok ? "border-mint/40 bg-mint/10 text-mint" : "border-coral/40 bg-coral/10 text-coral")}>
+          <motion.p key={s.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.25, ease: [0.165, 0.84, 0.44, 1] }}
+            className={cn("flex items-center gap-3 rounded-[12px] border px-4 py-3 text-sm", ok ? "border-mint/50 text-mint" : "border-coral/50 text-coral")}>
             {ok ? <Check aria-hidden className="size-4 shrink-0" /> : <X aria-hidden className="size-4 shrink-0" />}
             <span><span className="font-medium">{ok ? tc("state.settled") : s.id === "replay" ? "Not executed again" : tc("state.rejected")}.</span> {tc(`reason.${s.reason}`)}. {s.outcome}</span>
           </motion.p>
@@ -94,73 +92,50 @@ function RuleDemo() {
 
 export function Entry() {
   const tc = useTranslations("common");
-  const navLink = "rounded-full px-3 py-2 text-[13px] text-muted transition-colors duration-200 hover:bg-surface hover:text-fg";
   return (
     <MotionConfig reducedMotion="user">
-      <header className="glass-bar sticky top-0 z-20 border-b border-line">
-        <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-2 px-4 sm:px-6">
-          <Link href="/" className="me-2 flex items-center gap-2.5">
-            <span className="btn-primary flex size-9 items-center justify-center rounded-[14px]"><ShieldCheck aria-hidden className="size-5" /></span>
-            <span className="text-[15px] font-semibold tracking-tight">{tc("brand")}</span>
-          </Link>
-          <nav aria-label="Product" className="hidden items-center sm:flex">
-            <Link href="/shop" className={navLink}>Checkout</Link>
-            <Link href="/command" className={navLink}>Payments</Link>
-            <Link href="/evidence" className={navLink}>Evidence</Link>
-          </nav>
-          <div className="ms-auto flex items-center gap-2">
-            <LanguageSelector />
-            <Link href="/lab" className={cn(navLink, "hidden items-center gap-1.5 border border-line sm:inline-flex")}><FlaskConical aria-hidden className="size-4" />Lab (operator)</Link>
-          </div>
-        </div>
-      </header>
+      <ProductBar>
+        <LanguageSelector />
+        <Link href="/lab" className="hidden items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-[13px] text-muted transition-colors duration-200 hover:bg-surface-2 hover:text-fg sm:inline-flex"><FlaskConical aria-hidden className="size-4" />Lab (operator)</Link>
+      </ProductBar>
 
-      <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 sm:py-12">
+      <main className="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 py-8 sm:px-6 sm:py-14">
         <section className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
           <div>
-            <h1 className="mt-3 text-5xl leading-[1.04] sm:text-[64px]"><span className="hero-amount">{tc("tagline")}</span></h1>
+            <p className={label}>Product demo</p>
+            <h1 className="mt-4 text-5xl leading-[1.04] sm:text-[64px]"><span className="hero-amount">{tc("tagline")}</span></h1>
             <p className="mt-4 text-lg text-fg">This recipient. This amount. Once.</p>
             <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
               You approve the facts of one payment on your phone. The rail executes exactly those facts and refuses any request that differs, with evidence either way.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
-              <Link href="/shop" className="btn-primary inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm">Start a payment<ArrowRight aria-hidden className="size-4 rtl:rotate-180" /></Link>
+              <Link href="/shop" className="btn-primary inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm">Launch demo<ArrowRight aria-hidden className="size-4 rtl:rotate-180" /></Link>
               <Link href="/command" className="inline-flex h-12 items-center gap-2 rounded-full border border-line px-6 text-sm text-fg transition-colors duration-200 hover:bg-surface-2"><ListChecks aria-hidden className="size-4" />View payments</Link>
             </div>
-            
+            <p className="mt-5 flex flex-wrap gap-x-5 gap-y-2 text-[13px] text-muted">
+              <Link href="/landing" className="underline-offset-4 transition-colors duration-200 hover:text-fg hover:underline">About CounterSign</Link>
+              <Link href="/evidence" className="underline-offset-4 transition-colors duration-200 hover:text-fg hover:underline">Evidence Lab</Link>
+            </p>
           </div>
           <RuleDemo />
         </section>
 
         <section aria-labelledby="journey-title">
-          <h2 id="journey-title" className="text-sm text-muted">How one payment goes</h2>
-          <ol className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <h2 id="journey-title" className={label}>How one payment goes</h2>
+          <ol className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {STEPS.map((s) => {
               const inner = (<>
                 <span className="flex items-center justify-between">
-                  <span className="tabular flex size-8 items-center justify-center rounded-full border border-line bg-white/10 text-xs text-fg">{s.n}</span>
+                  <span className="tabular flex size-8 items-center justify-center rounded-full border border-line text-xs text-fg">{s.n}</span>
                   <s.icon aria-hidden className="size-5 text-muted transition-colors duration-200 group-hover:text-fg" />
                 </span>
                 <span className="mt-4 block text-[15px] font-medium text-fg">{s.title}</span>
                 <span className="mt-1.5 block text-[13px] leading-relaxed text-muted">{s.body}</span>
-                <span className={cn("mt-4 flex items-center gap-1.5 text-[13px]", s.href ? "text-fg" : "text-muted")}>{s.cta}{s.href && <ArrowRight aria-hidden className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180" />}</span>
+                <span className="mt-auto flex items-center gap-1.5 pt-4 text-[13px] text-fg">{s.cta}<ArrowRight aria-hidden className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5 motion-reduce:transition-none rtl:rotate-180" /></span>
               </>);
-              const cls = "group flex h-full flex-col rounded-[24px] border border-line bg-surface p-5 transition-transform duration-200";
-              return <li key={s.n}>{s.href ? <Link href={s.href} className={cn(cls, "hover:-translate-y-0.5")}>{inner}</Link> : <div className={cls}>{inner}</div>}</li>;
+              return <li key={s.n}><Link href={s.href} className="group flex h-full flex-col rounded-[16px] border border-line bg-surface p-5 transition-colors duration-200 hover:border-fg/25">{inner}</Link></li>;
             })}
           </ol>
-        </section>
-
-        <section aria-labelledby="who-title">
-          <h2 id="who-title" className="text-sm text-muted">Who gets what</h2>
-          <dl className="mt-4 grid gap-3 lg:grid-cols-3">
-            {AUDIENCES.map((a) => (
-              <div key={a.who} className="rounded-[24px] border border-line bg-surface p-5">
-                <dt className="text-[15px] font-medium text-fg">{a.who}</dt>
-                <dd className="mt-1.5 text-[13px] leading-relaxed text-muted">{a.what}</dd>
-              </div>
-            ))}
-          </dl>
         </section>
 
         <footer className="border-t border-line pt-5 text-xs leading-relaxed text-muted">
