@@ -1,8 +1,8 @@
 "use client";
 // CounterSign marketing page (/landing). Copy is English only; every interface piece is an illustration with sample values.
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
-import { MotionConfig, motion } from "motion/react";
+import { MotionConfig, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { ArrowRight, ArrowUpRight, FileCheck2, Fingerprint, Landmark, Repeat1, ShieldCheck, Target } from "lucide-react";
 import { cn } from "@/lib/cn";
 import { AttemptCard, EASE, FlowRail, Label, PhoneApproval, Pill, SAMPLE, SERIF, TermsCard, type Attempt } from "./pieces";
@@ -50,6 +50,10 @@ function Nav() {
 
 function Hero() {
   const [attempt, setAttempt] = useState<Attempt>("match");
+  const stage = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+  const { scrollYProgress } = useScroll({ target: stage, offset: ["start end", "start 0.25"] });
+  const scale = useTransform(scrollYProgress, [0, 1], [0.955, 1]);
   return (
     <section className="pt-12 sm:pt-16">
       <div className={WRAP}>
@@ -71,9 +75,11 @@ function Hero() {
 
         <motion.div
           id="product"
+          ref={stage}
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: EASE, delay: 0.12 }}
+          style={reduce ? undefined : { scale, transformOrigin: "50% 0%" }}
           className="mt-12 scroll-mt-20 rounded-t-[24px] border border-b-0 border-line bg-[#0D0D0C] p-4 sm:mt-14 sm:p-8"
         >
           <div className="flex flex-wrap items-center justify-between gap-3">

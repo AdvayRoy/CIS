@@ -80,7 +80,7 @@ export function ScrollStory() {
               </div>
               <motion.div
                 initial={false}
-                animate={{ opacity: at >= 2 ? 1 : 0, y: at >= 2 ? 0 : 24 }}
+                animate={{ opacity: at >= 2 ? 1 : 0.28, y: at >= 2 ? 0 : 12 }}
                 transition={T}
                 className="mt-4 max-lg:!transform-none max-lg:!opacity-100"
               >
