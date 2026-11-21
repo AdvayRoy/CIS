@@ -249,7 +249,7 @@ export function ApproveScreen({ id }: { id: string }) {
 
       {view && showActions && (
         <div
-          className="sticky bottom-0 -mx-4 rounded-t-3xl border-t border-line bg-bg px-4 pt-4"
+          className="[@media(min-height:700px)]:sticky bottom-0 -mx-4 rounded-t-3xl border-t border-line bg-bg px-4 pt-4"
           style={{ paddingBottom: "max(env(safe-area-inset-bottom), 16px)" }}
         >
           {actionError && (
