@@ -1,6 +1,7 @@
 "use client";
 // Shared product bar for the demo journey: Website -> Checkout -> Phone approval -> Execution -> Evidence.
 // Navigation only. It never reports a payment state; pages pass `current` from server data.
+import { Logo } from "@/components/Logo";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { ChevronRight, ShieldCheck } from "lucide-react";
@@ -24,7 +25,7 @@ export function ProductBar({ current, context, newTab, children }: { current?: J
     <header className="sticky top-0 z-20 border-b border-line bg-bg">
       <div className="mx-auto flex min-h-14 w-full max-w-6xl flex-wrap items-center gap-x-4 gap-y-1 px-4 py-2 sm:px-6">
         <Link href="/" {...out} className="flex shrink-0 items-center gap-2.5">
-          <span className="btn-primary flex size-8 items-center justify-center rounded-[10px]"><ShieldCheck aria-hidden className="size-[18px]" /></span>
+          <span className="border border-line bg-black flex size-8 items-center justify-center rounded-[10px]"><Logo className="size-[18px]" /></span>
           <span className="text-[15px] font-semibold tracking-tight">{tc("brand")}</span>
           {context && <span className="hidden text-[13px] text-muted sm:inline">/ {context}</span>}
         </Link>
