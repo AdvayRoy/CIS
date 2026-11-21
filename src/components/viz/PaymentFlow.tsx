@@ -1,6 +1,6 @@
 "use client";
 // OWNER: w/viz. Payer -> CounterSign -> Recipient, drawn only from the view and the selected server evidence.
-import { useSyncExternalStore } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 import { MotionConfig, motion } from "motion/react";
 import { Landmark, Shield, ShieldCheck, ShieldOff, ShieldX, Store, Wallet, type LucideIcon } from "lucide-react";
@@ -50,6 +50,9 @@ const PILL: Record<FlowMode, string> = {
 const GATE_ICON: Record<FlowMode, LucideIcon> = {
   idle: Shield, approved: ShieldCheck, executing: ShieldCheck, settled: ShieldCheck, rejected: ShieldX, closed: ShieldOff,
 };
+// One progress value moves the chip from the start edge of its track to the end edge, so it cannot leave the track.
+const CHIP_POS = { left: "calc(var(--p) * 100%)", translate: "calc(var(--p) * -100%)" };
+const CHIP_TRACK = "pointer-events-none absolute top-1/2 hidden h-0 sm:block";
 const LABEL = "text-[11px] font-medium tracking-[0.16em] text-muted uppercase";
 const FIGURE = "mt-2 text-[26px] leading-none font-semibold tracking-[-0.04em] sm:text-[44px] lg:text-[56px]";
 
@@ -84,6 +87,7 @@ export function PaymentFlow({ view, evidence }: { view: AgreementView; evidence:
   const tc = useTranslations("common");
   const tm = useTranslations("mobile");
   const reduce = usePrefersReducedMotion();
+  const [arrivedKey, setArrivedKey] = useState<string | null>(null);
   const a = view.agreement;
   const code = a.asset.code;
   const amt = (v: string) => fmtAmount(v, a.asset.decimals);
@@ -98,7 +102,10 @@ export function PaymentFlow({ view, evidence }: { view: AgreementView; evidence:
   // Remount (and so replay) only when the mode or the selected attempt changes, never on a poll tick.
   const animate = !reduce;
   const runKey = `${mode}:${evidence?.decision.decidedAt ?? 0}:${evidence?.observed.observedAt ?? 0}:${animate ? "m" : "s"}`;
-  const verdictAt = !animate ? 0 : moved ? TRAVEL - 0.2 : stopped ? STOP * 0.75 : 0;
+  // Settlement is claimed only once the travelling payment has actually finished, not on a parallel timer.
+  const travels = animate && moved;
+  const arrived = !travels || arrivedKey === runKey;
+  const verdictAt = animate && stopped ? STOP * 0.75 : 0;
   const gateAt = !animate ? 0 : moved ? TRAVEL * 0.4 : stopped ? STOP * 0.7 : 0;
 
   const status = mode === "idle" ? tc("state.awaiting_approval")
@@ -122,7 +129,7 @@ export function PaymentFlow({ view, evidence }: { view: AgreementView; evidence:
         <div className="flex items-center justify-between gap-4">
           <p className="text-[15px] font-semibold tracking-tight text-fg">{tc("brand")}</p>
           <motion.p key={`s-${runKey}`} className={cn("inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[13px] leading-none font-semibold", PILL[mode])}
-            initial={animate ? { opacity: 0, scale: 0.94 } : false} animate={{ opacity: 1, scale: 1 }} transition={{ ...SPRING, delay: verdictAt }}>
+            initial={animate ? { opacity: 0, scale: 0.94 } : false} animate={arrived ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.94 }} transition={{ ...SPRING, delay: verdictAt }}>
             {mode === "idle" && <span className="size-1.5 rounded-full bg-amber" />}
             {status}
           </motion.p>
@@ -135,7 +142,7 @@ export function PaymentFlow({ view, evidence }: { view: AgreementView; evidence:
             <p className={FIGURE}><Money value={amt(a.amount)} code={code} className="text-fg" /></p>
           </div>
           <motion.div key={runKey} className="min-w-0 border-s border-white/10 ps-5 sm:ps-8"
-            initial={animate ? { opacity: 0, y: 8 } : false} animate={{ opacity: 1, y: 0 }} transition={{ ...SPRING, delay: verdictAt }}>
+            initial={animate ? { opacity: 0, y: 8 } : false} animate={arrived ? { opacity: 1, y: 0 } : { opacity: 0, y: 8 }} transition={{ ...SPRING, delay: verdictAt }}>
             <p className={LABEL}>{stopped ? t("path.attempted") : t("path.executed")}</p>
             <p className={FIGURE}>
               {moved ? <Money value={amt(evidence.attempt.amount)} code={code} className="text-mint" />
@@ -179,16 +186,16 @@ export function PaymentFlow({ view, evidence }: { view: AgreementView; evidence:
               <NodeIcon icon={Store} x={944} className="text-fg" />
             </g>
             {mode === "settled" && (
-              <motion.g key={`lit-${runKey}`} initial={animate ? { opacity: 0 } : false} animate={{ opacity: 1 }}
-                transition={{ duration: 0.35, delay: animate && moved ? TRAVEL - 0.15 : 0 }}>
+              <motion.g key={`lit-${runKey}`} initial={animate ? { opacity: 0 } : false} animate={{ opacity: arrived ? 1 : 0 }}
+                transition={{ duration: 0.35 }}>
                 <rect x="904" y={CY - 40} width="80" height="80" rx="22" className="fill-mint" />
                 <NodeIcon icon={Store} x={944} className="text-black" />
               </motion.g>
             )}
-            {moved && animate && (
+            {travels && arrived && (
               <motion.rect key={`arrive-${runKey}`} x="904" y={CY - 40} width="80" height="80" rx="22" fill="none" className="stroke-mint" strokeWidth="1.5"
                 initial={{ opacity: 0, scale: 1 }} animate={{ opacity: [0, 0.8, 0], scale: [1, 1.1, 1.36] }}
-                transition={{ duration: 1, delay: TRAVEL - 0.1, ease: "easeOut" }} />
+                transition={{ duration: 1, ease: "easeOut" }} />
             )}
 
             {/* the payment itself: crosses only on settlement, halts at the barrier when stopped */}
@@ -199,7 +206,8 @@ export function PaymentFlow({ view, evidence }: { view: AgreementView; evidence:
                   transition={{ duration: TRAVEL, times: TRAVEL_TIMES, ease: "easeInOut" }} />
                 <motion.circle cy={CY} r="6" fill="currentColor"
                   initial={{ cx: L0, opacity: 0 }} animate={{ cx: [L0, L1, R0, R1], opacity: [0, 1, 1, 0] }}
-                  transition={{ duration: TRAVEL, times: TRAVEL_TIMES, ease: "easeInOut" }} />
+                  transition={{ duration: TRAVEL, times: TRAVEL_TIMES, ease: "easeInOut" }}
+                  onAnimationComplete={() => setArrivedKey(runKey)} />
               </g>
             )}
             {stopped && (
@@ -244,44 +252,51 @@ export function PaymentFlow({ view, evidence }: { view: AgreementView; evidence:
             </g>
           </svg>
 
-          {/* amount riding the payment; it yields to the enforcement point instead of crossing over it */}
-          {animate && moved && (
-            <motion.div key={`chip-${runKey}`} aria-hidden className="pointer-events-none absolute top-1/2 hidden -translate-x-1/2 -translate-y-[calc(100%+16px)] sm:block"
-              initial={{ left: pct(L0), opacity: 0 }}
-              animate={{ left: [pct(L0), pct(370), pct(L1), pct(R0), pct(630), pct(R1)], opacity: [0, 1, 0, 0, 1, 0] }}
-              transition={{ duration: TRAVEL, times: [0, 0.31, 0.4, 0.56, 0.66, 1], ease: "linear" }}>
-              <span className="inline-block rounded-full bg-mint px-3 py-1 text-[13px] font-semibold whitespace-nowrap text-black rtl:-scale-x-100">
-                <Money value={amt(evidence.attempt.amount)} code={code} codeClassName="text-black/60" />
-              </span>
-            </motion.div>
-          )}
+          {/* amount riding the payment: each chip stays inside its own rail segment, so it never covers a node */}
+          {animate && moved && [
+            { from: L0, to: L1, delay: 0, duration: TRAVEL * 0.4 },
+            { from: R0, to: R1, delay: TRAVEL * 0.56, duration: TRAVEL * 0.44 },
+          ].map((seg) => (
+            <div key={`chip-${seg.from}-${runKey}`} aria-hidden className={CHIP_TRACK} style={{ left: pct(seg.from + 12), right: pct(1000 - seg.to + 12) }}>
+              <motion.div className="absolute bottom-4" style={CHIP_POS}
+                initial={{ "--p": 0, opacity: 0 }} animate={{ "--p": 1, opacity: [0, 1, 1, 0] }}
+                transition={{ duration: seg.duration, delay: seg.delay, ease: "easeInOut", opacity: { duration: seg.duration, delay: seg.delay, times: [0, 0.2, 0.8, 1], ease: "linear" } }}>
+                <span className="inline-block rounded-full bg-mint px-3 py-1 text-[13px] font-semibold whitespace-nowrap text-black rtl:-scale-x-100">
+                  <Money value={amt(evidence.attempt.amount)} code={code} codeClassName="text-black/60" />
+                </span>
+              </motion.div>
+            </div>
+          ))}
           {stopped && (
-            <motion.div key={`chip-${runKey}`} aria-hidden className="pointer-events-none absolute top-1/2 hidden -translate-x-1/2 -translate-y-[calc(100%+16px)] sm:block"
-              initial={animate ? { left: pct(L0), opacity: 0 } : false} animate={{ left: animate ? [pct(L0), pct(340), pct(328), pct(332)] : pct(332), opacity: 1 }}
-              transition={{ duration: STOP, times: STOP_TIMES, ease: "easeOut" }}>
-              <span className="inline-block rounded-full bg-coral px-3 py-1 text-[13px] font-semibold whitespace-nowrap text-black rtl:-scale-x-100">
-                <Money value={amt(evidence.attempt.amount)} code={code} codeClassName="text-black/60" strike={diffs.has("amount")} />
-              </span>
-            </motion.div>
+            <div key={`chip-${runKey}`} aria-hidden className={CHIP_TRACK} style={{ left: pct(L0 + 12), right: pct(1000 - HALT + 14) }}>
+              <motion.div className="absolute bottom-4" style={CHIP_POS}
+                initial={animate ? { "--p": 0, opacity: 0 } : false}
+                animate={{ "--p": animate ? [0, 1, 0.95, 0.97] : 0.97, opacity: 1 }}
+                transition={{ duration: STOP, times: STOP_TIMES, ease: "easeOut" }}>
+                <span className="inline-block rounded-full bg-coral px-3 py-1 text-[13px] font-semibold whitespace-nowrap text-black rtl:-scale-x-100">
+                  <Money value={amt(evidence.attempt.amount)} code={code} codeClassName="text-black/60" strike={diffs.has("amount")} />
+                </span>
+              </motion.div>
+            </div>
           )}
         </div>
 
         {/* captions */}
-        <div className="mt-7 grid grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)_minmax(0,1fr)] gap-3 border-t border-white/10 pt-5 sm:gap-8 sm:pt-6">
+        <div className="mt-7 grid grid-cols-2 gap-x-3 gap-y-5 border-t border-white/10 pt-5 sm:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)_minmax(0,1fr)] sm:gap-8 sm:pt-6">
           <div className="min-w-0">
             <p className={LABEL}>{tc("field.payer")}</p>
-            <p className="mt-2 truncate"><span title={a.payer} className="ident text-[13px] text-fg">{short(a.payer)}</span></p>
+            <p className="mt-2 wrap-anywhere"><span title={a.payer} className="ident text-[13px] text-fg">{short(a.payer)}</span></p>
             {evidence && (
-              <motion.div key={runKey} className="mt-4" initial={animate ? { opacity: 0, y: 4 } : false} animate={{ opacity: 1, y: 0 }}
-                transition={{ ...SPRING, delay: animate ? (moved ? TRAVEL - 0.2 : STOP) : 0 }}>
+              <motion.div key={runKey} className="mt-4" initial={animate ? { opacity: 0, y: 4 } : false} animate={arrived ? { opacity: 1, y: 0 } : { opacity: 0, y: 4 }}
+                transition={{ ...SPRING, delay: animate && !moved ? STOP : 0 }}>
                 <p className="text-[12px] text-muted">{t("path.payerBalance")}</p>
                 <p className="mt-1 text-[18px] font-semibold tracking-tight sm:text-[22px]"><Money value={amt(evidence.observed.payerBalance)} code={code} className="text-fg" /></p>
               </motion.div>
             )}
           </div>
 
-          <motion.div key={`d-${runKey}`} className="min-w-0 text-center"
-            initial={animate ? { opacity: 0, y: 4 } : false} animate={{ opacity: 1, y: 0 }} transition={{ ...SPRING, delay: verdictAt }}>
+          <motion.div key={`d-${runKey}`} className="order-last col-span-2 min-w-0 text-center sm:order-none sm:col-span-1"
+            initial={animate ? { opacity: 0, y: 4 } : false} animate={arrived ? { opacity: 1, y: 0 } : { opacity: 0, y: 4 }} transition={{ ...SPRING, delay: verdictAt }}>
             {detail && <p className={cn("mx-auto max-w-[28ch] text-[13px] leading-5 font-medium", blocked ? "text-coral" : "text-fg")}>{detail}</p>}
             {(mode === "settled" || blocked) && view.executionCount > 0 && (
               <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-1 text-[12px] text-muted">
@@ -292,12 +307,12 @@ export function PaymentFlow({ view, evidence }: { view: AgreementView; evidence:
 
           <div className="min-w-0 text-end">
             <p className={LABEL}>{tc("field.recipient")}</p>
-            <p className={cn("mt-2 truncate text-[14px] font-semibold", blocked ? "text-muted" : "text-fg")}>{a.recipientDisplayName}</p>
-            <p className="truncate"><span title={a.recipient} className="ident text-[12px] text-muted">{short(a.recipient)}</span></p>
+            <p className={cn("mt-2 text-[14px] font-semibold wrap-anywhere", blocked ? "text-muted" : "text-fg")}>{a.recipientDisplayName}</p>
+            <p className="wrap-anywhere"><span title={a.recipient} className="ident text-[12px] text-muted">{short(a.recipient)}</span></p>
             {moved && (
               <motion.p key={runKey} className="mt-3 text-[18px] font-semibold tracking-tight sm:text-[22px]"
-                initial={animate ? { opacity: 0, y: 6, scale: 0.96 } : false} animate={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ ...SPRING, delay: animate ? TRAVEL - 0.15 : 0 }}>
+                initial={animate ? { opacity: 0, y: 6, scale: 0.96 } : false} animate={arrived ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0, y: 6, scale: 0.96 }}
+                transition={SPRING}>
                 <Money value={`+${amt(evidence.attempt.amount)}`} code={code} className="text-mint" />
               </motion.p>
             )}
@@ -305,7 +320,7 @@ export function PaymentFlow({ view, evidence }: { view: AgreementView; evidence:
               <motion.div key={runKey} className="mt-3" initial={animate ? { opacity: 0, y: 4 } : false} animate={{ opacity: 1, y: 0 }}
                 transition={{ ...SPRING, delay: animate && evidence ? STOP : 0 }}>
                 {stopped && diffs.has("recipient") && (
-                  <p className="truncate"><span title={evidence.attempt.recipient} className="ident text-[12px] text-coral line-through decoration-coral">{short(evidence.attempt.recipient)}</span></p>
+                  <p className="wrap-anywhere"><span title={evidence.attempt.recipient} className="ident text-[12px] text-coral line-through decoration-coral">{short(evidence.attempt.recipient)}</span></p>
                 )}
                 <p className="mt-1 text-[13px] font-semibold text-coral">{t("path.notExecuted")}</p>
               </motion.div>
