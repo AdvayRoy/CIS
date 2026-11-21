@@ -1,0 +1,146 @@
+{
+  "title": "İdarəetmə mərkəzi",
+  "nav": {
+    "payment": "Ödəniş",
+    "chain": "Tokenlərin vəziyyəti",
+    "bank": "Bank hesabları",
+    "lab": "Demo laboratoriya (operator)"
+  },
+  "status": {
+    "serverError": "Server xətası",
+    "loading": "Cari vəziyyət yüklənir…",
+    "noData": "Serverlə əlaqə yoxdur. Təsdiqlənmiş vəziyyət hələ yoxdur."
+  },
+  "fixture": {
+    "badge": "Sınaq məlumatları",
+    "banner": "Maketin hazırlanması üçün sınaq məlumatları — bu, real vəziyyət deyil. Real sistemi görmək üçün ?fixture=1 parametrini silin."
+  },
+  "signIn": {
+    "label": "Demo giriş · müştəri açarı",
+    "action": "Daxil ol",
+    "failed": "Açar qəbul edilmədi",
+    "active": "Müştəri sessiyası (demo)"
+  },
+  "list": {
+    "title": "Razılaşmalar",
+    "empty": "Hələ razılaşma yoxdur. Satıcı razılaşmanı demo laboratoriyada yaradır və o, burada görünəcək."
+  },
+  "empty": {
+    "title": "Göstəriləcək ödəniş yoxdur",
+    "body": "Hələ heç nə tələb olunmayıb. Satıcı ödəniş təklif etdikdə o, təsdiqlənmiş şərtləri, bütün cəhdləri və icra sübutları ilə burada görünəcək.",
+    "action": "Demo laboratoriyanı aç"
+  },
+  "hero": {
+    "to": "alıcı:"
+  },
+  "pair": {
+    "title": "Telefonunuzda təsdiqləyin",
+    "hint": "Yalnız bu ödənişə bağlı qısamüddətli keçid yaradır.",
+    "needSignIn": "Telefonu qoşmaq üçün müştəri kimi daxil olun (yuxarı sağda).",
+    "action": "Telefonu qoş",
+    "again": "Yeni keçid",
+    "error": "Qoşulma keçidini yaratmaq mümkün olmadı.",
+    "qrAlt": "Təsdiq keçidinin QR kodu",
+    "expires": "Keçid {time} tarixinədək etibarlıdır",
+    "expired": "Bu keçidin müddəti bitib. Yenisini yaradın.",
+    "copy": "Keçidi kopyala",
+    "copied": "Kopyalandı"
+  },
+  "path": {
+    "approved": "Təsdiqləndi",
+    "attempted": "Cəhd edildi",
+    "executed": "İcra olundu",
+    "signed": "Müştəri imzalayıb",
+    "awaiting": "Hələ təsdiqlənməyib",
+    "noAttempt": "Cəhd daxil olmayıb",
+    "noAttemptHint": "Bu razılaşma üzrə icra cəhdi daxil olmayıb.",
+    "matches": "Təsdiqlənmiş şərtlərə uyğundur",
+    "differs": "{count, plural, one {# sahə təsdiqləndiyindən fərqlidir} other {# sahə təsdiqləndiyindən fərqlidir}}",
+    "changed": "dəyişib",
+    "approvedWas": "təsdiqlənib:",
+    "none": "Yoxdur",
+    "notExecuted": "Heç nə icra olunmayıb",
+    "notExecutedHint": "Bu razılaşma üzrə nə reyestrdə, nə də şəbəkədə nəticə var.",
+    "payerBalance": "Ödəyicinin balansı",
+    "receipt": "Qəbz",
+    "noReceipt": "Qəbz yoxdur"
+  },
+  "attempts": {
+    "label": "Cəhdlər",
+    "item": "Cəhd {n}"
+  },
+  "inspector": {
+    "title": "Sübutlar",
+    "show": "Sübut panelini göstər",
+    "hide": "Sübut panelini gizlət",
+    "empty": "Sübutlarına baxmaq üçün razılaşma seçin.",
+    "terms": "Təsdiqlənmiş şərtlər",
+    "agreementId": "Razılaşma ID",
+    "displayOnly": "Yalnız göstərilən ad — yoxlanılmış şəxsiyyət deyil",
+    "itemId": "Məhsul",
+    "token": "Token kontraktı",
+    "chainId": "Şəbəkə {id}",
+    "signature": "Təsdiq imzası",
+    "signer": "İmzalayan",
+    "signatureValue": "EIP-712 imzası",
+    "approvedAt": "Təsdiq vaxtı",
+    "signerNote": "Qoşulmuş təsdiq sessiyası bu şərtləri təsdiqlədikdən sonra etibarlı demo imzalayan tərəfindən imzalanıb.",
+    "noSignature": "İmza yoxdur. Vəziyyət: {state}.",
+    "attempt": "İcraçının tələbi",
+    "decision": "Qərar",
+    "accepted": "Qəbul edildi",
+    "rejected": "Rədd edildi",
+    "diffs": "Fərqlər ({count})",
+    "noDiffs": "Heç bir sahə təsdiqlənmiş şərtlərdən fərqlənmir.",
+    "noReceipt": "Bu cəhd üzrə qəbz yaradılmayıb.",
+    "transferId": "Köçürmə ID",
+    "debit": "Silindi",
+    "credit": "Daxil oldu",
+    "postedAt": "Qeydə alınma vaxtı",
+    "txHash": "Tranzaksiya",
+    "block": "Blok",
+    "txStatus": "Vəziyyət",
+    "tx": {
+      "success": "Uğurlu",
+      "reverted": "Geri qaytarıldı"
+    },
+    "revertReason": "Geri qaytarılma səbəbi",
+    "observed": "Cəhddən sonrakı vəziyyət · {source}",
+    "recipientBalance": "Alıcının balansı",
+    "observedAt": "Oxunma vaxtı",
+    "events": "Hadisələr",
+    "noEvents": "Hadisə qeydə alınmayıb."
+  },
+  "chain": {
+    "title": "Tokenlə alış — əvvəl və sonra",
+    "block": "Blok {block}",
+    "unavailable": "Lokal şəbəkə əlçatan deyil. Tokenlərin vəziyyətini göstərmək mümkün deyil.",
+    "noScenario": "Ssenarinin vəziyyəti alınmayıb.",
+    "protected": {
+      "title": "Qorunan alış",
+      "note": "Dəqiq icazə, alış və icazənin ləğvi bir tranzaksiyada."
+    },
+    "vulnerable": {
+      "title": "Müqayisə üçün zəif variant",
+      "note": "Qəsdən edilən müqayisə: daimi icazəsi olan qorunmayan hesab."
+    },
+    "purchased": "Alınıb",
+    "notPurchased": "Hələ alınmayıb",
+    "start": "Ssenarinin başlanğıcı",
+    "now": "Cari balans",
+    "allowance": "Mağaza üçün qalan icazə",
+    "unlimited": "Limitsiz",
+    "shopBalance": "Mağazanın balansı",
+    "attackerBalance": "Çıxarış alıcısının balansı",
+    "drain": "Sonrakı çıxarış cəhdi",
+    "drainNone": "Hələ cəhd edilməyib",
+    "drainSucceeded": "Uğurlu — {amount} çıxarıldı",
+    "drainFailed": "Uğursuz — {amount} tələb olunub",
+    "account": "Hesab"
+  },
+  "bank": {
+    "title": "Bank hesabları",
+    "unavailable": "Bank simulyasiyası əlçatan deyil. Balansları göstərmək mümkün deyil.",
+    "empty": "Hesablar alınmayıb."
+  }
+}

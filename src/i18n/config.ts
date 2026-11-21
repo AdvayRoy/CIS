@@ -1,6 +1,6 @@
 // OWNER: worker F (w/i18n).
 export const LOCALES = [
-  { code: "en", name: "English", english: "English", dir: "ltr", intl: "en-AE" },
+  { code: "en", name: "English", english: "English", dir: "ltr", intl: "en" },
   { code: "ar", name: "العربية", english: "Arabic", dir: "rtl", intl: "ar-AE" },
   { code: "ru", name: "Русский", english: "Russian", dir: "ltr", intl: "ru" },
   { code: "uk", name: "Українська", english: "Ukrainian", dir: "ltr", intl: "uk" },

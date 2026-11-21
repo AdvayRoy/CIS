@@ -1,0 +1,119 @@
+{
+  "title": "Toʻlovni tasdiqlash",
+  "header": {
+    "approval": "Toʻlovni tasdiqlash"
+  },
+  "loading": "Toʻlov serverdan yuklanmoqda",
+  "notFound": {
+    "title": "Toʻlov topilmadi",
+    "body": "Bu havola serverdagi hech bir toʻlovga mos kelmaydi. Sotuvchidan yangi tasdiqlash havolasini soʻrang."
+  },
+  "loadError": {
+    "title": "Toʻlovni yuklab boʻlmadi",
+    "body": "Server xato qaytardi. Bu sahifadan hech narsa tasdiqlanmadi va toʻlanmadi."
+  },
+  "fixture": "Sinov maʼlumotlari. Serverga ulanmagan.",
+  "disconnected": {
+    "title": "Aloqa yoʻq",
+    "body": "Server tasdiqlagan oxirgi holat koʻrsatilmoqda. Bu ekranda undan yangiroq hech narsa yoʻq.",
+    "never": "Server bilan hali aloqa oʻrnatilmadi. Toʻlov holati tasdiqlanmagan.",
+    "actions": "Aloqa tiklanmaguncha «Tasdiqlash» va «Rad etish» tugmalari oʻchirilgan."
+  },
+  "card": {
+    "payTo": "Toʻlov oluvchi",
+    "displayNameNote": "Nomni sotuvchi koʻrsatgan, u tekshirilmagan. Aynan shu identifikator nazorat qilinadi.",
+    "amountExact": "Aniq summa",
+    "amountMax": "Eng yuqori summa",
+    "amountValue": "{amount} {asset}",
+    "recipient": "Aniq oluvchi",
+    "payer": "Kimdan",
+    "rail": "Toʻlov usuli",
+    "oneUse": "Bir martalik cheklov",
+    "oneUseValue": "Faqat bitta toʻlov. Ikki marta ishlatib boʻlmaydi.",
+    "expiry": "Amal qilish muddati",
+    "expiresIn": "{time} dan keyin tugaydi",
+    "expiryAt": "vaqti: {time}",
+    "expiryReached": "Amal qilish muddati tugadi",
+    "scope": "Ruxsat doirasi",
+    "scopeValue": "Faqat shu toʻlov. Undan keyin hech qanday doimiy ruxsat qolmaydi.",
+    "network": "Tarmoq",
+    "networkValue": "Tarmoq {chainId}",
+    "item": "Mahsulot"
+  },
+  "pairing": {
+    "checking": "Bu telefon bogʻlanganligi tekshirilmoqda",
+    "unpairedTitle": "Bu telefon bogʻlanmagan",
+    "unpairedBody": "Tasdiqlash uchun shu qurilmada ochilgan yaroqli bogʻlash havolasi kerak. Havola yoʻq, yaroqsiz yoki muddati oʻtgan, shuning uchun bu sahifa toʻlovni faqat koʻrsata oladi. Yangi bogʻlash havolasi yoki QR kodni soʻrang."
+  },
+  "action": {
+    "approve": "Shu toʻlovni tasdiqlash",
+    "approving": "Tasdiq yuborilmoqda",
+    "decline": "Rad etish",
+    "declining": "Rad etilmoqda",
+    "failed": "Server bu amalni qabul qilmadi",
+    "expiredLocal": "Amal qilish muddati oʻtdi. Server tasdigʻi kutilmoqda."
+  },
+  "status": {
+    "awaiting_approval": "Har bir tafsilotni tekshiring. Siz tasdiqlamaguningizcha hech narsa toʻlanmaydi.",
+    "approved": "Siz aynan shu shartlarni tasdiqladingiz. Toʻlov hali bajarilmadi.",
+    "executing": "Toʻlov bajarilmoqda. U hali yakunlanmagan.",
+    "rejected": "Urinish siz tasdiqlagan shartlarga mos kelmadi va toʻxtatildi.",
+    "settled": "Bir marta toʻlandi, aynan tasdiqlanganidek.",
+    "declined": "Siz rad etdingiz. Hech narsa toʻlanmadi.",
+    "expired": "Tasdiqlash vaqti tugadi. Bu tasdiq bilan hech narsa toʻlab boʻlmaydi.",
+    "failed": "Bajarish amalga oshmadi. Quyidagi dalillar toʻlov tizimi nimani qayd etganini koʻrsatadi."
+  },
+  "path": {
+    "label": "Toʻlov jarayoni",
+    "approved": "Tasdiqlandi",
+    "attempted": "Urinish boʻldi",
+    "executed": "Bajarildi",
+    "stopped": "Toʻxtatildi",
+    "failed": "Amalga oshmadi"
+  },
+  "stopped": {
+    "title": "Nega toʻxtatildi",
+    "approved": "Siz tasdiqladingiz",
+    "attempted": "Urinishda soʻralgan",
+    "noDiffs": "Bu urinish uchun maydonlarda farq koʻrsatilmagan."
+  },
+  "receipt": {
+    "title": "Kvitansiya",
+    "paid": "{amount} {asset} toʻlandi",
+    "to": "oluvchi: {name}",
+    "evidenceShow": "Dalillarni koʻrsatish",
+    "evidenceHide": "Dalillarni yashirish",
+    "evidenceTitle": "Dalillar",
+    "noEvidence": "Bajarish dalillari hali qayd etilmagan.",
+    "ledgerReceipt": "Reyestr kvitansiyasi",
+    "chainReceipt": "Tarmoq kvitansiyasi",
+    "noReceipt": "Kvitansiya yoʻq: bu urinish boʻyicha hech narsa bajarilmadi",
+    "transferId": "Oʻtkazma ID",
+    "debit": "Mablagʻ yechilgan hisob",
+    "credit": "Mablagʻ tushgan hisob",
+    "postedAt": "Oʻtkazilgan vaqt",
+    "txHash": "Tranzaksiya xeshi",
+    "block": "Blok",
+    "chain": "Tarmoq ID",
+    "txStatus": "Tranzaksiya holati",
+    "txSuccess": "Muvaffaqiyatli",
+    "txReverted": "Bekor qilindi",
+    "revertReason": "Bekor qilish sababi",
+    "observed": "Urinishdan keyingi holat",
+    "payerBalance": "Sizning balansingiz",
+    "recipientBalance": "Oluvchining balansi",
+    "allowance": "Qolgan ruxsat",
+    "allowanceNone": "Bu toʻlov usuliga taalluqli emas",
+    "executionCount": "Bajarilishlar soni",
+    "observedAt": "Oʻqilgan vaqt",
+    "approval": "Tasdiq",
+    "signer": "Imzolovchi",
+    "signature": "Imzo",
+    "approvedAt": "Tasdiqlangan vaqt",
+    "attempts": "Urinishlar",
+    "attemptN": "{n}-urinish",
+    "accepted": "Qabul qilindi",
+    "rejected": "Rad etildi",
+    "agreementId": "Toʻlov ID"
+  }
+}

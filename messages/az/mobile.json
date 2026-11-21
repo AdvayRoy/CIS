@@ -1,0 +1,119 @@
+{
+  "title": "Ödənişi təsdiqləyin",
+  "header": {
+    "approval": "Ödənişin təsdiqi"
+  },
+  "loading": "Ödəniş serverdən yüklənir",
+  "notFound": {
+    "title": "Ödəniş tapılmadı",
+    "body": "Bu keçid serverdəki heç bir ödənişə uyğun gəlmir. Satıcıdan yeni təsdiq keçidi istəyin."
+  },
+  "loadError": {
+    "title": "Ödənişi yükləmək mümkün olmadı",
+    "body": "Server xəta qaytardı. Bu səhifədən heç nə təsdiqlənməyib və ödənilməyib."
+  },
+  "fixture": "Sınaq məlumatları. Serverə qoşulmayıb.",
+  "disconnected": {
+    "title": "Əlaqə yoxdur",
+    "body": "Serverin təsdiqlədiyi son vəziyyət göstərilir. Bu ekranda ondan yeni heç nə yoxdur.",
+    "never": "Serverlə hələ əlaqə qurulmayıb. Ödənişin vəziyyəti təsdiqlənməyib.",
+    "actions": "Əlaqə bərpa olunana qədər «Təsdiqlə» və «İmtina et» düymələri söndürülüb."
+  },
+  "card": {
+    "payTo": "Ödəniş alan",
+    "displayNameNote": "Adı satıcı təqdim edib və yoxlanılmayıb. Məhz bu identifikator nəzarətdədir.",
+    "amountExact": "Dəqiq məbləğ",
+    "amountMax": "Maksimum məbləğ",
+    "amountValue": "{amount} {asset}",
+    "recipient": "Dəqiq alıcı",
+    "payer": "Kimdən",
+    "rail": "Ödəniş üsulu",
+    "oneUse": "Birdəfəlik limit",
+    "oneUseValue": "Yalnız bir ödəniş. İki dəfə istifadə edilə bilməz.",
+    "expiry": "Etibarlılıq müddəti",
+    "expiresIn": "{time} sonra bitir",
+    "expiryAt": "vaxt: {time}",
+    "expiryReached": "Etibarlılıq müddəti bitib",
+    "scope": "İcazənin əhatəsi",
+    "scopeValue": "Yalnız bu ödəniş. Ondan sonra heç bir davamlı icazə qalmır.",
+    "network": "Şəbəkə",
+    "networkValue": "Şəbəkə {chainId}",
+    "item": "Məhsul"
+  },
+  "pairing": {
+    "checking": "Bu telefonun qoşulub-qoşulmadığı yoxlanılır",
+    "unpairedTitle": "Bu telefon qoşulmayıb",
+    "unpairedBody": "Təsdiq üçün bu cihazda açılmış etibarlı qoşulma keçidi lazımdır. Keçid yoxdur, etibarsızdır və ya müddəti bitib, ona görə bu səhifə ödənişi yalnız göstərə bilər. Yeni qoşulma keçidi və ya QR kod istəyin."
+  },
+  "action": {
+    "approve": "Bu ödənişi təsdiqlə",
+    "approving": "Təsdiq göndərilir",
+    "decline": "İmtina et",
+    "declining": "İmtina edilir",
+    "failed": "Server bu əməliyyatı qəbul etmədi",
+    "expiredLocal": "Etibarlılıq müddəti keçib. Serverin təsdiqi gözlənilir."
+  },
+  "status": {
+    "awaiting_approval": "Hər bir təfərrüatı yoxlayın. Siz təsdiqləməyincə heç nə ödənilmir.",
+    "approved": "Siz məhz bu şərtləri təsdiqlədiniz. Ödəniş hələ icra olunmayıb.",
+    "executing": "Ödəniş icra olunur. Hələ tamamlanmayıb.",
+    "rejected": "Cəhd təsdiqlədiyiniz şərtlərə uyğun gəlmədi və dayandırıldı.",
+    "settled": "Bir dəfə ödənildi, məhz təsdiqləndiyi kimi.",
+    "declined": "Siz imtina etdiniz. Heç nə ödənilmədi.",
+    "expired": "Təsdiq vaxtı bitdi. Bu təsdiqlə heç nə ödənilə bilməz.",
+    "failed": "İcra uğursuz oldu. Aşağıdakı sübutlar ödəniş sisteminin nəyi qeydə aldığını göstərir."
+  },
+  "path": {
+    "label": "Ödənişin gedişi",
+    "approved": "Təsdiqləndi",
+    "attempted": "Cəhd edildi",
+    "executed": "İcra olundu",
+    "stopped": "Dayandırıldı",
+    "failed": "Uğursuz"
+  },
+  "stopped": {
+    "title": "Niyə dayandırıldı",
+    "approved": "Siz təsdiqlədiniz",
+    "attempted": "Cəhddə tələb olunub",
+    "noDiffs": "Bu cəhd üçün sahələrdə fərq bildirilməyib."
+  },
+  "receipt": {
+    "title": "Qəbz",
+    "paid": "{amount} {asset} ödənildi",
+    "to": "alıcı: {name}",
+    "evidenceShow": "Sübutları göstər",
+    "evidenceHide": "Sübutları gizlət",
+    "evidenceTitle": "Sübutlar",
+    "noEvidence": "İcra sübutu hələ qeydə alınmayıb.",
+    "ledgerReceipt": "Reyestr qəbzi",
+    "chainReceipt": "Şəbəkə qəbzi",
+    "noReceipt": "Qəbz yoxdur: bu cəhd üzrə heç nə icra olunmayıb",
+    "transferId": "Köçürmə ID",
+    "debit": "Vəsait silinən hesab",
+    "credit": "Vəsait daxil olan hesab",
+    "postedAt": "Qeydə alınma vaxtı",
+    "txHash": "Tranzaksiya heşi",
+    "block": "Blok",
+    "chain": "Şəbəkə ID",
+    "txStatus": "Tranzaksiyanın vəziyyəti",
+    "txSuccess": "Uğurlu",
+    "txReverted": "Geri qaytarıldı",
+    "revertReason": "Geri qaytarılma səbəbi",
+    "observed": "Cəhddən sonrakı vəziyyət",
+    "payerBalance": "Sizin balansınız",
+    "recipientBalance": "Alıcının balansı",
+    "allowance": "Qalan icazə",
+    "allowanceNone": "Bu ödəniş üsuluna aid deyil",
+    "executionCount": "İcra sayı",
+    "observedAt": "Oxunma vaxtı",
+    "approval": "Təsdiq",
+    "signer": "İmzalayan",
+    "signature": "İmza",
+    "approvedAt": "Təsdiq vaxtı",
+    "attempts": "Cəhdlər",
+    "attemptN": "Cəhd {n}",
+    "accepted": "Qəbul edildi",
+    "rejected": "Rədd edildi",
+    "agreementId": "Ödəniş ID"
+  }
+}

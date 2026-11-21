@@ -1,0 +1,146 @@
+{
+  "title": "Dolandyryş merkezi",
+  "nav": {
+    "payment": "Töleg",
+    "chain": "Tokenleriň ýagdaýy",
+    "bank": "Bank hasaplary",
+    "lab": "Demo-barlaghana (operator)"
+  },
+  "status": {
+    "serverError": "Serwer ýalňyşlygy",
+    "loading": "Häzirki ýagdaý ýüklenýär…",
+    "noData": "Serwere birigip bolmady. Tassyklanan ýagdaý entek ýok."
+  },
+  "fixture": {
+    "badge": "Synag maglumatlary",
+    "banner": "Maketi işläp düzmek üçin synag maglumatlary — bu hakyky ýagdaý däl. Hakyky ulgamy görmek üçin ?fixture=1 parametrini aýryň."
+  },
+  "signIn": {
+    "label": "Demo-giriş · müşderi açary",
+    "action": "Girmek",
+    "failed": "Açar kabul edilmedi",
+    "active": "Müşderi sessiýasy (demo)"
+  },
+  "list": {
+    "title": "Ylalaşyklar",
+    "empty": "Ylalaşyk entek ýok. Satyjy ylalaşygy demo-barlaghanada döredýär we ol şu ýerde peýda bolar."
+  },
+  "empty": {
+    "title": "Görkezmäge töleg ýok",
+    "body": "Entek hiç zat soralmady. Satyjy töleg teklip edende, ol tassyklanan şertleri, ähli synanyşyklary we ýerine ýetiriş subutnamalary bilen şu ýerde peýda bolar.",
+    "action": "Demo-barlaghanany açmak"
+  },
+  "hero": {
+    "to": "alyjy:"
+  },
+  "pair": {
+    "title": "Telefonyňyzda tassyklaň",
+    "hint": "Diňe şu tölege baglanan gysga möhletli salgy döredýär.",
+    "needSignIn": "Telefony birikdirmek üçin müşderi hökmünde giriň (ýokarky sagda).",
+    "action": "Telefony birikdirmek",
+    "again": "Täze salgy",
+    "error": "Birikdirme salgysyny döredip bolmady.",
+    "qrAlt": "Tassyklama salgysynyň QR kody",
+    "expires": "Salgy {time} çenli hakyky",
+    "expired": "Bu salgynyň möhleti gutardy. Täzesini dörediň.",
+    "copy": "Salgyny göçürmek",
+    "copied": "Göçürildi"
+  },
+  "path": {
+    "approved": "Tassyklandy",
+    "attempted": "Synanyşyk edildi",
+    "executed": "Ýerine ýetirildi",
+    "signed": "Müşderi gol çekdi",
+    "awaiting": "Entek tassyklanmady",
+    "noAttempt": "Synanyşyk gelmedi",
+    "noAttemptHint": "Bu ylalaşyk boýunça ýerine ýetiriş synanyşygy gelmedi.",
+    "matches": "Tassyklanan şertlere gabat gelýär",
+    "differs": "{count, plural, one {# meýdan tassyklanandan tapawutlanýar} other {# meýdan tassyklanandan tapawutlanýar}}",
+    "changed": "üýtgedi",
+    "approvedWas": "tassyklanan:",
+    "none": "Ýok",
+    "notExecuted": "Hiç zat ýerine ýetirilmedi",
+    "notExecutedHint": "Bu ylalaşyk boýunça reýestrde-de, torda-da netije ýok.",
+    "payerBalance": "Töleýjiniň balansy",
+    "receipt": "Kwitansiýa",
+    "noReceipt": "Kwitansiýa ýok"
+  },
+  "attempts": {
+    "label": "Synanyşyklar",
+    "item": "{n}-nji synanyşyk"
+  },
+  "inspector": {
+    "title": "Subutnamalar",
+    "show": "Subutnama panelini görkezmek",
+    "hide": "Subutnama panelini gizlemek",
+    "empty": "Subutnamalaryny görmek üçin ylalaşyk saýlaň.",
+    "terms": "Tassyklanan şertler",
+    "agreementId": "Ylalaşyk ID",
+    "displayOnly": "Diňe görkezilýän at — barlanan şahsyýet däl",
+    "itemId": "Haryt",
+    "token": "Token şertnamasy",
+    "chainId": "Tor {id}",
+    "signature": "Tassyklama goly",
+    "signer": "Gol çekiji",
+    "signatureValue": "EIP-712 goly",
+    "approvedAt": "Tassyklanan wagty",
+    "signerNote": "Birikdirilen tassyklama sessiýasy şu şertleri tassyklandan soň ynamdar demo gol çekiji gol çekdi.",
+    "noSignature": "Gol ýok. Ýagdaýy: {state}.",
+    "attempt": "Ýerine ýetirijiniň soragy",
+    "decision": "Karar",
+    "accepted": "Kabul edildi",
+    "rejected": "Ret edildi",
+    "diffs": "Tapawutlar ({count})",
+    "noDiffs": "Hiç bir meýdan tassyklanan şertlerden tapawutlanmaýar.",
+    "noReceipt": "Bu synanyşyk boýunça kwitansiýa döredilmedi.",
+    "transferId": "Geçirim ID",
+    "debit": "Alyndy",
+    "credit": "Geçirildi",
+    "postedAt": "Hasaba alnan wagty",
+    "txHash": "Tranzaksiýa",
+    "block": "Blok",
+    "txStatus": "Ýagdaýy",
+    "tx": {
+      "success": "Üstünlikli",
+      "reverted": "Yzyna gaýtaryldy"
+    },
+    "revertReason": "Yzyna gaýtarmagyň sebäbi",
+    "observed": "Synanyşykdan soňky ýagdaý · {source}",
+    "recipientBalance": "Alyjynyň balansy",
+    "observedAt": "Okalan wagty",
+    "events": "Wakalar",
+    "noEvents": "Waka hasaba alynmady."
+  },
+  "chain": {
+    "title": "Token bilen satyn almak — öň we soň",
+    "block": "Blok {block}",
+    "unavailable": "Ýerli tor elýeterli däl. Tokenleriň ýagdaýyny görkezip bolmaýar.",
+    "noScenario": "Ssenariniň ýagdaýy alynmady.",
+    "protected": {
+      "title": "Goragly satyn alyş",
+      "note": "Takyk rugsat, satyn alyş we rugsady aýyrmak bir tranzaksiýada."
+    },
+    "vulnerable": {
+      "title": "Deňeşdirmek üçin gowşak wariant",
+      "note": "Bilgeşleýin deňeşdirme: hemişelik rugsady bolan goragsyz hasap."
+    },
+    "purchased": "Satyn alyndy",
+    "notPurchased": "Entek satyn alynmady",
+    "start": "Ssenariniň başy",
+    "now": "Häzirki balans",
+    "allowance": "Dükan üçin galan rugsat",
+    "unlimited": "Çäksiz",
+    "shopBalance": "Dükanyň balansy",
+    "attackerBalance": "Çykaryp alyjynyň balansy",
+    "drain": "Soňraky çykaryp almak synanyşygy",
+    "drainNone": "Entek synanyşyk edilmedi",
+    "drainSucceeded": "Üstünlikli — {amount} alyndy",
+    "drainFailed": "Başa barmady — {amount} soraldy",
+    "account": "Hasap"
+  },
+  "bank": {
+    "title": "Bank hasaplary",
+    "unavailable": "Bank simulýasiýasy elýeterli däl. Balanslary görkezip bolmaýar.",
+    "empty": "Hasaplar alynmady."
+  }
+}

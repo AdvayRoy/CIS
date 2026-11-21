@@ -5,6 +5,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import { DEFAULT_LOCALE, LOCALE_STORAGE_KEY, NAMESPACES, isLocale, localeMeta, type LocaleCode } from "./config";
 import { mergeOverEnglish, type MessageTree } from "./merge";
 import { scriptFontClassName } from "./fonts";
+import { intlTag } from "./format";
 import common from "../../messages/en/common.json";
 import desktop from "../../messages/en/desktop.json";
 import mobile from "../../messages/en/mobile.json";
@@ -89,7 +90,8 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   );
   return (
     <Ctx.Provider value={value}>
-      <NextIntlClientProvider locale={active.locale} messages={active.messages} timeZone="Asia/Dubai"
+      {/* The Intl tag pins Western digits, so next-intl formatters never render amounts or times in Arabic-Indic digits. */}
+      <NextIntlClientProvider locale={active.locale === "en" ? "en" : intlTag(active.locale)} messages={active.messages} timeZone="Asia/Dubai"
         onError={() => {}} getMessageFallback={({ namespace, key }) => (namespace ? `${namespace}.${key}` : key)}>
         {children}
       </NextIntlClientProvider>

@@ -1,0 +1,119 @@
+{
+  "title": "Aprobați plata",
+  "header": {
+    "approval": "Aprobarea plății"
+  },
+  "loading": "Se încarcă plata de pe server",
+  "notFound": {
+    "title": "Plata nu a fost găsită",
+    "body": "Acest link nu corespunde niciunei plăți de pe server. Cereți comerciantului un nou link de aprobare."
+  },
+  "loadError": {
+    "title": "Plata nu a putut fi încărcată",
+    "body": "Serverul a răspuns cu o eroare. Nimic nu a fost aprobat sau plătit din această pagină."
+  },
+  "fixture": "Date de test. Fără conexiune la server.",
+  "disconnected": {
+    "title": "Deconectat",
+    "body": "Se afișează ultima stare confirmată de server. Nimic de pe acest ecran nu este mai recent.",
+    "never": "Serverul nu a fost încă contactat. Nicio stare a plății nu este confirmată.",
+    "actions": "Butoanele Aprobă și Refuză sunt dezactivate până la revenirea conexiunii."
+  },
+  "card": {
+    "payTo": "Plătiți către",
+    "displayNameNote": "Numele este furnizat de comerciant și nu este verificat. Acest identificator este cel impus.",
+    "amountExact": "Sumă exactă",
+    "amountMax": "Sumă maximă",
+    "amountValue": "{amount} {asset}",
+    "recipient": "Destinatar exact",
+    "payer": "De la",
+    "rail": "Metodă de plată",
+    "oneUse": "Limită de unică folosință",
+    "oneUseValue": "O singură plată. Nu poate fi folosită de două ori.",
+    "expiry": "Expiră",
+    "expiresIn": "Expiră în {time}",
+    "expiryAt": "la {time}",
+    "expiryReached": "Timpul de expirare a fost atins",
+    "scope": "Sfera permisiunii",
+    "scopeValue": "Doar această plată. Nu rămâne nicio permisiune continuă după aceea.",
+    "network": "Rețea",
+    "networkValue": "Lanțul {chainId}",
+    "item": "Articol"
+  },
+  "pairing": {
+    "checking": "Se verifică dacă acest telefon este asociat",
+    "unpairedTitle": "Acest telefon nu este asociat",
+    "unpairedBody": "Aprobarea necesită un link de asociere valid, deschis pe acest dispozitiv. Linkul lipsește, este nevalid sau a expirat, așa că această pagină poate doar afișa plata. Cereți un nou link de asociere sau un cod QR."
+  },
+  "action": {
+    "approve": "Aprob această plată",
+    "approving": "Se trimite aprobarea",
+    "decline": "Refuz",
+    "declining": "Se refuză",
+    "failed": "Serverul nu a acceptat această acțiune",
+    "expiredLocal": "Timpul de expirare a trecut. Se așteaptă confirmarea serverului."
+  },
+  "status": {
+    "awaiting_approval": "Verificați fiecare detaliu. Nu se plătește nimic până nu aprobați.",
+    "approved": "Ați aprobat exact acești termeni. Plata nu a fost încă executată.",
+    "executing": "Plata este în curs de executare. Nu este încă finalizată.",
+    "rejected": "O încercare nu a corespuns cu ceea ce ați aprobat și a fost oprită.",
+    "settled": "Plătit o singură dată, exact așa cum ați aprobat.",
+    "declined": "Ați refuzat. Nu s-a plătit nimic.",
+    "expired": "Fereastra de aprobare s-a închis. Nu se poate plăti nimic cu această aprobare.",
+    "failed": "Executarea a eșuat. Dovezile de mai jos arată ce a înregistrat metoda de plată."
+  },
+  "path": {
+    "label": "Progresul plății",
+    "approved": "Aprobată",
+    "attempted": "Încercată",
+    "executed": "Executată",
+    "stopped": "Oprită",
+    "failed": "Eșuată"
+  },
+  "stopped": {
+    "title": "De ce a fost oprită",
+    "approved": "Ați aprobat",
+    "attempted": "Încercarea a cerut",
+    "noDiffs": "Nu au fost raportate diferențe de câmpuri pentru această încercare."
+  },
+  "receipt": {
+    "title": "Chitanță",
+    "paid": "Plătit {amount} {asset}",
+    "to": "către {name}",
+    "evidenceShow": "Afișează dovezile",
+    "evidenceHide": "Ascunde dovezile",
+    "evidenceTitle": "Dovezi",
+    "noEvidence": "Nu a fost înregistrată încă nicio dovadă de executare.",
+    "ledgerReceipt": "Chitanță din registru",
+    "chainReceipt": "Chitanță din lanț",
+    "noReceipt": "Fără chitanță: nu s-a executat nimic pentru această încercare",
+    "transferId": "ID transfer",
+    "debit": "Cont debitat",
+    "credit": "Cont creditat",
+    "postedAt": "Înregistrat",
+    "txHash": "Hash-ul tranzacției",
+    "block": "Bloc",
+    "chain": "ID lanț",
+    "txStatus": "Starea tranzacției",
+    "txSuccess": "Reușită",
+    "txReverted": "Anulată",
+    "revertReason": "Motivul anulării",
+    "observed": "Observat după încercare",
+    "payerBalance": "Soldul dvs.",
+    "recipientBalance": "Soldul destinatarului",
+    "allowance": "Permisiune rămasă",
+    "allowanceNone": "Nu se aplică pentru această metodă de plată",
+    "executionCount": "Număr de executări",
+    "observedAt": "Citit la",
+    "approval": "Aprobare",
+    "signer": "Semnatar",
+    "signature": "Semnătură",
+    "approvedAt": "Aprobat la",
+    "attempts": "Încercări",
+    "attemptN": "Încercarea {n}",
+    "accepted": "Acceptată",
+    "rejected": "Respinsă",
+    "agreementId": "ID plată"
+  }
+}
