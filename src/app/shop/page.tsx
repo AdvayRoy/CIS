@@ -52,12 +52,12 @@ export default function ShopPage() {
   const price = rail === "bank" ? "100.00 AED" : "100 CSUSD";
 
   return (
-    <main className="mx-auto grid min-h-dvh w-full max-w-5xl content-center items-stretch gap-6 px-6 py-10 md:grid-cols-[1.1fr_0.9fr]">
+    <main className="mx-auto grid min-h-[calc(100dvh-1.5rem)] w-full max-w-5xl content-center items-stretch gap-6 px-6 py-10 md:grid-cols-[1.1fr_0.9fr]">
       <section className="tilt rounded-[20px] border border-line bg-surface p-8">
-        <p className="flex items-center gap-2 text-xs tracking-widest text-muted uppercase"><ShoppingBag aria-hidden className="size-4" />Demo Shop · merchant checkout fixture</p>
-        <h1 className="mt-6 text-4xl font-semibold tracking-tight">Annual membership</h1>
+        <p className="flex items-center gap-2 text-sm text-muted"><ShoppingBag aria-hidden className="size-4" />Demo Shop</p>
+        <h1 className="mt-6 text-[44px] leading-[1.08]">Annual membership</h1>
         <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">One payment of {rail === "bank" ? "exactly" : "at most"} {price}. You approve the recipient and the amount on your phone; the shop cannot change the recipient, take more than that, or charge twice.</p>
-        <p className="ticker mt-8 text-6xl font-semibold"><span className="hero-amount">{rail === "bank" ? "100.00" : "100"}</span><span className="ms-2 text-xl font-normal text-muted">{rail === "bank" ? "AED" : "CSUSD"}</span></p>
+        <p className="ticker mt-8 text-5xl font-medium"><span className="hero-amount">{rail === "bank" ? "100.00" : "100"}</span><span className="ms-2 text-xl font-normal text-muted">{rail === "bank" ? "AED" : "CSUSD"}</span></p>
         <div className="seg mt-8" role="group" aria-label="Payment method">
           <button type="button" aria-pressed={rail === "bank"} disabled={!!id} onClick={() => setRail("bank")}>Bank transfer</button>
           <button type="button" aria-pressed={rail === "crypto"} disabled={!!id || !chainUp} onClick={() => setRail("crypto")}>CSUSD token</button>
@@ -71,13 +71,13 @@ export default function ShopPage() {
           ) : (
             <button type="button" onClick={() => { setId(null); setError(null); }} className="inline-flex h-12 items-center rounded-full border border-line bg-white/5 px-6 text-sm">New order</button>
           )}
-          <span className="text-xs text-muted">Bank simulation · Local-chain demo</span>
+          
         </div>
         {error && <p role="alert" className="mt-4 text-sm text-coral">{error}</p>}
       </section>
 
       <section className="rounded-[20px] border border-line bg-surface p-8" aria-live="polite">
-        <h2 className="text-xs tracking-widest text-muted uppercase">Order status</h2>
+        <h2 className="text-sm text-muted">Order status</h2>
         {!id && <p className="mt-6 text-sm leading-relaxed text-muted">Nothing ordered yet. Choose a payment method and press Pay with CounterSign.</p>}
         {id && (
           <>
