@@ -28,7 +28,7 @@ export function EvidenceInspector({ view, evidence, stage, onStage }:
   const diffFields = new Set((evidence?.decision.diffs ?? []).map((d) => d.field));
 
   return (
-    <div className="flex h-full min-h-0 w-[340px] flex-col">
+    <div className="flex h-full min-h-0 w-full flex-col lg:w-[340px]">
       <div className="flex h-14 shrink-0 items-center justify-between border-b border-line px-5">
         <h2 className={LABEL}>{t("inspector.title")}</h2>
       </div>

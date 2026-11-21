@@ -75,7 +75,7 @@ export function ChainPanel({ chain, label }: { chain: Overview["chain"]; label: 
       </span>}>
       {!chain.available ? <Notice tone="amber">{t("chain.unavailable")}</Notice>
         : !chain.token || (!chain.protected && !chain.vulnerable) ? <Notice>{t("chain.noScenario")}</Notice> : (
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid gap-3 md:grid-cols-2">
             {chain.protected ? <Scenario s={chain.protected} token={chain.token} /> : <Notice>{t("chain.noScenario")}</Notice>}
             {chain.vulnerable ? <Scenario s={chain.vulnerable} token={chain.token} /> : <Notice>{t("chain.noScenario")}</Notice>}
           </div>
@@ -90,7 +90,7 @@ export function BankPanel({ bank, label }: { bank: Overview["bank"]; label: stri
     <Panel id="bank" title={t("bank.title")} aside={<span className="rounded-full border border-line px-2 py-0.5 text-xs text-muted">{label}</span>}>
       {!bank.available ? <Notice tone="amber">{t("bank.unavailable")}</Notice>
         : bank.accounts.length === 0 ? <Notice>{t("bank.empty")}</Notice> : (
-          <ul className="grid grid-cols-3 gap-3">
+          <ul className="grid gap-3 sm:grid-cols-3">
             {bank.accounts.map((acc) => (
               <li key={acc.id} className="min-w-0 rounded-[16px] border border-line bg-white/[0.03] p-5">
                 <p className="truncate text-[13px] text-muted">{acc.displayName}</p>

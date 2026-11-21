@@ -5,7 +5,7 @@ import { QRCodeSVG } from "qrcode.react";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, Copy, Smartphone } from "lucide-react";
 import { api, ApiFailure } from "@/lib/api";
-import { toMs } from "./format";
+import { EASE, toMs } from "./format";
 
 type Pairing = { url: string; expiresAt: number };
 
@@ -38,8 +38,8 @@ export function PairPhone({ agreementId, canPair, serverTime }: { agreementId: s
   const errorText = error && (tc.has(`reason.${error}`) ? tc(`reason.${error}`) : t("pair.error"));
 
   return (
-    <div className="rounded-[16px] border border-amber/30 bg-surface p-4">
-      <div className="flex items-center justify-between gap-4">
+    <div className="rounded-[16px] border border-amber/30 bg-surface p-5">
+      <div className="flex flex-wrap items-center justify-between gap-4">
         <div className="min-w-0">
           <p className="text-sm font-medium">{t("pair.title")}</p>
           <p className="mt-0.5 text-[13px] text-muted">{canPair ? t("pair.hint") : t("pair.needSignIn")}</p>
@@ -54,8 +54,8 @@ export function PairPhone({ agreementId, canPair, serverTime }: { agreementId: s
       <AnimatePresence initial={false}>
         {pairing && (
           <motion.div key="qr" initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.24, ease: "easeOut" }} className="overflow-hidden">
-            <div className="mt-4 flex items-center gap-5 border-t border-line pt-4">
+            transition={{ duration: 0.3, ease: EASE }} className="overflow-hidden">
+            <div className="mt-4 flex flex-wrap items-center gap-5 border-t border-line pt-4">
               <div className={`shrink-0 rounded-xl bg-white p-2.5 ${expired ? "opacity-30" : ""}`}>
                 <QRCodeSVG value={pairing.url} size={128} marginSize={0} title={t("pair.qrAlt")} />
               </div>
