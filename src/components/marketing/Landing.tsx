@@ -1,14 +1,15 @@
 "use client";
 // CounterSign marketing page (/landing). Copy is English only; every interface piece is an illustration with sample values.
-import { useRef, useState } from "react";
 import Link from "next/link";
-import { MotionConfig, motion, useScroll, useTransform } from "motion/react";
+import { MotionConfig, motion } from "motion/react";
 import { ArrowRight, ArrowUpRight, FileCheck2, Fingerprint, Landmark, Repeat1, ShieldCheck, Target } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { AttemptCard, EASE, FlowRail, Label, PhoneApproval, Pill, SAMPLE, SERIF, TermsCard, usePrefersReducedMotion, type Attempt } from "./pieces";
+import { EASE, Label, Pill, SAMPLE, SERIF } from "./pieces";
+import { ProductPanel, RailsGlobe, RuleBuilder } from "./HeroPanels";
 import { ScrollStory } from "./ScrollStory";
 
 const WRAP = "mx-auto w-full max-w-[1240px] px-5 sm:px-8";
+const H1 = "font-sans text-[46px] font-medium leading-[1.02] tracking-[-0.035em] sm:text-[76px] lg:text-[92px]";
 const reveal = {
   initial: { opacity: 0, y: 24 },
   whileInView: { opacity: 1, y: 0 },
@@ -30,91 +31,61 @@ function Cta({ className, children = "Launch the demo" }: { className?: string; 
 
 function Nav() {
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-[#131312]/90 backdrop-blur-md">
+    <header className="sticky top-0 z-40 border-b border-black/10 bg-[#FAF9F5]/90 text-[#131312] backdrop-blur-md">
       <div className={cn(WRAP, "flex h-14 items-center justify-between gap-4")}>
-        <Link href="/landing" className="flex items-center gap-2 text-[15px] font-semibold tracking-tight">
-          <ShieldCheck aria-hidden className="size-[18px] text-mint" />
+        <Link href="/landing" className="flex items-center gap-2 text-[16px] font-semibold tracking-tight">
+          <ShieldCheck aria-hidden className="size-[18px]" />
           CounterSign
         </Link>
-        <nav aria-label="Primary" className="hidden items-center gap-7 text-[13px] text-muted md:flex">
-          <a href="#product" className="hover:text-fg">Product</a>
-          <a href="#how" className="hover:text-fg">How it works</a>
-          <Link href="/command" className="hover:text-fg">Command centre</Link>
-          <Link href="/evidence" className="hover:text-fg">Evidence</Link>
+        <nav aria-label="Primary" className="hidden items-center gap-8 text-[14px] text-[#131312] md:flex">
+          <a href="#product" className="hover:text-[#66645E]">Product</a>
+          <a href="#how" className="hover:text-[#66645E]">How it works</a>
+          <Link href="/command" className="hover:text-[#66645E]">Command centre</Link>
+          <Link href="/evidence" className="hover:text-[#66645E]">Evidence</Link>
         </nav>
-        <Cta className="h-9 px-4 text-[13px]" />
+        <Cta className="h-9 bg-[#131312] px-4 text-[13px] text-[#FAF9F5] hover:bg-black hover:text-mint" />
       </div>
     </header>
   );
 }
 
 function Hero() {
-  const [attempt, setAttempt] = useState<Attempt>("match");
-  const stage = useRef<HTMLDivElement>(null);
-  const reduce = usePrefersReducedMotion();
-  const { scrollYProgress } = useScroll({ target: stage, offset: ["start end", "start 0.25"] });
-  const scale = useTransform(scrollYProgress, [0, 1], [0.955, 1]);
   return (
-    <section className="pt-12 sm:pt-16">
+    <section className="bg-[#FAF9F5] pb-20 pt-14 text-[#131312] sm:pb-28 sm:pt-24">
       <div className={WRAP}>
-        <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE }}>
-          <Label>Payment agreement enforcement</Label>
-          <h1 className="mt-5 text-[46px] leading-[1] sm:text-[76px] lg:text-[96px]">
-            <span className="block">One payment.</span> <span className="block text-muted">Exactly as agreed.</span>
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: EASE }}
+          className="mx-auto flex max-w-[900px] flex-col items-center text-center"
+        >
+          <h1 className={H1}>
+            <span className="block">One payment.</span> <span className="block text-[#77756D]">Exactly as agreed.</span>
           </h1>
-          <p className="mt-6 max-w-[560px] text-[17px] leading-relaxed text-muted sm:text-[19px]">
-            The customer approves one payment. CounterSign enforces the agreed recipient, amount and spending permissions, and stops anything else.
+          <p className="mt-6 max-w-[560px] text-[17px] leading-relaxed text-[#66645E] sm:text-[19px]">
+            The customer approves one payment. CounterSign enforces the agreed recipient, amount and use, and stops anything else.
           </p>
-          <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-            <Cta />
-            <Link href="/command" className="inline-flex items-center gap-1.5 text-[14px] text-fg hover:text-mint">
-              Open the command centre <ArrowUpRight aria-hidden className="size-4" />
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Cta className="h-12 px-6 text-[15px] hover:bg-[#131312] hover:text-mint" />
+            <Link href="/command" className="inline-flex h-12 items-center gap-1.5 rounded-full bg-[#131312] px-6 text-[15px] font-semibold text-[#FAF9F5] hover:bg-black">
+              Command centre <ArrowUpRight aria-hidden className="size-4" />
             </Link>
           </div>
         </motion.div>
 
         <motion.div
           id="product"
-          ref={stage}
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: EASE, delay: 0.12 }}
-          style={reduce ? undefined : { scale, transformOrigin: "50% 0%" }}
-          className="mt-12 scroll-mt-20 rounded-t-[24px] border border-b-0 border-line bg-[#0D0D0C] p-4 sm:mt-14 sm:p-8"
+          transition={{ duration: 0.6, ease: EASE, delay: 0.12 }}
+          className="mt-14 grid scroll-mt-20 gap-x-6 gap-y-10 sm:mt-20 lg:grid-cols-2"
         >
-          <div className="flex flex-wrap items-center justify-between gap-3">
-            <div role="group" aria-label="Choose what the app attempts" className="inline-flex rounded-full border border-line p-[3px]">
-              {(["match", "changed"] as const).map((a) => (
-                <button
-                  key={a}
-                  type="button"
-                  aria-pressed={attempt === a}
-                  onClick={() => setAttempt(a)}
-                  className={cn("h-9 rounded-full px-4 text-[13px]", attempt === a ? "bg-[#FAF9F5] font-semibold text-black" : "text-muted hover:text-fg")}
-                >
-                  {a === "match" ? "Matching payment" : "Changed payment"}
-                </button>
-              ))}
-            </div>
-            <Label>Illustration · sample values</Label>
-          </div>
-          <div className="mt-6 grid gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)_auto] lg:items-start">
-            <div className="min-w-0">
-              <TermsCard checked />
-              <p className="mt-3 text-[12px] text-muted">1 · What the customer intended</p>
-            </div>
-            <div className="min-w-0">
-              <AttemptCard attempt={attempt} />
-              <p className="mt-3 text-[12px] text-muted">2 · What the app attempted</p>
-            </div>
-            <div className="hidden justify-self-center lg:block">
-              <PhoneApproval approved />
-            </div>
-          </div>
-          <div className="mt-6">
-            <FlowRail attempt={attempt} />
-            <p className="mt-3 text-[12px] text-muted">3 · What CounterSign enforced &nbsp; 4 · What happened to the money</p>
-          </div>
+          <ProductPanel title="Approved terms become the rule" body="Recipient, exact amount, one use. An attempt that differs is stopped with a reason code, and the attempt is recorded as evidence.">
+            <RuleBuilder />
+          </ProductPanel>
+          <ProductPanel title="Bank and crypto, one check" body="The demo runs a simulated bank ledger and a local test token. Both rails pass through the same comparison before anything moves.">
+            <RailsGlobe />
+          </ProductPanel>
         </motion.div>
       </div>
     </section>
