@@ -10,8 +10,9 @@ import { ArrowRight, Check, Loader2, ShieldCheck, Smartphone, X } from "lucide-r
 import { api, type ApiFailure } from "@/lib/api";
 import { usePoll } from "@/lib/usePoll";
 import { cn } from "@/lib/cn";
-import { BANK_ACCOUNTS, formatUnitsStr, type AgreementView, type Overview } from "@/shared/contract";
+import { BANK_ACCOUNTS, type AgreementView, type Overview } from "@/shared/contract";
 import { ProductBar, type JourneyStep } from "@/components/product/Journey";
+import { fmtAsset } from "@/components/desktop/format";
 
 const TOKEN_100 = "100000000000000000000";
 const EASE = [0.165, 0.84, 0.44, 1] as const;
@@ -73,7 +74,7 @@ export default function ShopPage() {
   const price = rail === "bank" ? "100.00 AED" : "100 CSUSD";
   const recipient = view ? view.agreement.recipient : rail === "bank" ? BANK_ACCOUNTS.merchant : shop ?? "";
   const journey: JourneyStep = step === 1 ? "approval" : step === 2 ? "execution" : step === 3 || step === -1 ? "evidence" : "checkout";
-  const fmt = (amount: string) => view ? `${formatUnitsStr(amount, view.agreement.asset.decimals)} ${view.agreement.asset.code}` : amount;
+  const fmt = (amount: string) => view ? fmtAsset(amount, view.agreement.asset) : amount;
 
   return (
     <MotionConfig reducedMotion="user" transition={{ duration: 0.3, ease: EASE }}>
@@ -114,21 +115,24 @@ export default function ShopPage() {
           {error && <p role="alert" className="mt-4 text-sm text-coral">{error}</p>}
         </section>
 
-        <section className={card} aria-live="polite" aria-labelledby="status-title">
+        <section className={cn(card, id && "order-first md:order-none")} aria-live="polite" aria-labelledby="status-title">
           <h2 id="status-title" className={label}>Order status</h2>
           {!id && <p className="mt-5 text-sm leading-relaxed text-muted">Nothing ordered yet. Choose a payment method and press Pay with CounterSign.</p>}
           {id && (
             <>
               <ol className="mt-5 space-y-4">
                 {steps.map((s, i) => {
-                  const done = step > i || step === 3; const active = step === i && step !== 3;
+                  // A stopped order keeps the steps the server confirmed: it exists, and it was approved only if an approval is recorded.
+                  const reached = step === -1 ? (view?.approval ? 2 : 1) : step;
+                  const done = reached > i || step === 3; const active = step !== -1 && step === i && step !== 3;
+                  const stopped = step === -1 && reached === i;
                   return (
                     <li key={s} className="flex items-start gap-3">
                       <span className={cn("mt-0.5 flex size-6 shrink-0 items-center justify-center rounded-full border text-[11px] transition-colors duration-300",
-                        done ? "border-mint bg-mint text-black" : active ? "border-amber text-amber" : "border-line text-muted")}>
-                        {done ? <Check aria-hidden className="size-3.5" /> : active ? <Loader2 aria-hidden className="size-3.5 animate-spin motion-reduce:animate-none" /> : i + 1}
+                        done ? "border-mint bg-mint text-black" : stopped ? "border-coral text-coral" : active ? "border-amber text-amber" : "border-line text-muted")}>
+                        {done ? <Check aria-hidden className="size-3.5" /> : stopped ? <X aria-hidden className="size-3.5" /> : active ? <Loader2 aria-hidden className="size-3.5 animate-spin motion-reduce:animate-none" /> : i + 1}
                       </span>
-                      <span className={cn("text-sm transition-colors duration-300", done || active ? "text-fg" : "text-muted")}>{s}</span>
+                      <span className={cn("text-sm transition-colors duration-300", done || active || stopped ? "text-fg" : "text-muted")}>{s}</span>
                     </li>
                   );
                 })}
@@ -151,7 +155,7 @@ export default function ShopPage() {
                 {step === 3 && view && (
                   <motion.div key="paid" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="mt-6 rounded-[12px] border border-mint/50 p-5">
                     <p className="flex items-center gap-2 text-xl font-semibold text-mint"><Check aria-hidden className="size-5" />Order confirmed</p>
-                    <p className="tabular mt-1.5 text-xs text-muted">{view.agreement.rail === "bank" ? "Paid" : "Approved limit"} {formatUnitsStr(view.agreement.amount, view.agreement.asset.decimals)} {view.agreement.asset.code}, executed {view.executionCount} time.</p>
+                    <p className="tabular mt-1.5 text-xs text-muted">{view.agreement.rail === "bank" ? "Paid" : "Approved limit"} {fmt(view.agreement.amount)}, executed {view.executionCount} time.</p>
                     {receipt && <p className="ident mt-2 text-[11px] text-muted">{receipt.kind === "ledger" ? receipt.transferId : receipt.txHash}</p>}
                   </motion.div>
                 )}
@@ -170,7 +174,8 @@ export default function ShopPage() {
                     {last ? tc(`reason.${last.decision.reason}`) : <span className="text-muted">No decision yet.</span>}
                   </Fact>
                   <Fact k="Money">
-                    {last ? <><span className="tabular">{tc("field.balance")} {fmt(last.observed.payerBalance)}</span><span className="block text-xs text-muted">{tc("field.executionCount")}: {view.executionCount}</span></> : <span className="text-muted">No money has moved.</span>}
+                    <span className="tabular">{tc("field.executionCount")}: {view.executionCount}</span>
+                    <span className="tabular block text-xs text-muted">{last ? <>{tc("field.balance")} after the attempt: {fmt(last.observed.payerBalance)}</> : "No attempt has reached the rail."}</span>
                   </Fact>
                 </dl>
               )}
