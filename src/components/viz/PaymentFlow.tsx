@@ -1,6 +1,6 @@
 "use client";
 // OWNER: w/viz. Payer -> CounterSign -> Recipient, drawn only from the view and the selected server evidence.
-import { useId, useSyncExternalStore } from "react";
+import { useSyncExternalStore } from "react";
 import { useTranslations } from "next-intl";
 import { MotionConfig, motion } from "motion/react";
 import { Landmark, Shield, ShieldCheck, ShieldOff, ShieldX, Store, Wallet, type LucideIcon } from "lucide-react";
@@ -17,7 +17,9 @@ export type FlowMode = "idle" | "approved" | "executing" | "settled" | "rejected
 export function flowMode(view: AgreementView, evidence: ExecutionEvidence | null): FlowMode {
   if (evidence) {
     if (!evidence.decision.accepted) return "rejected";
-    if (evidence.observed.executionCount > 0) return "settled";
+    const r = evidence.receipt;
+    // A posted receipt proves the debit even when the follow-up balance read returned nothing.
+    if (evidence.observed.executionCount > 0 || (r && (r.kind === "ledger" || r.status === "success"))) return "settled";
     return view.state === "executing" ? "executing" : "rejected";
   }
   switch (view.state) {
@@ -30,21 +32,26 @@ export function flowMode(view: AgreementView, evidence: ExecutionEvidence | null
   }
 }
 
-const CY = 100, GATE = 500, LANES = [-2, -1, 0, 1, 2];
-const L0 = 112, L1 = 448, R0 = 552, R1 = 888;
-const laneIn = (k: number) => `M ${L0} ${CY + k * 12} C 250 ${CY + k * 12}, 330 ${CY + k * 3}, ${L1} ${CY + k * 3}`;
-const laneOut = (k: number) => `M ${R0} ${CY + k * 3} C 670 ${CY + k * 3}, 750 ${CY + k * 12}, ${R1} ${CY + k * 12}`;
+const CY = 80, GATE = 500, L0 = 96, L1 = 452, R0 = 548, R1 = 904;
+const TICKS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => 124 + i * 30);
 const pct = (x: number) => `${x / 10}%`;
 const EASE = [0.22, 1, 0.36, 1] as const;
-const SPRING = { type: "spring", stiffness: 150, damping: 20, mass: 0.9 } as const;
-const TRAVEL = 2.3, TRAVEL_TIMES = [0, 0.4, 0.56, 1], STOP = 1.3, STOP_TIMES = [0, 0.7, 0.86, 1];
+const SPRING = { type: "spring", stiffness: 170, damping: 22, mass: 0.9 } as const;
+const TRAVEL = 2.2, TRAVEL_TIMES = [0, 0.4, 0.56, 1], STOP = 1.2, STOP_TIMES = [0, 0.7, 0.86, 1];
+const HALT = 430;
 
 const TONE: Record<FlowMode, string> = {
   idle: "text-amber", approved: "text-mint", executing: "text-mint", settled: "text-mint", rejected: "text-coral", closed: "text-muted",
 };
+const PILL: Record<FlowMode, string> = {
+  idle: "border border-white/25 text-fg", approved: "bg-white text-black", executing: "bg-white text-black",
+  settled: "bg-mint text-black", rejected: "bg-coral text-black", closed: "border border-white/15 text-muted",
+};
 const GATE_ICON: Record<FlowMode, LucideIcon> = {
   idle: Shield, approved: ShieldCheck, executing: ShieldCheck, settled: ShieldCheck, rejected: ShieldX, closed: ShieldOff,
 };
+const LABEL = "text-[11px] font-medium tracking-[0.16em] text-muted uppercase";
+const FIGURE = "mt-2 text-[26px] leading-none font-semibold tracking-[-0.04em] sm:text-[44px] lg:text-[56px]";
 
 const RM_QUERY = "(prefers-reduced-motion: reduce)";
 const subscribeRM = (cb: () => void) => {
@@ -55,11 +62,11 @@ const subscribeRM = (cb: () => void) => {
 /** Hydration-safe: the server snapshot is "motion allowed", the client corrects it before paint settles. */
 const usePrefersReducedMotion = () => useSyncExternalStore(subscribeRM, () => window.matchMedia(RM_QUERY).matches, () => false);
 
-function Money({ value, code, className, strike }: { value: string; code: string; className?: string; strike?: boolean }) {
+function Money({ value, code, className, codeClassName, strike }: { value: string; code: string; className?: string; codeClassName?: string; strike?: boolean }) {
   return (
-    <span dir="ltr" className={cn("tabular inline-flex items-baseline gap-1.5 [unicode-bidi:isolate]", className)}>
-      <span className={cn(strike && "line-through decoration-coral/80 decoration-2")}>{value}</span>
-      <span className="text-[0.5em] font-medium tracking-wide text-muted">{code}</span>
+    <span dir="ltr" className={cn("tabular inline-flex items-baseline gap-[0.3em] [unicode-bidi:isolate]", className)}>
+      <span className={cn(strike && "line-through decoration-current decoration-[0.07em]")}>{value}</span>
+      <span className={cn("text-[0.42em] font-medium tracking-wide", codeClassName ?? "text-muted")}>{code}</span>
     </span>
   );
 }
@@ -67,7 +74,7 @@ function Money({ value, code, className, strike }: { value: string; code: string
 function NodeIcon({ icon: Icon, x, className }: { icon: LucideIcon; x: number; className?: string }) {
   return (
     <g className="origin-center [transform-box:fill-box] rtl:-scale-x-100">
-      <Icon aria-hidden x={x - 15} y={CY - 15} size={30} strokeWidth={1.5} className={className} />
+      <Icon aria-hidden x={x - 14} y={CY - 14} size={28} strokeWidth={1.75} className={className} />
     </g>
   );
 }
@@ -77,7 +84,6 @@ export function PaymentFlow({ view, evidence }: { view: AgreementView; evidence:
   const tc = useTranslations("common");
   const tm = useTranslations("mobile");
   const reduce = usePrefersReducedMotion();
-  const uid = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const a = view.agreement;
   const code = a.asset.code;
   const amt = (v: string) => fmtAmount(v, a.asset.decimals);
@@ -88,9 +94,12 @@ export function PaymentFlow({ view, evidence }: { view: AgreementView; evidence:
   const diffs = new Set(stopped ? evidence.decision.diffs.map((d) => d.field) : []);
   const moved = mode === "settled" && !!evidence;
   const blocked = mode === "rejected";
+  const solid = mode !== "idle" && mode !== "closed";
   // Remount (and so replay) only when the mode or the selected attempt changes, never on a poll tick.
   const animate = !reduce;
   const runKey = `${mode}:${evidence?.decision.decidedAt ?? 0}:${evidence?.observed.observedAt ?? 0}:${animate ? "m" : "s"}`;
+  const verdictAt = !animate ? 0 : moved ? TRAVEL - 0.2 : stopped ? STOP * 0.75 : 0;
+  const gateAt = !animate ? 0 : moved ? TRAVEL * 0.4 : stopped ? STOP * 0.7 : 0;
 
   const status = mode === "idle" ? tc("state.awaiting_approval")
     : mode === "rejected" ? (stopped || view.state !== "failed" ? tc("state.rejected") : tc("state.failed"))
@@ -109,226 +118,196 @@ export function PaymentFlow({ view, evidence }: { view: AgreementView; evidence:
   return (
     <MotionConfig reducedMotion="user">
       <section role="group" aria-label={tm("path.label")} data-testid="payment-flow" data-mode={mode}
-        className="relative overflow-hidden rounded-[16px] border border-line bg-surface p-5 sm:p-7">
+        className="relative overflow-hidden rounded-[20px] border border-white/10 bg-black p-5 sm:p-8">
+        <div className="flex items-center justify-between gap-4">
+          <p className="text-[15px] font-semibold tracking-tight text-fg">{tc("brand")}</p>
+          <motion.p key={`s-${runKey}`} className={cn("inline-flex items-center gap-2 rounded-full px-3.5 py-1.5 text-[13px] leading-none font-semibold", PILL[mode])}
+            initial={animate ? { opacity: 0, scale: 0.94 } : false} animate={{ opacity: 1, scale: 1 }} transition={{ ...SPRING, delay: verdictAt }}>
+            {mode === "idle" && <span className="size-1.5 rounded-full bg-amber" />}
+            {status}
+          </motion.p>
+        </div>
+
         {/* approved vs executed/attempted: the two figures the evidence can prove */}
-        <div className="flex items-end justify-between gap-6">
+        <div className="mt-7 grid grid-cols-2 gap-5 sm:gap-8">
           <div className="min-w-0">
-            <p className="text-[11px] font-medium tracking-[0.14em] text-muted uppercase">{t("path.approved")}</p>
-            <p className="mt-1 text-[28px] leading-none font-semibold tracking-tight sm:text-[34px]">
-              <Money value={amt(a.amount)} code={code} className="text-fg" />
-            </p>
+            <p className={LABEL}>{t("path.approved")}</p>
+            <p className={FIGURE}><Money value={amt(a.amount)} code={code} className="text-fg" /></p>
           </div>
-          <motion.div key={runKey} className="min-w-0 text-end"
-            initial={animate ? { opacity: 0, y: 6 } : false} animate={{ opacity: 1, y: 0 }}
-            transition={{ ...SPRING, delay: animate ? (moved ? TRAVEL - 0.25 : stopped ? STOP - 0.35 : 0) : 0 }}>
-            <p className={cn("text-[11px] font-medium tracking-[0.14em] uppercase", moved ? "text-mint" : stopped ? "text-coral" : "text-muted")}>
-              {stopped ? t("path.attempted") : t("path.executed")}
-            </p>
-            <p className="mt-1 text-[28px] leading-none font-semibold tracking-tight sm:text-[34px]">
+          <motion.div key={runKey} className="min-w-0 border-s border-white/10 ps-5 sm:ps-8"
+            initial={animate ? { opacity: 0, y: 8 } : false} animate={{ opacity: 1, y: 0 }} transition={{ ...SPRING, delay: verdictAt }}>
+            <p className={LABEL}>{stopped ? t("path.attempted") : t("path.executed")}</p>
+            <p className={FIGURE}>
               {moved ? <Money value={amt(evidence.attempt.amount)} code={code} className="text-mint" />
                 : stopped ? <Money value={amt(evidence.attempt.amount)} code={code} className="text-coral" strike={diffs.has("amount")} />
-                : <span className="text-muted/60">—</span>}
+                : <span className="text-white/25">—</span>}
             </p>
           </motion.div>
         </div>
 
         {/* stage: mirrored as a whole in RTL so the payer always sits at the inline start */}
-        <div className="relative mt-5 rtl:-scale-x-100">
-          <svg viewBox="0 0 1000 200" aria-hidden className="block h-auto w-full overflow-visible">
-            <defs>
-              <linearGradient id={`${uid}-in`} gradientUnits="userSpaceOnUse" x1={L0} x2={L1} y1="0" y2="0" className={tone}>
-                <stop offset="0" stopColor="currentColor" stopOpacity="0.12" />
-                <stop offset="1" stopColor="currentColor" stopOpacity="1" />
-              </linearGradient>
-              <linearGradient id={`${uid}-out`} gradientUnits="userSpaceOnUse" x1={R0} x2={R1} y1="0" y2="0" className={tone}>
-                <stop offset="0" stopColor="currentColor" stopOpacity="1" />
-                <stop offset="1" stopColor="currentColor" stopOpacity="0.3" />
-              </linearGradient>
-              <radialGradient id={`${uid}-glass`} cx="0.35" cy="0.25" r="0.9">
-                <stop offset="0" stopColor="#fff" stopOpacity="0.2" />
-                <stop offset="0.55" stopColor="#fff" stopOpacity="0.05" />
-                <stop offset="1" stopColor="#fff" stopOpacity="0.02" />
-              </radialGradient>
-              <filter id={`${uid}-blur`} x="-200%" y="-200%" width="500%" height="500%"><feGaussianBlur stdDeviation="7" /></filter>
-              <filter id={`${uid}-haze`} x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="26" /></filter>
-            </defs>
-
-            {/* lanes: five fine conduits that pinch through the enforcement aperture */}
+        <div className="relative mt-8 rtl:-scale-x-100">
+          <svg viewBox="0 0 1000 160" aria-hidden className="block h-auto w-full overflow-visible">
+            {/* rail: one measured track into the enforcement point, one out of it */}
             <g fill="none" stroke="#fff" strokeLinecap="round">
-              {LANES.map((k) => (
-                <path key={`i${k}`} d={laneIn(k)} strokeOpacity={k === 0 ? 0.18 : 0.07} strokeWidth={k === 0 ? 1.5 : 1} />
-              ))}
-              {LANES.map((k) => (
-                <path key={`o${k}`} d={laneOut(k)} strokeOpacity={k === 0 ? (blocked ? 0.1 : 0.18) : blocked ? 0.04 : 0.07}
-                  strokeWidth={k === 0 ? 1.5 : 1} strokeDasharray={blocked ? "2 7" : undefined} />
-              ))}
+              <path d={`M ${L0} ${CY} H ${L1}`} strokeOpacity="0.18" strokeWidth="1.5" />
+              <path d={`M ${R0} ${CY} H ${R1}`} strokeOpacity={blocked ? 0.14 : 0.18} strokeWidth="1.5" strokeDasharray={blocked ? "1 9" : undefined} />
+              {TICKS.map((x) => <path key={x} d={`M ${x} ${CY - 5} V ${CY + 5}`} strokeOpacity="0.14" />)}
+              {!blocked && TICKS.map((x) => <path key={x} d={`M ${1000 - x} ${CY - 5} V ${CY + 5}`} strokeOpacity="0.14" />)}
             </g>
-
-            <g key={runKey} fill="none" strokeLinecap="round">
-              {litIn && LANES.map((k) => (
-                <motion.path key={`li${k}`} d={laneIn(k)} stroke={`url(#${uid}-in)`} strokeWidth={k === 0 ? 2 : 1}
-                  initial={animate ? { pathLength: 0, opacity: 0 } : false} animate={{ pathLength: 1, opacity: k === 0 ? 1 : 0.5 }}
-                  transition={{ duration: 0.9, delay: Math.abs(k) * 0.07, ease: EASE }} />
-              ))}
-              {litOut && LANES.map((k) => (
-                <motion.path key={`lo${k}`} d={laneOut(k)} stroke={`url(#${uid}-out)`} strokeWidth={k === 0 ? 2 : 1}
-                  initial={animate ? { pathLength: 0, opacity: 0 } : false} animate={{ pathLength: 1, opacity: k === 0 ? 1 : 0.5 }}
-                  transition={{ duration: 0.9, delay: (moved ? TRAVEL * 0.56 : 0.3) + Math.abs(k) * 0.07, ease: EASE }} />
-              ))}
+            <g key={runKey} fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" className={tone}>
+              {litIn && (
+                <motion.path d={`M ${L0} ${CY} H ${blocked ? HALT : L1}`}
+                  initial={animate ? { pathLength: 0 } : false} animate={{ pathLength: 1 }}
+                  transition={{ duration: moved ? TRAVEL * 0.4 : STOP * 0.7, ease: moved ? "easeInOut" : "easeOut" }} />
+              )}
+              {litOut && (
+                <motion.path d={`M ${R0} ${CY} H ${R1}`}
+                  initial={animate ? { pathLength: 0, opacity: 0 } : false} animate={{ pathLength: 1, opacity: 1 }}
+                  transition={{ duration: moved ? TRAVEL * 0.44 : 0.8, delay: animate && moved ? TRAVEL * 0.56 : 0, ease: moved ? "easeInOut" : EASE, opacity: { duration: 0.01, delay: animate && moved ? TRAVEL * 0.56 : 0 } }} />
+              )}
             </g>
 
             {/* payer */}
-            <g>
-              <rect x="20" y={CY - 42} width="84" height="84" rx="24" fill={`url(#${uid}-glass)`} stroke="#fff" strokeOpacity="0.16" />
-              <path d={`M 34 ${CY - 41.5} H 90`} stroke="#fff" strokeOpacity="0.35" strokeLinecap="round" />
-              <NodeIcon icon={PayerIcon} x={62} className="text-fg" />
-            </g>
+            <rect x="16" y={CY - 40} width="80" height="80" rx="22" fill="#0d0d0d" stroke="#fff" strokeOpacity="0.22" strokeWidth="1.5" />
+            <NodeIcon icon={PayerIcon} x={56} className="text-fg" />
 
-            {/* recipient: dims when the attempt was stopped, lights only on proven settlement */}
-            <g opacity={blocked ? 0.42 : 1}>
-              <rect x="896" y={CY - 42} width="84" height="84" rx="24" fill={`url(#${uid}-glass)`}
-                className="stroke-white/15" strokeDasharray={blocked ? "3 6" : undefined} />
-              <path d={`M 910 ${CY - 41.5} H 966`} stroke="#fff" strokeOpacity="0.35" strokeLinecap="round" />
-              <NodeIcon icon={Store} x={938} className="text-fg" />
-              {mode === "settled" && (
-                <motion.g key={`lit-${runKey}`} initial={animate ? { opacity: 0 } : false} animate={{ opacity: 1 }}
-                  transition={{ duration: 0.5, delay: animate && moved ? TRAVEL - 0.15 : 0 }}>
-                  <rect x="896" y={CY - 42} width="84" height="84" rx="24" fill="#0a0a0a" className="stroke-mint/60" />
-                  <rect x="896" y={CY - 42} width="84" height="84" rx="24" fill={`url(#${uid}-glass)`} />
-                  <NodeIcon icon={Store} x={938} className="text-mint" />
-                </motion.g>
-              )}
+            {/* recipient: hollow when the attempt was stopped, filled only on proven settlement */}
+            <g opacity={blocked ? 0.45 : 1}>
+              <rect x="904" y={CY - 40} width="80" height="80" rx="22" fill={blocked ? "none" : "#0d0d0d"} stroke="#fff" strokeOpacity="0.22" strokeWidth="1.5"
+                strokeDasharray={blocked ? "2 7" : undefined} strokeLinecap="round" />
+              <NodeIcon icon={Store} x={944} className="text-fg" />
             </g>
+            {mode === "settled" && (
+              <motion.g key={`lit-${runKey}`} initial={animate ? { opacity: 0 } : false} animate={{ opacity: 1 }}
+                transition={{ duration: 0.35, delay: animate && moved ? TRAVEL - 0.15 : 0 }}>
+                <rect x="904" y={CY - 40} width="80" height="80" rx="22" className="fill-mint" />
+                <NodeIcon icon={Store} x={944} className="text-black" />
+              </motion.g>
+            )}
             {moved && animate && (
-              <motion.rect key={`arrive-${runKey}`} x="896" y={CY - 42} width="84" height="84" rx="24" fill="none" className="stroke-mint" strokeWidth="1.5"
-                initial={{ opacity: 0, scale: 1 }} animate={{ opacity: [0, 0.75, 0], scale: [1, 1.08, 1.32] }}
-                transition={{ duration: 1.1, delay: TRAVEL - 0.1, ease: "easeOut" }} />
+              <motion.rect key={`arrive-${runKey}`} x="904" y={CY - 40} width="80" height="80" rx="22" fill="none" className="stroke-mint" strokeWidth="1.5"
+                initial={{ opacity: 0, scale: 1 }} animate={{ opacity: [0, 0.8, 0], scale: [1, 1.1, 1.36] }}
+                transition={{ duration: 1, delay: TRAVEL - 0.1, ease: "easeOut" }} />
             )}
 
-            {/* the payment itself: crosses only on settlement, halts at the aperture when stopped */}
+            {/* the payment itself: crosses only on settlement, halts at the barrier when stopped */}
             {moved && animate && (
               <g key={`orb-${runKey}`} className="text-mint">
-                <motion.ellipse cy={CY} rx="26" ry="7" fill="currentColor" filter={`url(#${uid}-blur)`}
-                  initial={{ cx: L0, opacity: 0 }} animate={{ cx: [L0, L1, R0, R1], opacity: [0, 0.9, 0.9, 0] }}
+                <motion.circle cy={CY} r="12" fill="none" stroke="currentColor" strokeWidth="1.5"
+                  initial={{ cx: L0, opacity: 0 }} animate={{ cx: [L0, L1, R0, R1], opacity: [0, 0.5, 0.5, 0] }}
                   transition={{ duration: TRAVEL, times: TRAVEL_TIMES, ease: "easeInOut" }} />
-                <motion.circle cy={CY} r="4.5" fill="#fff"
+                <motion.circle cy={CY} r="6" fill="currentColor"
                   initial={{ cx: L0, opacity: 0 }} animate={{ cx: [L0, L1, R0, R1], opacity: [0, 1, 1, 0] }}
                   transition={{ duration: TRAVEL, times: TRAVEL_TIMES, ease: "easeInOut" }} />
               </g>
             )}
             {stopped && (
               <g key={`halt-${runKey}`} className="text-coral">
-                <motion.ellipse cy={CY} rx="18" ry="7" fill="currentColor" filter={`url(#${uid}-blur)`}
-                  initial={animate ? { cx: L0, opacity: 0 } : false} animate={{ cx: animate ? [L0, 432, 420, 424] : 424, opacity: animate ? [0, 0.9, 0.8, 0.6] : 0.6 }}
+                <motion.circle cy={CY} r="6" fill="currentColor"
+                  initial={animate ? { cx: L0, opacity: 0 } : false} animate={{ cx: animate ? [L0, HALT - 4, HALT - 16, HALT - 12] : HALT - 12, opacity: 1 }}
                   transition={{ duration: STOP, times: STOP_TIMES, ease: "easeOut" }} />
-                <motion.circle cy={CY} r="4.5" fill="currentColor"
-                  initial={animate ? { cx: L0, opacity: 0 } : false} animate={{ cx: animate ? [L0, 432, 420, 424] : 424, opacity: 1 }}
-                  transition={{ duration: STOP, times: STOP_TIMES, ease: "easeOut" }} />
-                <motion.path d={`M 439 ${CY - 22} V ${CY + 22}`} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"
+                <motion.path d={`M ${HALT} ${CY - 20} V ${CY + 20}`} stroke="currentColor" strokeWidth="3" strokeLinecap="round"
                   initial={animate ? { opacity: 0, scaleY: 0.3 } : false} animate={{ opacity: 1, scaleY: 1 }}
-                  transition={{ ...SPRING, delay: animate ? STOP * 0.7 : 0 }} />
+                  transition={{ ...SPRING, delay: gateAt }} />
               </g>
             )}
+
             {/* CounterSign enforcement point */}
             <g className={tone}>
-              <motion.circle cx={GATE} cy={CY} r="70" fill="currentColor" filter={`url(#${uid}-haze)`}
-                initial={false} animate={{ opacity: mode === "idle" && animate ? [0.1, 0.24, 0.1] : mode === "closed" ? 0.04 : 0.16 }}
-                transition={mode === "idle" && animate ? { duration: 4.6, repeat: Infinity, ease: "easeInOut" } : { duration: 0.5 }} />
               {mode === "idle" && animate && (
-                <motion.circle cx={GATE} cy={CY} fill="none" stroke="currentColor" strokeWidth="1"
-                  initial={{ r: 54, opacity: 0.45 }} animate={{ r: [54, 68, 54], opacity: [0.45, 0.08, 0.45] }}
-                  transition={{ duration: 4.6, repeat: Infinity, ease: "easeInOut" }} />
+                <motion.circle cx={GATE} cy={CY} fill="none" stroke="currentColor" strokeWidth="1.25"
+                  initial={{ r: 52, opacity: 0.6 }} animate={{ r: [52, 68, 52], opacity: [0.6, 0, 0.6] }}
+                  transition={{ duration: 4.4, repeat: Infinity, ease: "easeInOut" }} />
               )}
-              <circle cx={GATE} cy={CY} r="60" fill="none" stroke="#fff" strokeOpacity="0.07" />
-              <circle cx={GATE} cy={CY} r="46" fill="#050505" />
-              <circle cx={GATE} cy={CY} r="46" fill={`url(#${uid}-glass)`} stroke="#fff" strokeOpacity="0.2" />
-              {mode !== "idle" && mode !== "closed" && (
+              <circle cx={GATE} cy={CY} r="60" fill="none" stroke="#fff" strokeOpacity="0.1" />
+              <circle cx={GATE} cy={CY} r="44" fill={solid ? "#fff" : "#000"} stroke="#fff" strokeOpacity={solid ? 0 : mode === "idle" ? 0.4 : 0.18} strokeWidth="1.5" />
+              {(mode === "settled" || blocked) && (
+                <motion.circle key={`disc-${runKey}`} cx={GATE} cy={CY} r="44" fill="currentColor"
+                  initial={animate ? { opacity: 0 } : false} animate={{ opacity: 1 }} transition={{ duration: 0.25, delay: gateAt }} />
+              )}
+              {solid && (
                 <g transform={`rotate(-90 ${GATE} ${CY})`}>
-                  <motion.circle key={`ring-${runKey}`} cx={GATE} cy={CY} r="52" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round"
+                  <motion.circle key={`ring-${runKey}`} cx={GATE} cy={CY} r="52" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round"
                     initial={animate ? { pathLength: 0, opacity: 0 } : false} animate={{ pathLength: 1, opacity: 1 }}
-                    transition={{ ...SPRING, stiffness: 60, delay: animate ? (moved ? TRAVEL * 0.4 : stopped ? STOP * 0.7 : 0.05) : 0 }} />
+                    transition={{ ...SPRING, stiffness: 60, delay: animate ? gateAt + 0.05 : 0 }} />
                 </g>
               )}
               {blocked && animate && (
                 <motion.circle key={`shock-${runKey}`} cx={GATE} cy={CY} fill="none" stroke="currentColor" strokeWidth="1.5"
-                  initial={{ r: 46, opacity: 0 }} animate={{ r: [46, 50, 78], opacity: [0, 0.7, 0] }}
-                  transition={{ duration: 0.8, delay: evidence ? STOP * 0.7 : 0, ease: "easeOut" }} />
+                  initial={{ r: 52, opacity: 0 }} animate={{ r: [52, 56, 84], opacity: [0, 0.7, 0] }}
+                  transition={{ duration: 0.8, delay: gateAt, ease: "easeOut" }} />
               )}
               <motion.g key={`icon-${mode}`} initial={animate ? { scale: 0.6, opacity: 0 } : false} animate={{ scale: 1, opacity: 1 }} transition={SPRING}>
-                <NodeIcon icon={GateIcon} x={GATE} />
+                <NodeIcon icon={GateIcon} x={GATE} className={solid ? "text-black" : mode === "idle" ? "text-fg" : "text-muted"} />
               </motion.g>
             </g>
-
           </svg>
 
-          {/* amount riding the payment */}
+          {/* amount riding the payment; it yields to the enforcement point instead of crossing over it */}
           {animate && moved && (
-            <motion.div key={`chip-${runKey}`} aria-hidden className="pointer-events-none absolute top-1/2 hidden -translate-x-1/2 -translate-y-[calc(100%+14px)] sm:block"
-              initial={{ left: pct(L0), opacity: 0 }} animate={{ left: [pct(L0), pct(L1), pct(R0), pct(R1)], opacity: [0, 1, 1, 0] }}
-              transition={{ duration: TRAVEL, times: TRAVEL_TIMES, ease: "easeInOut" }}>
-              <span className="glass inline-block rounded-full border border-mint/40 bg-black/50 px-2.5 py-1 text-[12px] font-medium whitespace-nowrap text-mint rtl:-scale-x-100">
-                <Money value={amt(evidence.attempt.amount)} code={code} />
+            <motion.div key={`chip-${runKey}`} aria-hidden className="pointer-events-none absolute top-1/2 hidden -translate-x-1/2 -translate-y-[calc(100%+16px)] sm:block"
+              initial={{ left: pct(L0), opacity: 0 }}
+              animate={{ left: [pct(L0), pct(370), pct(L1), pct(R0), pct(630), pct(R1)], opacity: [0, 1, 0, 0, 1, 0] }}
+              transition={{ duration: TRAVEL, times: [0, 0.31, 0.4, 0.56, 0.66, 1], ease: "linear" }}>
+              <span className="inline-block rounded-full bg-mint px-3 py-1 text-[13px] font-semibold whitespace-nowrap text-black rtl:-scale-x-100">
+                <Money value={amt(evidence.attempt.amount)} code={code} codeClassName="text-black/60" />
               </span>
             </motion.div>
           )}
           {stopped && (
-            <motion.div key={`chip-${runKey}`} aria-hidden className="pointer-events-none absolute top-1/2 hidden -translate-x-1/2 -translate-y-[calc(100%+14px)] sm:block"
-              initial={animate ? { left: pct(L0), opacity: 0 } : false} animate={{ left: animate ? [pct(L0), pct(350), pct(338), pct(342)] : pct(342), opacity: 1 }}
+            <motion.div key={`chip-${runKey}`} aria-hidden className="pointer-events-none absolute top-1/2 hidden -translate-x-1/2 -translate-y-[calc(100%+16px)] sm:block"
+              initial={animate ? { left: pct(L0), opacity: 0 } : false} animate={{ left: animate ? [pct(L0), pct(340), pct(328), pct(332)] : pct(332), opacity: 1 }}
               transition={{ duration: STOP, times: STOP_TIMES, ease: "easeOut" }}>
-              <span className="glass inline-block rounded-full border border-coral/45 bg-black/50 px-2.5 py-1 text-[12px] font-medium whitespace-nowrap text-coral rtl:-scale-x-100">
-                <Money value={amt(evidence.attempt.amount)} code={code} strike={diffs.has("amount")} />
+              <span className="inline-block rounded-full bg-coral px-3 py-1 text-[13px] font-semibold whitespace-nowrap text-black rtl:-scale-x-100">
+                <Money value={amt(evidence.attempt.amount)} code={code} codeClassName="text-black/60" strike={diffs.has("amount")} />
               </span>
             </motion.div>
           )}
         </div>
 
         {/* captions */}
-        <div className="mt-4 grid grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)_minmax(0,1fr)] gap-3 sm:gap-6">
+        <div className="mt-7 grid grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)_minmax(0,1fr)] gap-3 border-t border-white/10 pt-5 sm:gap-8 sm:pt-6">
           <div className="min-w-0">
-            <p className="text-[11px] font-medium tracking-[0.14em] text-muted uppercase">{tc("field.payer")}</p>
-            <p className="mt-1 truncate"><span title={a.payer} className="ident text-[12px] text-fg">{short(a.payer)}</span></p>
+            <p className={LABEL}>{tc("field.payer")}</p>
+            <p className="mt-2 truncate"><span title={a.payer} className="ident text-[13px] text-fg">{short(a.payer)}</span></p>
             {evidence && (
-              <motion.div key={runKey} className="mt-3" initial={animate ? { opacity: 0, y: 4 } : false} animate={{ opacity: 1, y: 0 }}
-                transition={{ ...SPRING, delay: animate ? (moved ? 0.5 : STOP) : 0 }}>
-                <p className="text-[11px] text-muted">{t("path.payerBalance")}</p>
-                <p className="mt-0.5 text-[17px] font-medium tracking-tight"><Money value={amt(evidence.observed.payerBalance)} code={code} className="text-fg" /></p>
+              <motion.div key={runKey} className="mt-4" initial={animate ? { opacity: 0, y: 4 } : false} animate={{ opacity: 1, y: 0 }}
+                transition={{ ...SPRING, delay: animate ? (moved ? TRAVEL - 0.2 : STOP) : 0 }}>
+                <p className="text-[12px] text-muted">{t("path.payerBalance")}</p>
+                <p className="mt-1 text-[18px] font-semibold tracking-tight sm:text-[22px]"><Money value={amt(evidence.observed.payerBalance)} code={code} className="text-fg" /></p>
               </motion.div>
             )}
           </div>
 
-          <div className="min-w-0 text-center">
-            <p className="text-[13px] font-semibold tracking-tight text-fg">{tc("brand")}</p>
-            <motion.div key={`s-${runKey}`}
-              initial={animate ? { opacity: 0, y: 4 } : false} animate={{ opacity: 1, y: 0 }}
-              transition={{ ...SPRING, delay: animate ? (moved ? TRAVEL - 0.2 : stopped ? STOP * 0.75 : 0) : 0 }}>
-              <p className={cn("mt-1 text-[13px] font-medium", tone)}>{status}</p>
-              {detail && <p className="mx-auto mt-1 max-w-[30ch] text-[12px] leading-4 text-muted">{detail}</p>}
-              {(mode === "settled" || blocked) && view.executionCount > 0 && (
-                <p className="mt-2 inline-flex items-center gap-1.5 rounded-full border border-line px-2.5 py-0.5 text-[11px] text-muted">
-                  {tc("field.executionCount")}<span className="tabular text-fg">{view.executionCount}</span>
-                </p>
-              )}
-            </motion.div>
-          </div>
+          <motion.div key={`d-${runKey}`} className="min-w-0 text-center"
+            initial={animate ? { opacity: 0, y: 4 } : false} animate={{ opacity: 1, y: 0 }} transition={{ ...SPRING, delay: verdictAt }}>
+            {detail && <p className={cn("mx-auto max-w-[28ch] text-[13px] leading-5 font-medium", blocked ? "text-coral" : "text-fg")}>{detail}</p>}
+            {(mode === "settled" || blocked) && view.executionCount > 0 && (
+              <p className="mt-3 inline-flex items-center gap-2 rounded-full border border-white/15 px-3 py-1 text-[12px] text-muted">
+                {tc("field.executionCount")}<span className="tabular font-semibold text-fg">{view.executionCount}</span>
+              </p>
+            )}
+          </motion.div>
 
           <div className="min-w-0 text-end">
-            <p className="text-[11px] font-medium tracking-[0.14em] text-muted uppercase">{tc("field.recipient")}</p>
-            <p className={cn("mt-1 truncate text-[13px] font-medium", blocked ? "text-muted" : "text-fg")}>{a.recipientDisplayName}</p>
+            <p className={LABEL}>{tc("field.recipient")}</p>
+            <p className={cn("mt-2 truncate text-[14px] font-semibold", blocked ? "text-muted" : "text-fg")}>{a.recipientDisplayName}</p>
             <p className="truncate"><span title={a.recipient} className="ident text-[12px] text-muted">{short(a.recipient)}</span></p>
             {moved && (
-              <motion.p key={runKey} className="mt-2 text-[17px] font-medium tracking-tight"
+              <motion.p key={runKey} className="mt-3 text-[18px] font-semibold tracking-tight sm:text-[22px]"
                 initial={animate ? { opacity: 0, y: 6, scale: 0.96 } : false} animate={{ opacity: 1, y: 0, scale: 1 }}
                 transition={{ ...SPRING, delay: animate ? TRAVEL - 0.15 : 0 }}>
                 <Money value={`+${amt(evidence.attempt.amount)}`} code={code} className="text-mint" />
               </motion.p>
             )}
             {blocked && (
-              <motion.div key={runKey} className="mt-2" initial={animate ? { opacity: 0, y: 4 } : false} animate={{ opacity: 1, y: 0 }}
+              <motion.div key={runKey} className="mt-3" initial={animate ? { opacity: 0, y: 4 } : false} animate={{ opacity: 1, y: 0 }}
                 transition={{ ...SPRING, delay: animate && evidence ? STOP : 0 }}>
                 {stopped && diffs.has("recipient") && (
-                  <p className="truncate"><span title={evidence.attempt.recipient} className="ident text-[12px] text-coral line-through decoration-coral/80">{short(evidence.attempt.recipient)}</span></p>
+                  <p className="truncate"><span title={evidence.attempt.recipient} className="ident text-[12px] text-coral line-through decoration-coral">{short(evidence.attempt.recipient)}</span></p>
                 )}
-                <p className="mt-0.5 text-[12px] font-medium text-coral">{t("path.notExecuted")}</p>
+                <p className="mt-1 text-[13px] font-semibold text-coral">{t("path.notExecuted")}</p>
               </motion.div>
             )}
           </div>
