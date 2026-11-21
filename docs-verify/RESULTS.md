@@ -1,5 +1,7 @@
 # CounterSign acceptance results (worker E, independent verification)
 
+**Lead re-run on integrated `main` `1fe6cae`, 2026-11-21 08:53 UTC, production build (`pnpm demo`): V 37 passed / 0 failed; P 16 passed / 0 failed (the 12 below plus 4 localization flows in `e2e/i18n.e2e.ts`); `pnpm test` 235 passed, 52 skipped (absent `lab` dictionaries); `forge test` 21 passed. The table below is worker E's own earlier run.**
+
 Last updated: 2026-11-21 08:45 UTC. `main` tested: `316138b` (tree = `w/verify` with `origin/main` 316138b merged; only verification files differ).
 
 Server: `pnpm demo` via `bash docs-verify/run.sh` (Next dev server on :3000 + Anvil on :8545, health `chain.available=true, chainId=31337`).
