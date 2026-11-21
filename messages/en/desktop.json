@@ -1,3 +1,127 @@
 {
-  "title": "desktop"
+  "title": "Command",
+  "nav": { "payment": "Payment", "chain": "Token state", "bank": "Bank accounts", "lab": "Demo lab (operator)" },
+  "status": {
+    "serverError": "Server error",
+    "loading": "Loading current state…",
+    "noData": "Cannot reach the server. No confirmed state to show yet."
+  },
+  "fixture": {
+    "badge": "Fixture data",
+    "banner": "Fixture data for layout development — not live state. Remove ?fixture=1 to see the real system."
+  },
+  "signIn": {
+    "label": "Demo sign-in · customer key",
+    "action": "Sign in",
+    "failed": "Key not accepted",
+    "active": "Customer session (demo)"
+  },
+  "list": {
+    "title": "Agreements",
+    "empty": "No agreements yet. A merchant creates one from the demo lab; it will appear here."
+  },
+  "empty": {
+    "title": "No payment to show",
+    "body": "Nothing has been requested yet. When a merchant proposes a payment it appears here with its approved terms, every attempt and the execution evidence.",
+    "action": "Open demo lab"
+  },
+  "hero": { "to": "to" },
+  "pair": {
+    "title": "Approve on your phone",
+    "hint": "Creates a short-lived link bound to this one payment.",
+    "needSignIn": "Sign in as the customer (top right) to pair a phone.",
+    "action": "Pair phone",
+    "again": "New link",
+    "error": "Could not create a pairing link.",
+    "qrAlt": "QR code for the approval link",
+    "expires": "Link valid until {time}",
+    "expired": "This link has expired. Create a new one.",
+    "copy": "Copy link",
+    "copied": "Copied"
+  },
+  "path": {
+    "approved": "Approved",
+    "attempted": "Attempted",
+    "executed": "Executed",
+    "signed": "Signed by the customer",
+    "awaiting": "Not approved yet",
+    "noAttempt": "No attempt received",
+    "noAttemptHint": "No execution attempt has been received for this agreement.",
+    "matches": "Matches the approved terms",
+    "differs": "{count, plural, one {# field differs from approval} other {# fields differ from approval}}",
+    "changed": "changed",
+    "approvedWas": "approved:",
+    "none": "None",
+    "notExecuted": "Nothing executed",
+    "notExecutedHint": "No ledger or chain result exists for this agreement.",
+    "payerBalance": "Payer balance",
+    "receipt": "Receipt",
+    "noReceipt": "No receipt"
+  },
+  "attempts": { "label": "Attempts", "item": "Attempt {n}" },
+  "inspector": {
+    "title": "Evidence",
+    "show": "Show evidence inspector",
+    "hide": "Hide evidence inspector",
+    "empty": "Select an agreement to inspect its evidence.",
+    "terms": "Approved terms",
+    "agreementId": "Agreement ID",
+    "displayOnly": "Display name only — not a verified identity",
+    "itemId": "Item",
+    "token": "Token contract",
+    "chainId": "Chain {id}",
+    "signature": "Approval signature",
+    "signer": "Signer",
+    "signatureValue": "EIP-712 signature",
+    "approvedAt": "Approved at",
+    "signerNote": "Signed by the trusted demo signer after the paired approval session confirmed these terms.",
+    "noSignature": "No signature. State: {state}.",
+    "attempt": "Requested by executor",
+    "decision": "Decision",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "diffs": "Differences ({count})",
+    "noDiffs": "No field differs from the approved terms.",
+    "noReceipt": "No receipt was produced for this attempt.",
+    "transferId": "Transfer ID",
+    "debit": "Debited",
+    "credit": "Credited",
+    "postedAt": "Posted at",
+    "txHash": "Transaction",
+    "block": "Block",
+    "txStatus": "Status",
+    "tx": { "success": "Success", "reverted": "Reverted" },
+    "revertReason": "Revert reason",
+    "observed": "Observed after attempt · {source}",
+    "recipientBalance": "Recipient balance",
+    "observedAt": "Read at",
+    "events": "Events",
+    "noEvents": "No events recorded."
+  },
+  "chain": {
+    "title": "Token purchase — before and after",
+    "block": "Block {block}",
+    "unavailable": "Local chain is not available. No token state can be shown.",
+    "noScenario": "No scenario state reported.",
+    "protected": { "title": "Protected purchase", "note": "Exact approval, purchase and approval removal in one transaction." },
+    "vulnerable": { "title": "Vulnerable comparison", "note": "Intentional comparison: unprotected account with a standing approval." },
+    "purchased": "Purchased",
+    "notPurchased": "Not purchased yet",
+    "start": "Scenario start",
+    "now": "Balance now",
+    "allowance": "Allowance left to shop",
+    "unlimited": "Unlimited",
+    "shopBalance": "Shop balance",
+    "attackerBalance": "Drain recipient balance",
+    "drain": "Later withdrawal attempt",
+    "drainNone": "Not attempted yet",
+    "drainSucceeded": "Succeeded — {amount} taken",
+    "drainFailed": "Failed — {amount} requested",
+    "account": "Account"
+  },
+  "bank": {
+    "title": "Bank accounts",
+    "unavailable": "Bank simulation is not available. No balances can be shown.",
+    "empty": "No accounts reported."
+  }
 }

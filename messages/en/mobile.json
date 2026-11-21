@@ -1,3 +1,119 @@
 {
-  "title": "mobile"
+  "title": "Approve payment",
+  "header": {
+    "approval": "Payment approval"
+  },
+  "loading": "Loading the payment from the server",
+  "notFound": {
+    "title": "Payment not found",
+    "body": "This link does not match a payment on the server. Ask the merchant for a new approval link."
+  },
+  "loadError": {
+    "title": "The payment could not be loaded",
+    "body": "The server answered with an error. Nothing has been approved or paid from this page."
+  },
+  "fixture": "Fixture data. Not connected to the server.",
+  "disconnected": {
+    "title": "Disconnected",
+    "body": "Showing the last state the server confirmed. Nothing on this screen is newer than that.",
+    "never": "The server has not been reached yet. No payment state is confirmed.",
+    "actions": "Approve and Decline are off until the connection returns."
+  },
+  "card": {
+    "payTo": "Pay to",
+    "displayNameNote": "The name is supplied by the merchant and not verified. This identifier is what is enforced.",
+    "amountExact": "Exact amount",
+    "amountMax": "Maximum amount",
+    "amountValue": "{amount} {asset}",
+    "recipient": "Exact recipient",
+    "payer": "From",
+    "rail": "Payment rail",
+    "oneUse": "One-use limit",
+    "oneUseValue": "One payment only. Cannot be used twice.",
+    "expiry": "Expires",
+    "expiresIn": "Expires in {time}",
+    "expiryAt": "at {time}",
+    "expiryReached": "Expiry time reached",
+    "scope": "Permission scope",
+    "scopeValue": "This payment only. No continuing permission remains afterwards.",
+    "network": "Network",
+    "networkValue": "Chain {chainId}",
+    "item": "Item"
+  },
+  "pairing": {
+    "checking": "Checking that this phone is paired",
+    "unpairedTitle": "This phone is not paired",
+    "unpairedBody": "Approval needs a valid pairing link opened on this device. The link is missing, invalid or expired, so this page can only show the payment. Ask for a new pairing link or QR code."
+  },
+  "action": {
+    "approve": "Approve this payment",
+    "approving": "Sending approval",
+    "decline": "Decline",
+    "declining": "Declining",
+    "failed": "The server did not accept that action",
+    "expiredLocal": "The expiry time has passed. Waiting for the server to confirm."
+  },
+  "status": {
+    "awaiting_approval": "Check every detail. Nothing is paid until you approve.",
+    "approved": "You approved these exact terms. The payment has not been executed yet.",
+    "executing": "The payment is being executed. It is not complete yet.",
+    "rejected": "An attempt did not match what you approved and was stopped.",
+    "settled": "Paid once, exactly as approved.",
+    "declined": "You declined. Nothing was paid.",
+    "expired": "The approval window closed. Nothing can be paid with this approval.",
+    "failed": "Execution failed. The evidence below shows what the rail recorded."
+  },
+  "path": {
+    "label": "Payment progress",
+    "approved": "Approved",
+    "attempted": "Attempted",
+    "executed": "Executed",
+    "stopped": "Stopped",
+    "failed": "Failed"
+  },
+  "stopped": {
+    "title": "Why it was stopped",
+    "approved": "You approved",
+    "attempted": "Attempt asked for",
+    "noDiffs": "No field differences were reported for this attempt."
+  },
+  "receipt": {
+    "title": "Receipt",
+    "paid": "Paid {amount} {asset}",
+    "to": "to {name}",
+    "evidenceShow": "Show evidence",
+    "evidenceHide": "Hide evidence",
+    "evidenceTitle": "Evidence",
+    "noEvidence": "No execution evidence has been recorded yet.",
+    "ledgerReceipt": "Ledger receipt",
+    "chainReceipt": "Chain receipt",
+    "noReceipt": "No receipt: nothing was executed for this attempt",
+    "transferId": "Transfer ID",
+    "debit": "Debited account",
+    "credit": "Credited account",
+    "postedAt": "Posted",
+    "txHash": "Transaction hash",
+    "block": "Block",
+    "chain": "Chain ID",
+    "txStatus": "Transaction status",
+    "txSuccess": "Success",
+    "txReverted": "Reverted",
+    "revertReason": "Revert reason",
+    "observed": "Observed after the attempt",
+    "payerBalance": "Your balance",
+    "recipientBalance": "Recipient balance",
+    "allowance": "Remaining allowance",
+    "allowanceNone": "Not applicable on this rail",
+    "executionCount": "Times executed",
+    "observedAt": "Read at",
+    "approval": "Approval",
+    "signer": "Signer",
+    "signature": "Signature",
+    "approvedAt": "Approved at",
+    "attempts": "Attempts",
+    "attemptN": "Attempt {n}",
+    "accepted": "Accepted",
+    "rejected": "Rejected",
+    "agreementId": "Payment ID"
+  }
 }

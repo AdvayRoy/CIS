@@ -5,3 +5,14 @@
 - Contract: docs/CONTRACT.md (frozen at base commit).
 - Status: base scaffold pushed; workers launching. (Updated at each milestone.)
 - Commands: `pnpm install`, `pnpm dev`, `pnpm typecheck`, `pnpm build`.
+
+## Workers (Devin sessions, branches)
+- A Desktop `w/desktop`: https://app.devin.ai/sessions/d4ace7385e4d45538393d129c582b910
+- B Mobile `w/mobile`: https://app.devin.ai/sessions/29c981bfa0a34a85a46e4a537e43badf
+- C Bank/auth `w/bank`: https://app.devin.ai/sessions/3b1821fe1e0b4686afd193eedc84b761
+- D Crypto `w/crypto`: https://app.devin.ai/sessions/8f00f1e7b82f42039ef135ec4fc3696f
+- E Verification `w/verify`: https://app.devin.ai/sessions/fb452151a01f4a91baf5f7339886b47b
+- F Localization `w/i18n`: https://app.devin.ai/sessions/4d6dcee69f264fe381831214c47d4534
+
+## To resume from Git
+Clone, `pnpm install`, install Foundry, `pnpm demo`. Merge any unmerged `w/*` branches into `main` (lead only). Checks: `pnpm typecheck`, `pnpm build`, `pnpm test`, `cd contracts && forge test`.
