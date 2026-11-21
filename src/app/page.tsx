@@ -1,2 +1,5 @@
-import { redirect } from "next/navigation";
-export default function Home() { redirect("/command"); }
+import { Entry } from "@/components/product/Entry";
+
+export default function Home() {
+  return <Entry />;
+}

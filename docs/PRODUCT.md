@@ -180,4 +180,11 @@ From the pitch:
 
 ## 9. Status of these recommendations
 
-Implemented on branch `w/product`: see the commit log of that branch and the final section of the hand-off message. Everything in sections 4 to 8 that touches `/command`, `/approve`, `/shop`, `/lab`, `messages/**` or `docs/DEMO_SCRIPT.md` is a recommendation only; those files are owned by the lead and were not edited.
+Implemented on branch `w/product`:
+
+- `/` is no longer a redirect. `src/app/page.tsx` renders `src/components/product/Entry.tsx`: top navigation (Checkout, Payments, Lab (operator), language), the tagline with "This recipient. This amount. Once.", a primary "Start a payment" link to `/shop` and a secondary link to `/command`, a live status strip read from `GET /api/state`, the four-step journey with a link per screen, "Who gets what", and the prototype limits.
+- "Try the rule" on `/` is an interactive illustration (pick a request, see which field differs and the outcome). It is labelled as an illustration, runs entirely in the browser, calls no payment API and moves no balance. Its outcome sentences reuse the translated `common.reason.*` strings.
+- The page copy on `/` is English only. Brand, tagline, connection status, environment labels and reasons come from the existing `common` namespace and follow the selected language.
+- `/` links to `/shop`, which exists only once the lead's branch is merged. On this branch alone that link returns 404.
+
+Recommended only (files owned by the lead, not edited here): everything in sections 4 to 8 that touches `/command`, `/approve`, `/shop`, `/lab`, `messages/**`, `README.md` or `docs/DEMO_SCRIPT.md`.
