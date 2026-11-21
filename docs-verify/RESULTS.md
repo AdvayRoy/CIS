@@ -46,3 +46,7 @@ Commands:
 ## Change to these tests made by the lead (9f86af6)
 
 - The phone Approve control became press-and-hold, so five `approveBtn.click()` calls in `e2e/journey.e2e.ts` and `e2e/truthful-states.e2e.ts` became `click({ delay: 900 })`. No assertion changed. Consequence: a plain tap on "Approve this payment" no longer approves; worker E has no test for what a plain tap shows.
+
+## Visual observation at 9f86af6 (not caught by the automated checks)
+
+- `phone-375x667-1-awaiting.png`: the sticky action footer is now translucent, and the card text scrolling beneath it ("One-use limit ...") shows through the Decline button. The Approve label stays readable; Decline's label competes with the text behind it. Seen by eye in the screenshot; the overflow/obscured assertions still pass because the buttons themselves are on top.
