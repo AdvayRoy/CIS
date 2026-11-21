@@ -61,7 +61,7 @@ export function PairPhone({ agreementId, canPair, serverTime }: { agreementId: s
               </div>
               <div className="min-w-0 flex-1">
                 <p className={`text-[13px] ${expired ? "text-coral" : "text-muted"}`}>
-                  {expired ? t("pair.expired") : t("pair.expires", { time: fmt.dateTime(new Date(toMs(pairing.expiresAt)), { hour: "2-digit", minute: "2-digit", second: "2-digit" }) })}
+                  {expired ? t("pair.expired") : t("pair.expires", { time: fmt.dateTime(new Date(toMs(pairing.expiresAt)), { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }) })}
                 </p>
                 <p className="ident mt-2 max-h-16 overflow-hidden rounded-lg border border-line bg-bg px-3 py-2 text-[11px] text-muted">{pairing.url}</p>
                 <button type="button" onClick={copy}

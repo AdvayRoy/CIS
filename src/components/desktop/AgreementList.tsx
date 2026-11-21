@@ -30,14 +30,14 @@ export function AgreementList({ agreements, selectedId, onSelect }:
                     <span className="truncate text-[13px] font-medium">{a.recipientDisplayName || short(a.recipient)}</span>
                     <span className="tabular shrink-0 text-[13px]">{fmtAsset(a.amount, a.asset)}</span>
                   </span>
-                  <span className="mt-1 flex items-center justify-between gap-2 text-xs">
-                    <span className={cn("flex min-w-0 items-center gap-1.5", toneText[tone])}>
-                      <span aria-hidden className={cn("size-1.5 shrink-0 rounded-full", toneBg[tone])} />
-                      <span className="truncate">{tc(`state.${v.state}`)}</span>
-                    </span>
-                    <span className="shrink-0 text-muted">{tc(`rail.${a.rail}`)}</span>
+                  <span className={cn("mt-1 flex min-w-0 items-center gap-1.5 text-xs", toneText[tone])}>
+                    <span aria-hidden className={cn("size-1.5 shrink-0 rounded-full", toneBg[tone])} />
+                    <span className="truncate">{tc(`state.${v.state}`)}</span>
                   </span>
-                  <Ident value={a.id} display={short(a.id)} className="mt-1 block text-[11px] text-muted/70" />
+                  <span className="mt-1 flex items-center justify-between gap-2 text-[11px] text-muted/80">
+                    <span className="truncate">{tc(`rail.${a.rail}`)}</span>
+                    <Ident value={a.id} display={short(a.id, 4, 4)} className="shrink-0 text-[11px]" />
+                  </span>
                 </button>
               </li>
             );

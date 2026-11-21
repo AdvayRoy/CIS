@@ -23,7 +23,7 @@ export function EvidenceInspector({ view, evidence, stage, onStage }:
   const t = useTranslations("desktop");
   const tc = useTranslations("common");
   const fmt = useFormatter();
-  const time = (n: number) => fmt.dateTime(new Date(toMs(n)), { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  const time = (n: number) => fmt.dateTime(new Date(toMs(n)), { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false });
   const a = view?.agreement;
   const diffFields = new Set((evidence?.decision.diffs ?? []).map((d) => d.field));
 

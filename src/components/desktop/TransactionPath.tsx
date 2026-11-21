@@ -65,7 +65,7 @@ export function TransactionPath({ view, evidence, stage, onStage }:
   const diffs = new Map((evidence?.decision.diffs ?? []).map((d) => [d.field, d]));
   const approvedTone: Tone = view.approval ? "mint" : view.state === "awaiting_approval" ? "amber" : view.state === "declined" ? "coral" : "muted";
   const approvedStatus = view.approval ? t("path.signed") : view.state === "awaiting_approval" ? t("path.awaiting") : tc(`state.${view.state}`);
-  const attemptTone: Tone = !evidence ? "muted" : evidence.decision.accepted ? "mint" : "coral";
+  const attemptTone: Tone = !evidence ? "muted" : diffs.size > 0 ? "coral" : evidence.decision.accepted ? "mint" : "amber";
   const attemptStatus = !evidence ? t("path.noAttempt") : diffs.size > 0 ? t("path.differs", { count: diffs.size }) : t("path.matches");
   const executing = view.state === "executing" && !evidence;
   const execTone: Tone = executing ? "amber" : !evidence ? "muted" : evidence.decision.accepted && evidence.receipt ? "mint" : "coral";
@@ -79,7 +79,7 @@ export function TransactionPath({ view, evidence, stage, onStage }:
         <Fact label={tc("field.recipient")}><Ident value={a.recipient} display={short(a.recipient)} /></Fact>
         <Fact label={tc("field.amount")}><span className="tabular">{fmtAsset(a.amount, a.asset)}</span></Fact>
         <Fact label={tc("field.operation")}><Ident value={a.operation} /></Fact>
-        <Fact label={tc("field.expiry")}><span className="tabular">{fmt.dateTime(new Date(toMs(a.expiry)), { hour: "2-digit", minute: "2-digit", second: "2-digit" })}</span></Fact>
+        <Fact label={tc("field.expiry")}><span className="tabular">{fmt.dateTime(new Date(toMs(a.expiry)), { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false })}</span></Fact>
       </StageCard>
       <Connector tone={attemptTone} reached={!!evidence} />
       <StageCard index={2} stage="attempted" selected={stage === "attempted"} onSelect={onStage} tone={attemptTone} status={attemptStatus}>

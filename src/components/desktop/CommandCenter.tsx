@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, motion } from "motion/react";
@@ -16,6 +16,8 @@ import { EvidenceInspector } from "./EvidenceInspector";
 import { PairPhone } from "./PairPhone";
 import { BankPanel, ChainPanel } from "./RailPanels";
 import { Ident, Notice, Pill } from "./ui";
+
+const noSubscribe = () => () => {};
 
 function SignIn({ onDone }: { onDone: () => void }) {
   const t = useTranslations("desktop");
@@ -42,9 +44,9 @@ function SignIn({ onDone }: { onDone: () => void }) {
 export function CommandCenter() {
   const t = useTranslations("desktop");
   const tc = useTranslations("common");
-  // ?fixture=1 is read after mount so the default (server-rendered) path is always the real API.
-  const [fixture, setFixture] = useState<boolean | null>(null);
-  useEffect(() => { setFixture(new URLSearchParams(window.location.search).get("fixture") === "1"); }, []);
+  // ?fixture=1 is read on the client only, so the default (server-rendered) path is always the real API.
+  const fixture = useSyncExternalStore<boolean | null>(noSubscribe,
+    () => new URLSearchParams(window.location.search).get("fixture") === "1", () => null);
 
   const live = usePoll<Overview>(api.state, 1000, fixture === false);
   const [capsTick, setCapsTick] = useState(0);
@@ -56,17 +58,27 @@ export function CommandCenter() {
   }, [capsTick, live.connected]);
 
   const overview = fixture ? FIXTURE_OVERVIEW : live.data;
-  const [selectedId, setSelectedId] = useState<string | null>(null);
-  const [stage, setStage] = useState<Stage>("approved");
-  const [attemptIdx, setAttemptIdx] = useState<number | null>(null); // null = latest
   const [inspectorOpen, setInspectorOpen] = useState(true);
+  // User picks are remembered only while the authoritative state they were made against is unchanged:
+  // a newly created agreement becomes the focus, and new evidence moves focus to its stage.
+  const [pick, setPick] = useState<{ id: string; newest: string | null } | null>(null);
+  const [stagePick, setStagePick] = useState<{ key: string; stage: Stage } | null>(null);
+  const [attemptPick, setAttemptPick] = useState<{ key: string; idx: number } | null>(null);
 
   const agreements = useMemo(() => [...(overview?.agreements ?? [])].sort((a, b) => b.agreement.createdAt - a.agreement.createdAt), [overview]);
+  const newestId = agreements[0]?.agreement.id ?? null;
+  const selectedId = pick && pick.newest === newestId ? pick.id : null;
   const view = agreements.find((v) => v.agreement.id === selectedId) ?? agreements[0] ?? null;
-  const evidenceIdx = view && view.evidence.length ? Math.min(attemptIdx ?? view.evidence.length - 1, view.evidence.length - 1) : -1;
+  const count = view?.evidence.length ?? 0;
+  const key = `${view?.agreement.id ?? ""}:${count}`;
+  const evidenceIdx = count ? Math.min(attemptPick?.key === key ? attemptPick.idx : count - 1, count - 1) : -1;
   const evidence = view && evidenceIdx >= 0 ? view.evidence[evidenceIdx] : null;
+  const defaultStage: Stage = !count || !view ? "approved" : view.evidence[count - 1].decision.accepted ? "executed" : "attempted";
+  const stage = stagePick?.key === key ? stagePick.stage : defaultStage;
 
-  const select = (id: string) => { setSelectedId(id); setAttemptIdx(null); setStage("approved"); };
+  const select = (id: string) => setPick({ id, newest: newestId });
+  const setStage = (s: Stage) => setStagePick({ key, stage: s });
+  const setAttemptIdx = (idx: number) => setAttemptPick({ key, idx });
   const pickStage = (s: Stage) => { setStage(s); setInspectorOpen(true); };
 
   const conn: { tone: Tone; label: string } = fixture
