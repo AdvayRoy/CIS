@@ -140,7 +140,9 @@ export async function expectUnobscured(page: Page, locator: ReturnType<Page["loc
 /** Open every collapsed disclosure so evidence text becomes readable. */
 export async function expandAll(page: Page) {
   for (let pass = 0; pass < 3; pass++) {
-    const closed = page.locator('[aria-expanded="false"]:visible, details:not([open]) > summary:visible');
+    // disclosures only: dialog triggers (aria-haspopup, e.g. the language selector) are not evidence;
+    // main/body scope keeps the Next.js dev-tools indicator (nextjs-portal) out of it
+    const closed = page.locator('body > :not(nextjs-portal) [aria-expanded="false"]:not([aria-haspopup]):visible, body > :not(nextjs-portal) details:not([open]) > summary:visible');
     const n = await closed.count();
     if (!n) break;
     for (let i = 0; i < n; i++) await closed.nth(0).click({ timeout: 2000 }).catch(() => {});

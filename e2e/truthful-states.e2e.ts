@@ -106,6 +106,9 @@ test("10 disconnected: offline is shown as disconnected, never as success; recon
   await desk.page.goto("/command"); await ph.page.goto(pair.approvePath);
   await ph.page.getByRole("button", { name: /approve this payment/i }).click();
   await expect.poll(async () => (await getView(id)).state).toBe("approved");
+  // wait until both views have polled the approved state ("Approved" alone is also a static stage label)
+  await expect(ph.page.locator("body")).not.toContainText(/awaiting your approval/i);
+  await expect(desk.page.locator("body")).not.toContainText(/awaiting your approval/i);
   await expect(ph.page.locator("body")).toContainText(/approved/i);
 
   await ph.context.setOffline(true); await desk.context.setOffline(true);
@@ -141,9 +144,11 @@ test("10 disconnected approval: tapping Approve while offline does not show appr
   if (await btn.isEnabled().catch(() => false)) await btn.click().catch(() => {});
   await ph.page.waitForTimeout(2000);
   expect((await getView(id)).state, "server never saw an approval").toBe("awaiting_approval");
+  await shot(ph.page, "phone-390x844-offline-approve");
   const pt = await bodyText(ph.page);
   expect(successClaims(pt)).toEqual([]);
-  expect(pt, "must not show the approved state label for an approval that never reached the server").not.toMatch(/^\s*approved\s*$/im);
+  // "Approved" alone is also a static stage label of the progress path, so check the state wording instead.
+  expect(pt, "must not tell the customer they approved when the approval never reached the server").not.toMatch(/you approved|approval (sent|received|recorded)/i);
   expect(pt).toMatch(DISCONNECTED_RE);
   await shot(ph.page, "phone-390x844-offline-approve");
   await ph.context.close();

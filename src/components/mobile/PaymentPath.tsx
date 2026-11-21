@@ -15,11 +15,11 @@ export function PaymentPath({ view }: { view: AgreementView }) {
   const attempted = view.evidence.length > 0 || state === "executing" || state === "settled";
   const last: StepTone = state === "settled" ? "done" : state === "rejected" || state === "failed" ? "bad" : "idle";
   const steps: { key: string; label: string; tone: StepTone }[] = [
-    { key: "approved", label: t("path.approved"), tone: approved ? "done" : "idle" },
-    { key: "attempted", label: t("path.attempted"), tone: attempted ? "done" : "idle" },
+    { key: "approved", label: approved ? t("path.approved") : t("path.approval"), tone: approved ? "done" : "idle" },
+    { key: "attempted", label: attempted ? t("path.attempted") : t("path.attempt"), tone: attempted ? "done" : "idle" },
     {
       key: "executed",
-      label: state === "rejected" ? t("path.stopped") : state === "failed" ? t("path.failed") : t("path.executed"),
+      label: state === "rejected" ? t("path.stopped") : state === "failed" ? t("path.failed") : state === "settled" ? t("path.executed") : t("path.execution"),
       tone: last,
     },
   ];
