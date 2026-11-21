@@ -1,6 +1,6 @@
 # Evidence matrix
 
-Integrated `main` at `1fe6cae`, production build started with `pnpm demo`, run 2026-11-21 08:53 UTC on the build VM (macOS, Chromium headless).
+Integrated `main` at `c887fd0` (after the glass redesign), production build started with `pnpm demo`, run 2026-11-21 09:06 UTC on the build VM (macOS, Chromium headless).
 
 | Command | Result |
 |---|---|

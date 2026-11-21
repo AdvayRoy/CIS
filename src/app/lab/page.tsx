@@ -13,12 +13,12 @@ type Log = { at: number; label: string; ok: boolean; detail: string };
 
 function Btn({ children, onClick, tone = "default", disabled }: { children: React.ReactNode; onClick: () => void; tone?: "default" | "danger" | "ok"; disabled?: boolean }) {
   const toneCls = tone === "danger" ? "border-coral/50 text-coral hover:bg-coral/10" : tone === "ok" ? "border-mint/50 text-mint hover:bg-mint/10" : "border-line text-fg hover:bg-surface-2";
-  return <button disabled={disabled} onClick={onClick} className={`min-h-10 rounded-[12px] border px-3.5 py-2 text-sm transition-colors disabled:opacity-40 ${toneCls}`}>{children}</button>;
+  return <button disabled={disabled} onClick={onClick} className={`min-h-10 rounded-full border bg-white/5 px-4 py-2 text-sm transition-colors disabled:opacity-40 ${toneCls}`}>{children}</button>;
 }
-function Section({ title, note, children }: { title: string; note?: string; children: React.ReactNode }) {
+function Section({ title, note, step, children }: { title: string; note?: string; step?: number; children: React.ReactNode }) {
   return (
-    <section className="rounded-[16px] border border-line bg-surface p-5">
-      <h2 className="text-sm font-medium text-fg">{title}</h2>
+    <section className="rounded-[24px] border border-line bg-surface p-6">
+      <h2 className="flex items-center gap-3 text-sm font-medium text-fg">{step && <span aria-hidden className="tabular flex size-7 items-center justify-center rounded-full border border-line bg-white/10 text-xs text-iris">{step}</span>}{title}</h2>
       {note && <p className="mt-1 text-xs text-muted">{note}</p>}
       <div className="mt-4 flex flex-wrap gap-2">{children}</div>
     </section>
@@ -72,10 +72,10 @@ export default function LabPage() {
       <header className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <p className="text-xs uppercase tracking-widest text-amber">Operator only · demonstration controls</p>
-          <h1 className="mt-1 text-2xl font-semibold">CounterSign Lab</h1>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight"><span className="hero-amount">CounterSign Lab</span></h1>
           <p className="mt-1 text-sm text-muted">Bank simulation · Local-chain demo · {connected === false ? "disconnected" : connected ? "connected" : "connecting"}</p>
         </div>
-        <Link href="/command" className="rounded-[12px] border border-line px-3.5 py-2 text-sm hover:bg-surface-2">Open /command</Link>
+        <Link href="/command" className="btn-primary rounded-full px-5 py-2.5 text-sm">Open customer view</Link>
       </header>
 
       {!authed && (
@@ -87,17 +87,17 @@ export default function LabPage() {
       )}
 
       <div className="mt-5 grid gap-5">
-        <Section title="Checkout fixture (merchant)" note="Proposes a payment. The merchant receives no approval capability; the customer must pair and approve.">
+        <Section step={1} title="Propose a payment (merchant checkout fixture)" note="Next: the customer opens /command, pairs a phone and approves there. The merchant receives no approval capability; the customer must pair and approve.">
           <Btn disabled={!authed || busy || !shop} onClick={() => run("create crypto purchase", async () => { const v = await api.createAgreement({ rail: "crypto", recipient: shop!, recipientDisplayName: "Demo Shop", amount: TOKEN_100, itemId: "1", ttlSeconds: 600 }); return `created ${v.agreement.id}`; })}>Propose 100 CSUSD purchase</Btn>
           <Btn disabled={!authed || busy} onClick={() => run("create bank transfer", async () => { const v = await api.createAgreement({ rail: "bank", recipient: BANK_ACCOUNTS.merchant, recipientDisplayName: "Demo Merchant LLC", amount: "10000", ttlSeconds: 600 }); return `created ${v.agreement.id}`; })}>Propose 100.00 AED transfer</Btn>
           <Btn disabled={!authed || busy} onClick={() => run("create short-lived bank transfer", async () => { const v = await api.createAgreement({ rail: "bank", recipient: BANK_ACCOUNTS.merchant, recipientDisplayName: "Demo Merchant LLC", amount: "10000", ttlSeconds: 10 }); return `created ${v.agreement.id} (expires in 10 s)`; })}>Propose transfer expiring in 10 s</Btn>
         </Section>
 
-        <Section title="Execution attempts (merchant / attack fixture)" note="The fixture can alter the execution proposal. It cannot approve, rewrite approved facts or debit directly.">
+        <Section step={2} title="Attempt execution (merchant / attack fixture)" note="The fixture can alter the execution proposal. It cannot approve, rewrite approved facts or debit directly.">
           {ags.length === 0 && <p className="text-sm text-muted">No agreements yet.</p>}
           <div className="grid w-full gap-3">
             {ags.map((v) => (
-              <div key={v.agreement.id} className="rounded-[12px] border border-line bg-bg p-3">
+              <div key={v.agreement.id} className="rounded-[12px] border border-line bg-white/5 p-3">
                 <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
                   <span><span className="ident text-muted">{v.agreement.id.slice(0, 8)}</span> · {v.agreement.rail} · {formatUnitsStr(v.agreement.amount, v.agreement.asset.decimals)} {v.agreement.asset.code}</span>
                   <span className="text-muted">state: <span className="text-fg">{v.state}</span> · executions: {v.executionCount}</span>
@@ -115,7 +115,7 @@ export default function LabPage() {
           </div>
         </Section>
 
-        <Section title="Crypto comparison (operator)" note="The vulnerable account is an INTENTIONAL comparison fixture: unlimited approval, then the shop drains it later. The same drain is actually sent against the protected account.">
+        <Section step={3} title="Compare with an unprotected account (operator)" note="The vulnerable account is an INTENTIONAL comparison fixture: unlimited approval, then the shop drains it later. The same drain is actually sent against the protected account.">
           <Btn tone="danger" disabled={!authed || busy} onClick={() => run("vulnerable purchase", async () => { const s = await api.labVulnerablePurchase(); return `vulnerable balance ${s.customerBalance}, allowance ${s.allowance}`; })}>Run vulnerable purchase</Btn>
           <Btn tone="danger" disabled={!authed || busy} onClick={() => run("drain vulnerable", async () => { const s = await api.labDrain("vulnerable"); return `drain ${s.drainAttempt?.succeeded ? "SUCCEEDED" : "failed"} · balance ${s.customerBalance}`; })}>Send later drain → vulnerable</Btn>
           <Btn tone="danger" disabled={!authed || busy} onClick={() => run("drain protected", async () => { const s = await api.labDrain("protected"); return `drain ${s.drainAttempt?.succeeded ? "SUCCEEDED" : "FAILED"}${s.drainAttempt?.revertReason ? ` (${s.drainAttempt.revertReason})` : ""} · balance ${s.customerBalance} · allowance ${s.allowance}`; })}>Send later drain → protected</Btn>
@@ -125,7 +125,7 @@ export default function LabPage() {
           <Btn disabled={!authed || busy} onClick={() => run("reset", async () => { const r = await api.labReset(); return `reset ok · chain reset ${r.chainReset}`; })}>Reset demonstration</Btn>
         </Section>
 
-        <section className="rounded-[16px] border border-line bg-surface p-5">
+        <section className="rounded-[24px] border border-line bg-surface p-6">
           <h2 className="text-sm font-medium">Result log (server responses)</h2>
           <ul className="mt-3 space-y-1.5 text-xs">
             {log.length === 0 && <li className="text-muted">Nothing yet.</li>}

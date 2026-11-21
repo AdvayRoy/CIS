@@ -51,7 +51,8 @@
     "decline": "Rad etish",
     "declining": "Rad etilmoqda",
     "failed": "Server bu amalni qabul qilmadi",
-    "expiredLocal": "Amal qilish muddati oʻtdi. Server tasdigʻi kutilmoqda."
+    "expiredLocal": "Amal qilish muddati oʻtdi. Server tasdigʻi kutilmoqda.",
+    "holdHint": "Tasdiqlash uchun bosib turing"
   },
   "status": {
     "awaiting_approval": "Har bir tafsilotni tekshiring. Siz tasdiqlamaguningizcha hech narsa toʻlanmaydi.",

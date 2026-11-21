@@ -45,7 +45,7 @@ for (let i = 0; i < DESKTOPS.length; i++) {
     await shot(desk.page, `desktop-${d.name}-1-awaiting`);
 
     // --- approve on the phone (UI), verify on the server ---
-    await approveBtn.click();
+    await approveBtn.click({ delay: 900 });
     await expect.poll(async () => (await getView(id)).state, { message: "phone approval must reach the server" }).toBe("approved");
     await expect(ph.page.locator("body")).toContainText(/approved/i);
     expect(successClaims(await bodyText(ph.page)), "approved is not settled").toEqual([]);
@@ -115,7 +115,7 @@ test("9+12 crypto journey: desktop 1440x900 + phone 390x844 agree with EVM-read 
   expect(pt).toMatch(/Local-chain demo/i);
   await expectNoHorizontalOverflow(ph.page, "phone crypto awaiting");
   await shot(ph.page, "phone-390x844-crypto-1-awaiting");
-  await approveBtn.click();
+  await approveBtn.click({ delay: 900 });
   await expect.poll(async () => (await getView(id)).state).toBe("approved");
 
   const ex = await executeApi(await getView(id));

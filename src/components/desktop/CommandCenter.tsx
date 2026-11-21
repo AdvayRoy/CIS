@@ -34,8 +34,8 @@ function SignIn({ onDone }: { onDone: () => void }) {
         {failed ? t("signIn.failed") : t("signIn.label")}
       </label>
       <input id="cs-role-key" value={key} onChange={(e) => setKey(e.target.value)} autoComplete="off" spellCheck={false}
-        aria-invalid={failed} className="ident h-8 w-32 rounded-lg border border-line bg-bg px-2 text-[12px] text-fg" />
-      <button type="submit" disabled={busy || !key} className="h-8 rounded-lg border border-line px-3 text-[13px] hover:bg-surface-2 disabled:opacity-40">
+        aria-invalid={failed} className="ident h-9 w-32 rounded-full border border-line px-3 text-[12px] text-fg" />
+      <button type="submit" disabled={busy || !key} className="btn-primary h-9 rounded-full px-4 text-[13px] disabled:opacity-40">
         {t("signIn.action")}
       </button>
     </form>
@@ -93,10 +93,10 @@ export function CommandCenter() {
 
   return (
     <MotionConfig reducedMotion="user">
-    <div className="flex h-dvh min-h-0 w-full overflow-hidden bg-bg text-fg">
+    <div className="flex h-dvh min-h-0 w-full overflow-hidden text-fg">
       {/* Slim rail */}
-      <aside className="flex w-14 shrink-0 flex-col items-center gap-2 border-e border-line py-3">
-        <div className="mb-2 flex size-9 items-center justify-center rounded-xl bg-mint text-bg" title={tc("brand")}><ShieldCheck aria-hidden className="size-5" /></div>
+      <aside className="glass-bar flex w-16 shrink-0 flex-col items-center gap-2 border-e border-line py-3">
+        <div className="mb-2 flex size-9 items-center justify-center rounded-[14px] btn-primary" title={tc("brand")}><ShieldCheck aria-hidden className="size-5" /></div>
         <button type="button" className={navBtn} onClick={() => scrollTo("payment")} aria-label={t("nav.payment")} title={t("nav.payment")}><ArrowLeftRight aria-hidden className="size-[18px]" /></button>
         <button type="button" className={navBtn} onClick={() => scrollTo("chain")} aria-label={t("nav.chain")} title={t("nav.chain")}><Coins aria-hidden className="size-[18px]" /></button>
         <button type="button" className={navBtn} onClick={() => scrollTo("bank")} aria-label={t("nav.bank")} title={t("nav.bank")}><Landmark aria-hidden className="size-[18px]" /></button>
@@ -104,7 +104,7 @@ export function CommandCenter() {
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex h-14 shrink-0 items-center gap-4 border-b border-line px-5">
+        <header className="glass-bar relative z-20 flex h-16 shrink-0 items-center gap-4 border-b border-line px-6">
           <div className="flex min-w-0 items-baseline gap-3">
             <h1 className="text-[15px] font-semibold tracking-tight">{tc("brand")}</h1>
             <p className="hidden truncate text-[13px] text-muted min-[1360px]:block">{tc("tagline")}</p>
@@ -140,19 +140,19 @@ export function CommandCenter() {
               <section id="payment" className="flex flex-col gap-5">
                 {!overview ? <Notice tone={live.connected === false ? "coral" : "muted"}>{live.connected === false ? t("status.noData") : t("status.loading")}</Notice>
                   : !view ? (
-                    <div className="rounded-[16px] border border-dashed border-line p-8">
+                    <div className="rounded-[28px] border border-line bg-surface p-10">
                       <p className="text-lg font-medium">{t("empty.title")}</p>
                       <p className="mt-1 max-w-md text-[13px] leading-relaxed text-muted">{t("empty.body")}</p>
-                      <Link href="/lab" className="mt-4 inline-flex h-9 items-center rounded-xl border border-line px-3 text-[13px] hover:bg-surface">{t("empty.action")}</Link>
+                      <Link href="/lab" className="mt-4 btn-primary inline-flex h-11 items-center rounded-full px-5 text-sm">{t("empty.action")}</Link>
                     </div>
                   ) : (<>
-                    <div className="flex items-end justify-between gap-6">
+                    <div key={view.agreement.id} className="tilt sheen flex items-end justify-between gap-6 rounded-[28px] border border-line bg-surface p-7">
                       <div className="min-w-0">
                         <p className="flex items-center gap-2 text-[13px] text-muted">
                           <span>{tc(`rail.${view.agreement.rail}`)}</span><span aria-hidden>·</span>
                           <span>{tc(`env.${view.agreement.rail === "bank" ? "bank" : "chain"}`)}</span>
                         </p>
-                        <p className="tabular mt-1 text-5xl font-medium tracking-tight">{fmtAmount(view.agreement.amount, view.agreement.asset.decimals)}
+                        <p className="tabular mt-1 text-6xl font-semibold tracking-tight"><span className="hero-amount">{fmtAmount(view.agreement.amount, view.agreement.asset.decimals)}</span>
                           <span className="ms-2 text-xl font-normal text-muted">{view.agreement.asset.code}</span></p>
                         <p className="mt-2 truncate text-[13px] text-muted">
                           {t("hero.to")} <span className="text-fg">{view.agreement.recipientDisplayName}</span>{" "}
@@ -194,7 +194,7 @@ export function CommandCenter() {
 
           <motion.aside id="evidence-inspector" aria-label={t("inspector.title")} aria-hidden={!inspectorOpen} inert={!inspectorOpen}
             initial={false} animate={{ width: inspectorOpen ? 340 : 0 }} transition={{ duration: 0.26, ease: "easeOut" }}
-            className={cn("shrink-0 overflow-hidden bg-surface/40", inspectorOpen && "border-s border-line")}>
+            className={cn("shrink-0 overflow-hidden glass-bar", inspectorOpen && "border-s border-line")}>
             <EvidenceInspector view={view} evidence={evidence} stage={stage} onStage={setStage} />
           </motion.aside>
         </div>

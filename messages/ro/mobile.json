@@ -51,7 +51,8 @@
     "decline": "Refuz",
     "declining": "Se refuză",
     "failed": "Serverul nu a acceptat această acțiune",
-    "expiredLocal": "Timpul de expirare a trecut. Se așteaptă confirmarea serverului."
+    "expiredLocal": "Timpul de expirare a trecut. Se așteaptă confirmarea serverului.",
+    "holdHint": "Țineți apăsat pentru a aproba"
   },
   "status": {
     "awaiting_approval": "Verificați fiecare detaliu. Nu se plătește nimic până nu aprobați.",
