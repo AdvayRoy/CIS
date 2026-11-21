@@ -204,6 +204,8 @@ export function ApproveScreen({ id }: { id: string }) {
               )}
             </AnimatePresence>
 
+            {state !== "awaiting_approval" && <Receipt view={view} reasonText={reasonText} />}
+
             <PaymentCard view={view} remainingMs={remainingMs} envLabel={envLabel} />
 
             {state === "awaiting_approval" && pairing === "unpaired" && (
@@ -221,8 +223,6 @@ export function ApproveScreen({ id }: { id: string }) {
                 {t("pairing.checking")}
               </p>
             )}
-
-            {state !== "awaiting_approval" && <Receipt view={view} reasonText={reasonText} />}
           </>
         )}
       </div>

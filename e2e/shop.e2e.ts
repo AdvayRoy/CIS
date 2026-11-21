@@ -15,7 +15,7 @@ test("shop flow", async ({ browser }) => {
   const ph = await browser.newContext({ viewport: { width: 390, height: 844 }, hasTouch: true });
   const phone = await ph.newPage();
   await phone.goto(B + pr.approvePath);
-  await phone.getByTestId("approve").click({ delay: 900 });
+  await phone.getByTestId("approve").click({ delay: 1100 });
   await expect(shop.getByText("Order confirmed")).toBeVisible({ timeout: 15000 });
   await shop.screenshot({ path: "docs-verify/screenshots/shop-2-paid.png" });
   const desk = await ctx.newPage();

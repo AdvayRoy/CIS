@@ -25,9 +25,9 @@ export function StoppedPanel({ evidence, reasonText }: { evidence: ExecutionEvid
             <li key={`${d.field}-${i}`} className="rounded-xl border border-line p-3" data-testid="diff" data-field={d.field}>
               <p className="text-sm font-medium">{c(`field.${d.field}`)}</p>
               <p className="mt-2 text-xs text-muted">{t("stopped.approved")}</p>
-              <p className="ident text-[13px] text-mint">{diffValue(d, d.approved, evidence)}</p>
+              <p><span className="ident text-[13px] text-mint">{diffValue(d, d.approved, evidence)}</span></p>
               <p className="mt-2 text-xs text-muted">{t("stopped.attempted")}</p>
-              <p className="ident text-[13px] text-coral">{diffValue(d, d.attempted, evidence)}</p>
+              <p><span className="ident text-[13px] text-coral">{diffValue(d, d.attempted, evidence)}</span></p>
             </li>
           ))}
         </ul>

@@ -50,7 +50,7 @@ export default function ShopPage() {
   const price = rail === "bank" ? "100.00 AED" : "100 CSUSD";
 
   return (
-    <main className="mx-auto grid w-full max-w-5xl gap-6 px-6 py-10 md:grid-cols-[1.1fr_0.9fr]">
+    <main className="mx-auto grid min-h-dvh w-full max-w-5xl content-center items-stretch gap-6 px-6 py-10 md:grid-cols-[1.1fr_0.9fr]">
       <section className="tilt rounded-[20px] border border-line bg-surface p-8">
         <p className="flex items-center gap-2 text-xs tracking-widest text-muted uppercase"><ShoppingBag aria-hidden className="size-4" />Demo Shop · merchant checkout fixture</p>
         <h1 className="mt-6 text-4xl font-semibold tracking-tight">Annual membership</h1>
@@ -101,11 +101,11 @@ export default function ShopPage() {
               </div>
             )}
             {step === -1 && view && (
-              <p role="alert" className="mt-6 flex items-center gap-2 text-sm text-coral"><X aria-hidden className="size-4" />Not paid. State: {view.state}.</p>
+              <p role="alert" className="cs-stop glow-coral mt-6 flex items-center gap-2 rounded-[14px] border border-coral/40 p-4 text-sm text-coral"><X aria-hidden className="size-4" />Not paid: {view.state === "declined" ? "the customer declined on their phone." : view.state === "expired" ? "the approval window expired." : `state ${view.state}.`}</p>
             )}
             {step === 3 && view && (
-              <div className="glow-mint mt-6 rounded-[14px] border border-mint/40 p-4">
-                <p className="text-sm font-medium text-mint">Order confirmed</p>
+              <div className="sheen glow-mint mt-6 rounded-[14px] border border-mint/40 p-5">
+                <p className="text-xl font-semibold text-mint">Order confirmed</p>
                 <p className="mt-1 text-xs text-muted">Paid {formatUnitsStr(view.agreement.amount, view.agreement.asset.decimals)} {view.agreement.asset.code}, executed {view.executionCount} time.</p>
                 {receipt && <p className="ident mt-2 text-[11px] text-muted">{receipt.kind === "ledger" ? receipt.transferId : receipt.txHash}</p>}
               </div>

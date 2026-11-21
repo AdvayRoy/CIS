@@ -73,6 +73,8 @@ export function CommandCenter() {
   const view = agreements.find((v) => v.agreement.id === selectedId) ?? agreements[0] ?? null;
   const count = view?.evidence.length ?? 0;
   const key = `${view?.agreement.id ?? ""}:${count}`;
+  const lastEv = view && count ? view.evidence[count - 1] : null;
+  const bad = !!lastEv && !lastEv.decision.accepted;
   const evidenceIdx = count ? Math.min(attemptPick?.key === key ? attemptPick.idx : count - 1, count - 1) : -1;
   const evidence = view && evidenceIdx >= 0 ? view.evidence[evidenceIdx] : null;
   const defaultStage: Stage = !count || !view ? "approved" : view.evidence[count - 1].decision.accepted ? "executed" : "attempted";
@@ -139,7 +141,7 @@ export function CommandCenter() {
 
           <main className={cn("min-w-0 flex-1 overflow-x-hidden overflow-y-auto transition-opacity duration-200", stale && "opacity-70")}>
             <div className="mx-auto flex max-w-[1000px] flex-col gap-5 p-6">
-              {overview && <AssetsStrip overview={overview} bankLabel={tc("env.bank")} chainLabel={tc("env.chain")} payLabel="Demo Shop" />}
+              {overview && <AssetsStrip overview={overview} bankLabel={tc("env.bank")} chainLabel={tc("env.chain")} payLabel="Demo Shop" protectedRail={bad && view ? view.agreement.rail : null} />}
               <section id="payment" className="flex flex-col gap-5">
                 {!overview ? <Notice tone={live.connected === false ? "coral" : "muted"}>{live.connected === false ? t("status.noData") : t("status.loading")}</Notice>
                   : !view ? (
@@ -149,7 +151,7 @@ export function CommandCenter() {
                       <Link href="/shop" className="mt-4 btn-primary inline-flex h-11 items-center rounded-full px-5 text-sm">Demo Shop</Link>
                     </div>
                   ) : (<>
-                    <div key={view.agreement.id} className="tilt sheen flex items-end justify-between gap-6 rounded-[20px] border border-line bg-surface p-7">
+                    <div key={`${view.agreement.id}:${view.state}:${count}`} className={cn("tilt sheen flex items-end justify-between gap-6 rounded-[20px] border bg-surface p-7", bad ? "border-coral/50 glow-coral cs-stop" : view.state === "settled" ? "border-mint/40 glow-mint" : "border-line")}>
                       <div className="min-w-0">
                         <p className="flex items-center gap-2 text-[13px] text-muted">
                           <span>{tc(`rail.${view.agreement.rail}`)}</span><span aria-hidden>·</span>
@@ -190,8 +192,9 @@ export function CommandCenter() {
                     )}
                   </>)}
               </section>
+              {overview && view?.agreement.rail === "bank" && <BankPanel bank={overview.bank} label={tc("env.bank")} />}
               {overview && <ChainPanel chain={overview.chain} label={tc("env.chain")} />}
-              {overview && <BankPanel bank={overview.bank} label={tc("env.bank")} />}
+              {overview && view?.agreement.rail !== "bank" && <BankPanel bank={overview.bank} label={tc("env.bank")} />}
             </div>
           </main>
 
