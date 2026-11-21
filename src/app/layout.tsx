@@ -18,7 +18,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" dir="ltr" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col text-fg">
-        <GlassPointer /><I18nProvider>{children}</I18nProvider>
+        <GlassPointer /><p data-testid="demo-indicator" className="flex h-6 shrink-0 items-center justify-center gap-1.5 border-b border-line bg-black text-[11px] text-muted">
+          <span aria-hidden className="size-1.5 rounded-full bg-amber" />Demo environment — no real funds
+        </p>
+        <I18nProvider>{children}</I18nProvider>
       </body>
     </html>
   );

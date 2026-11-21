@@ -52,7 +52,7 @@ export default function ShopPage() {
   const price = rail === "bank" ? "100.00 AED" : "100 CSUSD";
 
   return (
-    <main className="mx-auto grid min-h-dvh w-full max-w-5xl content-center items-stretch gap-6 px-6 py-10 md:grid-cols-[1.1fr_0.9fr]">
+    <main className="mx-auto grid min-h-[calc(100dvh-1.5rem)] w-full max-w-5xl content-center items-stretch gap-6 px-6 py-10 md:grid-cols-[1.1fr_0.9fr]">
       <section className="tilt rounded-[20px] border border-line bg-surface p-8">
         <p className="flex items-center gap-2 text-xs tracking-widest text-muted uppercase"><ShoppingBag aria-hidden className="size-4" />Demo Shop · merchant checkout fixture</p>
         <h1 className="mt-6 text-4xl font-semibold tracking-tight">Annual membership</h1>

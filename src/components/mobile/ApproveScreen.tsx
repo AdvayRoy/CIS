@@ -103,7 +103,7 @@ export function ApproveScreen({ id }: { id: string }) {
 
   return (
     <main
-      className="mx-auto flex min-h-dvh w-full max-w-[430px] flex-col"
+      className="mx-auto flex min-h-[calc(100dvh-1.5rem)] w-full max-w-[430px] flex-col"
       style={{
         paddingTop: "max(env(safe-area-inset-top), 12px)",
         paddingInlineStart: "max(env(safe-area-inset-left), 16px)",
