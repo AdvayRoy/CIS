@@ -95,9 +95,6 @@ function RuleDemo() {
 export function Entry() {
   const tc = useTranslations("common");
   const tagline = tc("tagline");
-  const cut = tagline.search(/[.!?\u061F\u3002]\s/);
-  const head = cut < 0 ? tagline : tagline.slice(0, cut + 1);
-  const tail = cut < 0 ? "" : tagline.slice(cut + 2);
   return (
     <MotionConfig reducedMotion="user">
       <ProductBar>
@@ -107,15 +104,16 @@ export function Entry() {
 
       <main className="mx-auto flex w-full max-w-[1400px] flex-col gap-16 px-4 pb-10 pt-12 sm:gap-24 sm:px-6 sm:pt-20 lg:px-10">
         <section className="flex flex-col items-center text-center">
-          <p className={label}>Product demo</p>
-          <h1 className="mt-5 font-sans text-[44px] font-medium leading-[1.04] tracking-[-0.035em] sm:text-[72px]">
-            <span className="hero-amount block">{head}</span>
-            {tail && <span className="block text-muted">{tail}</span>}
+          <p className={label}>{tagline}</p>
+          <h1 className="mt-6 font-sans text-[34px] font-medium leading-[1.06] tracking-[-0.035em] sm:text-[60px] lg:text-[68px]">
+            <span className="hero-amount block">They verified who you were.</span>
+            <span className="block text-muted">They never verified what you wanted.</span>
           </h1>
-          <p className="mt-6 text-lg text-fg">This recipient. This amount. Once.</p>
-          <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
-            You approve the facts of one payment on your phone. The rail executes exactly those facts and refuses any request that differs, with evidence either way.
+          <p className="mt-8 max-w-2xl text-[17px] leading-relaxed text-muted">
+            We&apos;ve built financial systems that can recognize your face, verify your identity, and authenticate every transaction. Yet a valid authorization can still permit something fundamentally different from what you intended.
           </p>
+          <p className="mt-5 max-w-2xl text-lg text-fg">That is not a failure of identification. It is a failure of control.</p>
+          <p className="mt-3 max-w-2xl text-[15px] text-muted">CounterSign enforces the boundaries of what you actually agreed to.</p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link href="/shop" className="inline-flex h-12 items-center gap-2 rounded-full bg-mint px-6 text-sm font-semibold text-black hover:bg-fg">Launch demo<ArrowRight aria-hidden className="size-4 rtl:rotate-180" /></Link>
             <Link href="/command" className="inline-flex h-12 items-center gap-2 rounded-full border border-line px-6 text-sm text-fg transition-colors duration-200 hover:bg-surface-2"><ListChecks aria-hidden className="size-4" />Command centre</Link>
