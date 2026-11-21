@@ -32,7 +32,7 @@ for (const c of CASES) {
     await expectNoHorizontalOverflow(ph.page, `phone ${c.code} awaiting`);
     await shot(ph.page, `i18n-${c.code}-phone-1-awaiting`);
 
-    await approve.click();
+    await approve.click({ delay: 900 });
     await expect.poll(async () => (await getView(id)).state).toBe("approved");
 
     // mutated recipient is stopped; reason is rendered in the selected language
@@ -64,7 +64,7 @@ test("i18n: switching language on the phone is instant, keeps payment state and 
   const created = await createAgreement("bank"); const id = created.agreement.id; const pair = await pairing(id);
   const ph = await phone(browser, PHONES[0]);
   await ph.page.goto(pair.approvePath);
-  await ph.page.getByTestId("approve").click();
+  await ph.page.getByTestId("approve").click({ delay: 900 });
   await expect.poll(async () => (await getView(id)).state).toBe("approved");
   let navigations = 0; ph.page.on("framenavigated", (f) => { if (f === ph.page.mainFrame()) navigations++; });
   await ph.page.locator('[data-slot="language-selector"] button').first().click();

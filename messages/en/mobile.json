@@ -51,7 +51,8 @@
     "decline": "Decline",
     "declining": "Declining",
     "failed": "The server did not accept that action",
-    "expiredLocal": "The expiry time has passed. Waiting for the server to confirm."
+    "expiredLocal": "The expiry time has passed. Waiting for the server to confirm.",
+    "holdHint": "Press and hold to approve"
   },
   "status": {
     "awaiting_approval": "Check every detail. Nothing is paid until you approve.",

@@ -5,9 +5,9 @@ import { type Tone, toneBg, toneBorder, toneText } from "./format";
 
 export function Pill({ tone, children, className }: { tone: Tone; children: ReactNode; className?: string }) {
   return (
-    <span className={cn("inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-medium whitespace-nowrap",
+    <span className={cn("inline-flex items-center gap-1.5 rounded-full border bg-white/5 px-2.5 py-1 text-xs font-medium whitespace-nowrap backdrop-blur-md",
       toneBorder[tone], toneText[tone], className)}>
-      <span aria-hidden className={cn("size-1.5 rounded-full", toneBg[tone])} />
+      <span aria-hidden className={cn("live-dot size-1.5 rounded-full", toneBg[tone])} />
       {children}
     </span>
   );
@@ -29,7 +29,7 @@ export function Row({ label, children, changed }: { label: ReactNode; children: 
 export function Panel({ id, title, aside, children, className }:
   { id?: string; title: ReactNode; aside?: ReactNode; children: ReactNode; className?: string }) {
   return (
-    <section id={id} className={cn("rounded-[16px] border border-line bg-surface p-5", className)}>
+    <section id={id} className={cn("rounded-[24px] border border-line bg-surface p-6", className)}>
       <header className="mb-4 flex items-center justify-between gap-3">
         <h2 className="text-[13px] font-medium tracking-wide text-muted uppercase">{title}</h2>
         {aside}

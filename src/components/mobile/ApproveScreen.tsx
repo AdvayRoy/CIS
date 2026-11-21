@@ -14,6 +14,7 @@ import { PaymentCard } from "./PaymentCard";
 import { PaymentPath } from "./PaymentPath";
 import { StoppedPanel } from "./StoppedPanel";
 import { Receipt } from "./Receipt";
+import { HoldButton } from "@/components/fx/HoldButton";
 import { LanguageSelector } from "@/components/i18n/LanguageSelector";
 
 type Tone = "mint" | "amber" | "coral" | "muted";
@@ -228,7 +229,7 @@ export function ApproveScreen({ id }: { id: string }) {
 
       {view && showActions && (
         <div
-          className="sticky bottom-0 -mx-4 border-t border-line bg-bg px-4 pt-3"
+          className="glass-bar sticky bottom-0 -mx-4 rounded-t-[28px] border-t border-line px-4 pt-4"
           style={{ paddingBottom: "max(env(safe-area-inset-bottom), 16px)" }}
         >
           {actionError && (
@@ -237,22 +238,22 @@ export function ApproveScreen({ id }: { id: string }) {
             </p>
           )}
           {locallyExpired && <p role="status" className="mb-2 text-sm text-muted">{t("action.expiredLocal")}</p>}
-          <button
-            type="button"
+          <HoldButton
             data-testid="approve"
-            onClick={() => act("approve")}
+            onConfirm={() => act("approve")}
             disabled={!!busy || offline || locallyExpired}
-            className="flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-mint px-4 text-base font-semibold text-bg transition-opacity duration-200 disabled:opacity-40"
+            hint={busy === "approve" ? undefined : t("action.holdHint")}
+            className="min-h-16 rounded-[22px] px-4 text-base"
           >
             {busy === "approve" && <Loader2 aria-hidden className="size-5 animate-spin" />}
             {busy === "approve" ? t("action.approving") : t("action.approve")}
-          </button>
+          </HoldButton>
           <button
             type="button"
             data-testid="decline"
             onClick={() => act("decline")}
             disabled={!!busy || offline}
-            className="mt-2 flex min-h-12 w-full items-center justify-center gap-2 rounded-2xl border border-line px-4 text-base font-medium text-fg transition-opacity duration-200 disabled:opacity-40"
+            className="mt-2 flex min-h-12 w-full items-center justify-center gap-2 rounded-[18px] border border-line bg-white/5 px-4 text-base font-medium text-fg transition-opacity duration-200 disabled:opacity-40"
           >
             {busy === "decline" && <Loader2 aria-hidden className="size-5 animate-spin" />}
             {busy === "decline" ? t("action.declining") : t("action.decline")}

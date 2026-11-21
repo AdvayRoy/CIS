@@ -51,7 +51,8 @@
     "decline": "İmtina et",
     "declining": "İmtina edilir",
     "failed": "Server bu əməliyyatı qəbul etmədi",
-    "expiredLocal": "Etibarlılıq müddəti keçib. Serverin təsdiqi gözlənilir."
+    "expiredLocal": "Etibarlılıq müddəti keçib. Serverin təsdiqi gözlənilir.",
+    "holdHint": "Təsdiqləmək üçün basıb saxlayın"
   },
   "status": {
     "awaiting_approval": "Hər bir təfərrüatı yoxlayın. Siz təsdiqləməyincə heç nə ödənilmir.",

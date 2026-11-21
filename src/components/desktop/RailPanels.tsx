@@ -26,7 +26,7 @@ function Scenario({ s, token }: { s: TokenScenario; token: Asset }) {
   const allowance = unlimited ? t("chain.unlimited") : fmtAsset(s.allowance, token);
   const d = s.drainAttempt;
   return (
-    <div className={cn("min-w-0 rounded-xl border bg-bg/40 p-4", vulnerable ? "border-dashed border-coral/40" : "border-line")}>
+    <div className={cn("min-w-0 rounded-[20px] border bg-white/[0.04] p-5", vulnerable ? "border-dashed border-coral/40" : "border-line")}>
       <div className="flex items-center justify-between gap-2">
         <h3 className="text-sm font-medium">{t(`chain.${s.label}.title`)}</h3>
         <Pill tone={s.purchased ? (vulnerable ? "amber" : "mint") : "muted"}>{s.purchased ? t("chain.purchased") : t("chain.notPurchased")}</Pill>
@@ -92,7 +92,7 @@ export function BankPanel({ bank, label }: { bank: Overview["bank"]; label: stri
         : bank.accounts.length === 0 ? <Notice>{t("bank.empty")}</Notice> : (
           <ul className="grid grid-cols-3 gap-4">
             {bank.accounts.map((acc) => (
-              <li key={acc.id} className="min-w-0 rounded-xl border border-line bg-bg/40 p-4">
+              <li key={acc.id} className="min-w-0 rounded-[20px] border border-line bg-white/[0.04] p-5">
                 <p className="truncate text-[13px] text-muted">{acc.displayName}</p>
                 <motion.p key={acc.balance} initial={{ opacity: 0.4, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}
                   className="tabular mt-1 truncate text-2xl font-medium tracking-tight">{fmtAmount(acc.balance, acc.asset.decimals)}

@@ -45,7 +45,7 @@ export function PairPhone({ agreementId, canPair, serverTime }: { agreementId: s
           <p className="mt-0.5 text-[13px] text-muted">{canPair ? t("pair.hint") : t("pair.needSignIn")}</p>
         </div>
         <button type="button" onClick={pair} disabled={!canPair || busy}
-          className="inline-flex h-10 shrink-0 items-center gap-2 rounded-xl bg-fg px-4 text-sm font-medium text-bg transition-opacity duration-200 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-40">
+          className="inline-flex h-10 shrink-0 items-center gap-2 btn-primary rounded-full px-5 text-sm disabled:cursor-not-allowed disabled:opacity-40">
           <Smartphone aria-hidden className="size-4" />
           {pairing ? t("pair.again") : t("pair.action")}
         </button>
@@ -63,7 +63,7 @@ export function PairPhone({ agreementId, canPair, serverTime }: { agreementId: s
                 <p className={`text-[13px] ${expired ? "text-coral" : "text-muted"}`}>
                   {expired ? t("pair.expired") : t("pair.expires", { time: fmt.dateTime(new Date(toMs(pairing.expiresAt)), { hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false }) })}
                 </p>
-                <p className="ident mt-2 max-h-16 overflow-hidden rounded-lg border border-line bg-bg px-3 py-2 text-[11px] text-muted">{pairing.url}</p>
+                <p className="ident mt-2 max-h-16 overflow-hidden rounded-lg border border-line bg-white/5 px-3 py-2 text-[11px] text-muted">{pairing.url}</p>
                 <button type="button" onClick={copy}
                   className="mt-3 inline-flex h-9 items-center gap-2 rounded-xl border border-line px-3 text-[13px] hover:bg-surface-2">
                   {copied ? <Check aria-hidden className="size-4 text-mint" /> : <Copy aria-hidden className="size-4" />}

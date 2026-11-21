@@ -116,7 +116,7 @@ export function LanguageSelector({ className }: { className?: string }) {
               value={query}
               onChange={(e) => { setQuery(e.target.value); setActiveIndex(0); }}
               ref={inputRef}
-              className="h-12 w-full rounded-[12px] border border-line bg-bg ps-11 pe-4 text-base text-fg placeholder:text-muted/70 focus:border-mint/60 focus:outline-none"
+              className="h-12 w-full rounded-[12px] border border-line ps-11 pe-4 text-base text-fg placeholder:text-muted/70 focus:border-mint/60 focus:outline-none"
             />
           </div>
           <ul ref={listRef} id={listId} role="listbox" aria-label={t("label")} className="mt-3 min-h-0 flex-1 overflow-y-auto overscroll-contain px-2 pb-3">

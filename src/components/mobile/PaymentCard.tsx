@@ -31,7 +31,7 @@ export function PaymentCard({ view, remainingMs, envLabel }: { view: AgreementVi
   const expiryAt = format.dateTime(new Date(a.expiry * 1000), { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 
   return (
-    <section className="rounded-[20px] border border-line bg-surface p-4" data-testid="payment-card">
+    <section className="tilt rounded-[28px] border border-line bg-surface p-5" data-testid="payment-card">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-xs text-muted">{t("card.payTo")}</p>

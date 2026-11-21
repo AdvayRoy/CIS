@@ -51,7 +51,8 @@
     "decline": "Ret etmek",
     "declining": "Ret edilýär",
     "failed": "Serwer bu hereketi kabul etmedi",
-    "expiredLocal": "Möhleti geçdi. Serweriň tassyklamasyna garaşylýar."
+    "expiredLocal": "Möhleti geçdi. Serweriň tassyklamasyna garaşylýar.",
+    "holdHint": "Tassyklamak üçin basyp saklaň"
   },
   "status": {
     "awaiting_approval": "Her bir jikme-jikligi barlaň. Siz tassyklaýançaňyz hiç zat tölenmeýär.",
