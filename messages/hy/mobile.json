@@ -65,6 +65,9 @@
   },
   "path": {
     "label": "Վճարման ընթացք",
+    "approval": "Հաստատում",
+    "attempt": "Փորձ",
+    "execution": "Կատարում",
     "approved": "Հաստատված է",
     "attempted": "Փորձ է արվել",
     "executed": "Կատարված է",

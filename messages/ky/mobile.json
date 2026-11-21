@@ -65,6 +65,9 @@
   },
   "path": {
     "label": "Төлөмдүн жүрүшү",
+    "approval": "Ырастоо",
+    "attempt": "Аракет",
+    "execution": "Аткаруу",
     "approved": "Ырасталды",
     "attempted": "Аракет жасалды",
     "executed": "Аткарылды",

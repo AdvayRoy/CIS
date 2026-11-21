@@ -10,19 +10,19 @@ Financial authorization never depends on these strings: the server returns struc
 | Locale | Language | common | mobile (approval flow) | desktop | lab | Status | Native review |
 |---|---|---|---|---|---|---|---|
 | en | English | source | source | source | source | Source | n/a |
-| ar | العربية (RTL) | 55/55 | 95/95 | 112/112 | English | Complete | No |
-| ru | Русский | 55/55 | 95/95 | 112/112 | English | Complete | No |
-| uk | Українська | 55/55 | 95/95 | 112/112 | English | Complete | No |
-| be | Беларуская | 55/55 | 95/95 | 112/112 | English | Complete | No |
-| ro | Română | 55/55 | 95/95 | 112/112 | English | Complete | No |
-| kk | Қазақша | 55/55 | 95/95 | 112/112 | English | Complete, lower confidence | No |
-| uz | Oʻzbekcha | 55/55 | 95/95 | 112/112 | English | Complete, lower confidence | No |
-| az | Azərbaycan dili | 55/55 | 95/95 | 112/112 | English | Complete, lower confidence | No |
-| hy | Հայերեն | 55/55 | 95/95 | 112/112 | English | Complete, lower confidence | No |
-| ka | ქართული | 55/55 | 95/95 | 112/112 | English | Complete, lower confidence | No |
-| ky | Кыргызча | 55/55 | 95/95 | 112/112 | English | Complete, lowest confidence | No |
-| tg | Тоҷикӣ | 55/55 | 95/95 | 112/112 | English | Complete, lowest confidence | No |
-| tk | Türkmençe | 55/55 | 95/95 | 112/112 | English | Complete, lowest confidence | No |
+| ar | العربية (RTL) | 55/55 | 98/98 | 112/112 | English | Complete | No |
+| ru | Русский | 55/55 | 98/98 | 112/112 | English | Complete | No |
+| uk | Українська | 55/55 | 98/98 | 112/112 | English | Complete | No |
+| be | Беларуская | 55/55 | 98/98 | 112/112 | English | Complete | No |
+| ro | Română | 55/55 | 98/98 | 112/112 | English | Complete | No |
+| kk | Қазақша | 55/55 | 98/98 | 112/112 | English | Complete, lower confidence | No |
+| uz | Oʻzbekcha | 55/55 | 98/98 | 112/112 | English | Complete, lower confidence | No |
+| az | Azərbaycan dili | 55/55 | 98/98 | 112/112 | English | Complete, lower confidence | No |
+| hy | Հայերեն | 55/55 | 98/98 | 112/112 | English | Complete, lower confidence | No |
+| ka | ქართული | 55/55 | 98/98 | 112/112 | English | Complete, lower confidence | No |
+| ky | Кыргызча | 55/55 | 98/98 | 112/112 | English | Complete, lowest confidence | No |
+| tg | Тоҷикӣ | 55/55 | 98/98 | 112/112 | English | Complete, lowest confidence | No |
+| tk | Türkmençe | 55/55 | 98/98 | 112/112 | English | Complete, lowest confidence | No |
 
 Notes
 

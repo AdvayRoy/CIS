@@ -65,6 +65,9 @@
   },
   "path": {
     "label": "Progresul plății",
+    "approval": "Aprobare",
+    "attempt": "Încercare",
+    "execution": "Executare",
     "approved": "Aprobată",
     "attempted": "Încercată",
     "executed": "Executată",

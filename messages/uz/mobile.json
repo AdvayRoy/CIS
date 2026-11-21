@@ -65,6 +65,9 @@
   },
   "path": {
     "label": "Toʻlov jarayoni",
+    "approval": "Tasdiqlash",
+    "attempt": "Urinish",
+    "execution": "Bajarish",
     "approved": "Tasdiqlandi",
     "attempted": "Urinish boʻldi",
     "executed": "Bajarildi",

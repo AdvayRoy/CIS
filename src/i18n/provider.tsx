@@ -69,7 +69,7 @@ export function I18nProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const stored = localStorage.getItem(LOCALE_STORAGE_KEY);
-      if (isLocale(stored) && stored !== DEFAULT_LOCALE) apply(stored);
+      if (isLocale(stored) && stored !== DEFAULT_LOCALE) queueMicrotask(() => apply(stored));
     } catch {}
     const onStorage = (e: StorageEvent) => { if (e.key === LOCALE_STORAGE_KEY && isLocale(e.newValue)) apply(e.newValue); };
     window.addEventListener("storage", onStorage);

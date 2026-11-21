@@ -65,6 +65,9 @@
   },
   "path": {
     "label": "Төлем барысы",
+    "approval": "Растау",
+    "attempt": "Әрекет",
+    "execution": "Орындау",
     "approved": "Расталды",
     "attempted": "Әрекет жасалды",
     "executed": "Орындалды",

@@ -65,6 +65,9 @@
   },
   "path": {
     "label": "تقدّم الدفعة",
+    "approval": "الموافقة",
+    "attempt": "المحاولة",
+    "execution": "التنفيذ",
     "approved": "تمت الموافقة",
     "attempted": "جرت المحاولة",
     "executed": "تم التنفيذ",

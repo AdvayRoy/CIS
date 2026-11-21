@@ -65,6 +65,9 @@
   },
   "path": {
     "label": "Ход платежа",
+    "approval": "Подтверждение",
+    "attempt": "Попытка",
+    "execution": "Исполнение",
     "approved": "Подтверждено",
     "attempted": "Попытка",
     "executed": "Исполнено",

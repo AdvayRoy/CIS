@@ -28,12 +28,13 @@ export function LanguageSelector({ className }: { className?: string }) {
     return LOCALES.filter((l) => fold(l.name).includes(q) || fold(l.english).includes(q) || l.code.startsWith(q));
   }, [query]);
 
-  useEffect(() => {
-    if (!open) return;
-    setQuery("");
-    setActiveIndex(Math.max(0, LOCALES.findIndex((l) => l.code === locale)));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open]);
+  const onOpenChange = (next: boolean) => {
+    if (next) {
+      setQuery("");
+      setActiveIndex(Math.max(0, LOCALES.findIndex((l) => l.code === locale)));
+    }
+    setOpen(next);
+  };
 
   useEffect(() => {
     listRef.current?.querySelector<HTMLElement>(`[data-index="${activeIndex}"]`)?.scrollIntoView({ block: "nearest" });
@@ -52,7 +53,7 @@ export function LanguageSelector({ className }: { className?: string }) {
   };
 
   return (
-    <Dialog.Root open={open} onOpenChange={setOpen}>
+    <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Trigger asChild>
         <button
           type="button"

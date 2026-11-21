@@ -65,6 +65,9 @@
   },
   "path": {
     "label": "Раванди пардохт",
+    "approval": "Тасдиқ",
+    "attempt": "Кӯшиш",
+    "execution": "Иҷро",
     "approved": "Тасдиқ шуд",
     "attempted": "Кӯшиш шуд",
     "executed": "Иҷро шуд",

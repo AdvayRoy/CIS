@@ -65,6 +65,9 @@
   },
   "path": {
     "label": "Ödənişin gedişi",
+    "approval": "Təsdiq",
+    "attempt": "Cəhd",
+    "execution": "İcra",
     "approved": "Təsdiqləndi",
     "attempted": "Cəhd edildi",
     "executed": "İcra olundu",
