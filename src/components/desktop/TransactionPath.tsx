@@ -55,7 +55,7 @@ function StageCard({ stage, selected, onSelect, tone, status, children, index }:
 
 function Connector({ tone, reached }: { tone: Tone; reached: boolean }) {
   return (
-    <div aria-hidden className="relative mt-[30px] h-px w-5 shrink-0 self-start bg-line xl:w-7">
+    <div aria-hidden className="relative mt-[30px] h-px w-5 shrink-0 self-start bg-line max-lg:hidden xl:w-7">
       <motion.div className={cn("absolute inset-0 origin-left rtl:origin-right", toneBg[tone])}
         initial={false} animate={{ scaleX: reached ? 1 : 0 }} transition={{ duration: 0.4, ease: EASE }} />
       <motion.div className={cn("absolute -end-0.5 -top-[3px] size-[7px] rounded-full", toneBg[tone])}
@@ -82,7 +82,7 @@ export function TransactionPath({ view, evidence, stage, onStage }:
   const diffText = (f: FieldDiff["field"]) => { const d = diffs.get(f); return d ? diffValue(d, "approved", a.asset) : undefined; };
 
   return (
-    <div className="flex items-stretch">
+    <div className="flex items-stretch max-lg:flex-col max-lg:gap-3">
       <StageCard index={1} stage="approved" selected={stage === "approved"} onSelect={onStage} tone={approvedTone} status={approvedStatus}>
         <Fact label={tc("field.recipient")}><Ident value={a.recipient} display={short(a.recipient)} /></Fact>
         <Fact label={tc("field.amount")}><span className="tabular">{fmtAsset(a.amount, a.asset)}</span></Fact>

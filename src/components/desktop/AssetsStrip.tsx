@@ -13,7 +13,7 @@ export function AssetsStrip({ overview, bankLabel, chainLabel, payLabel, protect
   const tok = overview.chain.available ? overview.chain.protected : null;
   const token = overview.chain.token;
   return (
-    <section aria-label="assets" className="grid grid-cols-[1fr_1fr_auto] gap-3">
+    <section aria-label="assets" className="grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
       <div className={`min-w-0 rounded-[16px] border bg-surface p-5 transition-colors duration-300 ${protectedRail === "bank" ? "border-mint/50" : "border-line"}`}>
         <p className={`${LABEL} flex items-center gap-2`}><Landmark aria-hidden className="size-3.5" />AED<span aria-hidden>·</span>{bankLabel}{protectedRail === "bank" && <ShieldCheck aria-hidden className="ms-auto size-4 text-mint" />}</p>
         <p className={`ticker mt-3 truncate text-[32px] leading-none font-semibold ${protectedRail === "bank" ? "text-mint" : ""}`}>
