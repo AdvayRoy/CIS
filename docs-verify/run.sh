@@ -5,7 +5,7 @@
 set -uo pipefail
 cd "$(dirname "$0")/.."
 export PATH="$HOME/.foundry/bin:$PATH"
-OUT=test-results; mkdir -p "$OUT"
+OUT=data/verify-out; # not test-results/: Playwright wipes it mkdir -p "$OUT"
 URL="${CS_BASE_URL:-http://localhost:3000}"
 if [ "${NO_RESTART:-}" != "1" ]; then
   for port in 3000 8545; do lsof -ti ":$port" | xargs kill 2>/dev/null || true; done
