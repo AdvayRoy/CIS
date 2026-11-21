@@ -14,6 +14,7 @@ import { PaymentCard } from "./PaymentCard";
 import { PaymentPath } from "./PaymentPath";
 import { StoppedPanel } from "./StoppedPanel";
 import { Receipt } from "./Receipt";
+import { LanguageSelector } from "@/components/i18n/LanguageSelector";
 
 type Tone = "mint" | "amber" | "coral" | "muted";
 const STATE_UI: Record<AgreementState, { tone: Tone; Icon: typeof Clock; spin?: boolean }> = {
@@ -119,7 +120,7 @@ export function ApproveScreen({ id }: { id: string }) {
         <div className="flex shrink-0 items-center gap-2">
           {/* LANGUAGE-SELECTOR SLOT: the lead mounts <LanguageSelector /> from
               src/components/i18n/LanguageSelector.tsx (worker F) inside this element. */}
-          <div data-slot="language-selector" className="flex min-h-11 items-center" />
+          <div data-slot="language-selector" className="flex min-h-11 items-center"><LanguageSelector /></div>
           <ConnectionPill connected={connected} />
         </div>
       </header>

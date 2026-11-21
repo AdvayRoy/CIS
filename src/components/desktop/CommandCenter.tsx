@@ -16,6 +16,7 @@ import { EvidenceInspector } from "./EvidenceInspector";
 import { PairPhone } from "./PairPhone";
 import { BankPanel, ChainPanel } from "./RailPanels";
 import { Ident, Notice, Pill } from "./ui";
+import { LanguageSelector } from "@/components/i18n/LanguageSelector";
 
 const noSubscribe = () => () => {};
 
@@ -112,7 +113,7 @@ export function CommandCenter() {
             {!fixture && caps && !caps.customer && <SignIn onDone={() => setCapsTick((n) => n + 1)} />}
             {!fixture && caps?.customer && <span className="text-xs text-muted">{t("signIn.active")}</span>}
             {/* LANGUAGE SELECTOR SLOT — worker F: render <LanguageSelector /> from "@/components/i18n/LanguageSelector" inside this element. */}
-            <div data-slot="language-selector" className="flex items-center" />
+            <div data-slot="language-selector" className="flex items-center"><LanguageSelector /></div>
             <span role="status" aria-live="polite"><Pill tone={conn.tone}>{conn.label}</Pill></span>
             <button type="button" onClick={() => setInspectorOpen((o) => !o)} aria-expanded={inspectorOpen} aria-controls="evidence-inspector"
               aria-label={inspectorOpen ? t("inspector.hide") : t("inspector.show")} title={inspectorOpen ? t("inspector.hide") : t("inspector.show")}
