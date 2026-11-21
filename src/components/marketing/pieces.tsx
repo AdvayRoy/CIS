@@ -1,11 +1,23 @@
 "use client";
 // Illustrative CounterSign interface pieces for the marketing page. Static sample values, no backend state.
+import { useSyncExternalStore } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Check, Fingerprint, ShieldCheck, X } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 export const EASE = [0.165, 0.84, 0.44, 1] as const;
 export const SERIF = "font-[family-name:var(--font-display-serif)]";
+
+const RM = "(prefers-reduced-motion: reduce)";
+function subscribeRM(cb: () => void) {
+  const m = window.matchMedia(RM);
+  m.addEventListener("change", cb);
+  return () => m.removeEventListener("change", cb);
+}
+/** Hydration-safe reduced-motion flag: false on the server and first paint, then the user's setting. */
+export function usePrefersReducedMotion() {
+  return useSyncExternalStore(subscribeRM, () => window.matchMedia(RM).matches, () => false);
+}
 
 export type Attempt = "match" | "changed";
 export const SAMPLE = {

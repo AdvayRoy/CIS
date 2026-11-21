@@ -2,10 +2,10 @@
 // CounterSign marketing page (/landing). Copy is English only; every interface piece is an illustration with sample values.
 import { useRef, useState } from "react";
 import Link from "next/link";
-import { MotionConfig, motion, useReducedMotion, useScroll, useTransform } from "motion/react";
+import { MotionConfig, motion, useScroll, useTransform } from "motion/react";
 import { ArrowRight, ArrowUpRight, FileCheck2, Fingerprint, Landmark, Repeat1, ShieldCheck, Target } from "lucide-react";
 import { cn } from "@/lib/cn";
-import { AttemptCard, EASE, FlowRail, Label, PhoneApproval, Pill, SAMPLE, SERIF, TermsCard, type Attempt } from "./pieces";
+import { AttemptCard, EASE, FlowRail, Label, PhoneApproval, Pill, SAMPLE, SERIF, TermsCard, usePrefersReducedMotion, type Attempt } from "./pieces";
 import { ScrollStory } from "./ScrollStory";
 
 const WRAP = "mx-auto w-full max-w-[1240px] px-5 sm:px-8";
@@ -51,7 +51,7 @@ function Nav() {
 function Hero() {
   const [attempt, setAttempt] = useState<Attempt>("match");
   const stage = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = usePrefersReducedMotion();
   const { scrollYProgress } = useScroll({ target: stage, offset: ["start end", "start 0.25"] });
   const scale = useTransform(scrollYProgress, [0, 1], [0.955, 1]);
   return (
@@ -253,7 +253,7 @@ function Footer() {
 export function Landing() {
   return (
     <MotionConfig reducedMotion="user">
-      <div className="flex min-h-0 flex-1 flex-col bg-bg text-fg">
+      <div lang="en" dir="ltr" className="flex min-h-0 flex-1 flex-col bg-bg text-fg">
         <Nav />
         <main>
           <Hero />
