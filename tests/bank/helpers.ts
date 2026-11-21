@@ -2,7 +2,7 @@ import { mkdtempSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-export function useTempDb(): string {
+export function tempDb(): string {
   const path = join(mkdtempSync(join(tmpdir(), "cs-bank-")), "test.db");
   process.env.CS_DB_PATH = path;
   return path;

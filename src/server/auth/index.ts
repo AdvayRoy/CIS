@@ -64,6 +64,9 @@ function pairingValid(id: string, token: string): boolean {
   return !!row && safeEqual(row.agreement_id, id) && row.expires_at > nowMs();
 }
 
+const hasLivePairing = (id: string) =>
+  !!getDb().prepare("SELECT 1 FROM pairing_tokens WHERE agreement_id = ? AND expires_at > ? LIMIT 1").get(id, nowMs());
+
 function mustView(id: string): AgreementView {
   const v = loadView(id);
   if (!v) throw new PortError("NOT_FOUND", "no such agreement", 404);
@@ -182,7 +185,12 @@ export const auth: AuthPort = {
     return mustView(id);
   },
 
-  get: (id: string) => loadView(id),
+  get(id: string) {
+    const view = loadView(id);
+    // Keep the pre-signed approval warm (e.g. after a server restart) while a live pairing token exists.
+    if (view?.state === "awaiting_approval" && !presigned.has(id) && hasLivePairing(id)) void prepareApproval(id);
+    return view;
+  },
   list: () => listViews(),
 
   recordOutcome(id: string, outcome: Outcome) {

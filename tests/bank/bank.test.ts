@@ -1,9 +1,9 @@
 import { execFile } from "node:child_process";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeEach, describe, expect, it } from "vitest";
-import { ATTACKER, CUSTOMER, MERCHANT, useTempDb } from "./helpers";
+import { ATTACKER, CUSTOMER, MERCHANT, tempDb } from "./helpers";
 
-const dbPath = useTempDb();
+const dbPath = tempDb();
 const { auth, authInternals } = await import("../../src/server/auth");
 const { bank } = await import("../../src/server/bank");
 const { getDb } = await import("../../src/server/db");

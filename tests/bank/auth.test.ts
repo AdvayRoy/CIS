@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { MERCHANT, useTempDb } from "./helpers";
+import { MERCHANT, tempDb } from "./helpers";
 
-useTempDb();
+tempDb();
 const { auth, authInternals } = await import("../../src/server/auth");
 const { bank } = await import("../../src/server/bank");
 const { getDb } = await import("../../src/server/db");
@@ -41,6 +41,21 @@ describe("sessions", () => {
     expect(auth.capsFromRequest(new Request("http://localhost/?cs_customer=" + c.split("=")[1], { headers: { authorization: c } }))).toEqual(NONE);
     authInternals.setClock(() => Date.now() + 9 * 3600 * 1000);
     expect(auth.capsFromRequest(reqWith(c))).toEqual(NONE);
+  });
+});
+
+describe("signer isolation", () => {
+  it("the signer key is referenced only inside src/server/auth", async () => {
+    const { readdirSync, readFileSync } = await import("node:fs");
+    const { join } = await import("node:path");
+    const root = join(__dirname, "../../src");
+    const files = (readdirSync(root, { recursive: true }) as string[]).filter((f) => /\.(ts|tsx)$/.test(f));
+    const offenders = files.filter((f) => !f.replace(/\\/g, "/").startsWith("server/auth/"))
+      .filter((f) => /CS_SIGNER_PRIVATE_KEY|auth\/signer|signerAccount/.test(readFileSync(join(root, f), "utf8")));
+    expect(offenders).toEqual([]);
+    const authModule = await import("../../src/server/auth");
+    expect(Object.keys(authModule).sort()).toEqual(["auth", "authInternals"]);
+    expect(JSON.stringify(Object.keys(authModule.authInternals))).not.toMatch(/sign(?!er)/i);
   });
 });
 
