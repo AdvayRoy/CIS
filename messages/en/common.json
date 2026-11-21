@@ -62,6 +62,10 @@
   },
   "language": {
     "label": "Language",
-    "search": "Search languages"
+    "search": "Search languages",
+    "choose": "Choose your language",
+    "noResults": "No language matches your search",
+    "close": "Close",
+    "fallbackNote": "Text that is not yet translated is shown in English."
   }
 }

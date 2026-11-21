@@ -1,0 +1,71 @@
+{
+  "brand": "CounterSign",
+  "tagline": "دفعة واحدة. تمامًا كما اتُّفق عليها.",
+  "env": {
+    "bank": "محاكاة مصرفية",
+    "chain": "عرض تجريبي على سلسلة محلية"
+  },
+  "rail": {
+    "bank": "تحويل مصرفي",
+    "crypto": "شراء بالرموز"
+  },
+  "field": {
+    "recipient": "المستلم",
+    "amount": "المبلغ",
+    "operation": "العملية",
+    "continuingAllowance": "إذن مستمر",
+    "expiry": "تنتهي الصلاحية",
+    "nonce": "رقم يُستخدم مرة واحدة",
+    "domain": "الشبكة",
+    "merchant": "التاجر",
+    "rail": "وسيلة الدفع",
+    "payer": "من",
+    "allowance": "الإذن المتبقي",
+    "balance": "الرصيد",
+    "executionCount": "عدد مرات التنفيذ"
+  },
+  "state": {
+    "awaiting_approval": "بانتظار موافقتك",
+    "approved": "تمت الموافقة",
+    "executing": "قيد التنفيذ",
+    "rejected": "تم الإيقاف",
+    "settled": "مكتملة",
+    "declined": "مرفوضة",
+    "expired": "منتهية الصلاحية",
+    "failed": "فشلت"
+  },
+  "reason": {
+    "OK": "نُفِّذت تمامًا كما وافقت عليها",
+    "NOT_FOUND": "الدفعة غير موجودة",
+    "NOT_APPROVED": "لم تتم الموافقة على هذه الدفعة",
+    "DECLINED": "لقد رفضت هذه الدفعة",
+    "INVALID_SIGNATURE": "تعذّر التحقق من الموافقة",
+    "EXPIRED": "انتهت صلاحية الموافقة",
+    "REPLAYED": "سبق استخدام هذه الموافقة مرة واحدة",
+    "RECIPIENT_MISMATCH": "المستلم يختلف عمّا وافقت عليه",
+    "AMOUNT_MISMATCH": "المبلغ يختلف عمّا وافقت عليه",
+    "AMOUNT_EXCEEDS_LIMIT": "المبلغ يتجاوز ما وافقت عليه",
+    "OPERATION_NOT_ALLOWED": "العملية ليست التي وافقت عليها",
+    "CONTINUING_PERMISSION_NOT_ALLOWED": "طُلب إذن مستمر إضافي",
+    "RAIL_MISMATCH": "وسيلة دفع خاطئة",
+    "DOMAIN_MISMATCH": "شبكة أو عقد خاطئ",
+    "INSUFFICIENT_FUNDS": "الرصيد غير كافٍ",
+    "EXECUTION_REVERTED": "رفضت الشبكة المعاملة",
+    "UNAUTHORIZED_CAPABILITY": "غير مسموح من هذا السياق",
+    "RAIL_UNAVAILABLE": "وسيلة الدفع غير متاحة",
+    "DISCONNECTED": "انقطع الاتصال — تُعرض آخر حالة مؤكدة"
+  },
+  "connection": {
+    "connected": "متصل",
+    "disconnected": "غير متصل",
+    "connecting": "جارٍ الاتصال"
+  },
+  "language": {
+    "label": "اللغة",
+    "search": "ابحث عن لغة",
+    "choose": "اختر لغتك",
+    "noResults": "لا توجد لغة مطابقة لبحثك",
+    "close": "إغلاق",
+    "fallbackNote": "النص الذي لم يُترجم بعد يُعرض بالإنجليزية."
+  }
+}
