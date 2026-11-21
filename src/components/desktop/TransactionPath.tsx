@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { Ban, CircleCheck, CircleDashed, Clock, TriangleAlert } from "lucide-react";
 import type { AgreementView, ExecutionEvidence, FieldDiff } from "@/shared/contract";
 import { cn } from "@/lib/cn";
-import { diffValue, fmtAsset, short, toMs, type Stage, type Tone, toneBg, toneBorder, toneText } from "./format";
+import { diffValue, fmtAsset, short, toMs, EASE, LABEL, type Stage, type Tone, toneBg, toneBorder, toneText } from "./format";
 import { Ident } from "./ui";
 
 const ICON: Record<Tone, typeof Ban> = { mint: CircleCheck, amber: Clock, coral: TriangleAlert, muted: CircleDashed };
@@ -13,7 +13,7 @@ const ICON: Record<Tone, typeof Ban> = { mint: CircleCheck, amber: Clock, coral:
 function Fact({ label, children, diff, approvedText }: { label: string; children: ReactNode; diff?: FieldDiff; approvedText?: string }) {
   const t = useTranslations("desktop");
   return (
-    <div className={cn("rounded-lg px-2 py-1.5", diff && "bg-coral/10 ring-1 ring-coral/40")}>
+    <div className={cn("-mx-2 rounded-lg px-2 py-1.5", diff && "bg-coral/10 ring-1 ring-coral/40")}>
       {/* a value that does not fit beside its label drops to its own line; a changed field always stacks */}
       <div className={cn("min-w-0", !diff && "flex flex-wrap items-baseline justify-between gap-x-3")}>
         <dt className={cn("shrink-0 text-[11px]", diff ? "text-coral" : "text-muted")}>
@@ -34,28 +34,32 @@ function StageCard({ stage, selected, onSelect, tone, status, children, index }:
   const Icon = ICON[tone];
   return (
     <motion.button layout="position" type="button" onClick={() => onSelect(stage)} aria-pressed={selected}
-      transition={{ duration: 0.24 }}
-      className={cn("flex min-w-0 flex-1 flex-col rounded-[16px] border bg-surface p-5 text-start transition-colors duration-200 hover:-translate-y-0.5",
-        selected ? cn(toneBorder[tone], "bg-surface-2", tone === "mint" ? "glow-mint" : tone === "coral" ? "glow-coral" : tone === "amber" ? "glow-amber" : "") : "border-line hover:bg-surface-2/60")}>
+      transition={{ duration: 0.3, ease: EASE }}
+      className={cn("relative flex min-w-0 flex-1 flex-col overflow-hidden rounded-[16px] border p-5 text-start transition-colors duration-200",
+        selected ? cn(toneBorder[tone], "bg-surface-2") : "border-line bg-surface hover:border-white/15")}>
+      {selected && <motion.span layoutId="stage-marker" aria-hidden transition={{ duration: 0.3, ease: EASE }}
+        className={cn("absolute inset-x-0 top-0 h-0.5", tone === "muted" ? "bg-fg/40" : toneBg[tone])} />}
       <span className="flex items-center justify-between gap-2">
-        <span className="text-[11px] font-medium tracking-wider text-muted uppercase">{index}. {t(`path.${stage}`)}</span>
+        <span className={cn(LABEL, "flex items-center gap-2")}>
+          <span className="tabular flex size-5 items-center justify-center rounded-full border border-line text-[10px] tracking-normal text-fg">{index}</span>
+          {t(`path.${stage}`)}
+        </span>
         <Icon aria-hidden className={cn("size-4 shrink-0", toneText[tone])} />
       </span>
-      <motion.span key={status} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}
-        className={cn("mt-1.5 min-h-10 text-sm leading-5 font-medium", toneText[tone])}>{status}</motion.span>
-      <dl className="mt-3 space-y-0.5 border-t border-line pt-2">{children}</dl>
+      <motion.span key={status} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25, ease: EASE }}
+        className={cn("mt-3 min-h-10 text-[15px] leading-5 font-medium", toneText[tone])}>{status}</motion.span>
+      <dl className="mt-3 space-y-0.5 border-t border-line pt-2.5">{children}</dl>
     </motion.button>
   );
 }
 
 function Connector({ tone, reached }: { tone: Tone; reached: boolean }) {
   return (
-    <div aria-hidden className="relative mt-7 h-px w-6 shrink-0 self-start bg-line xl:w-8">
+    <div aria-hidden className="relative mt-[30px] h-px w-5 shrink-0 self-start bg-line max-lg:hidden xl:w-7">
       <motion.div className={cn("absolute inset-0 origin-left rtl:origin-right", toneBg[tone])}
-        initial={false} animate={{ scaleX: reached ? 1 : 0 }} transition={{ duration: 0.3, ease: "easeOut" }} />
+        initial={false} animate={{ scaleX: reached ? 1 : 0 }} transition={{ duration: 0.4, ease: EASE }} />
       <motion.div className={cn("absolute -end-0.5 -top-[3px] size-[7px] rounded-full", toneBg[tone])}
         initial={false} animate={{ opacity: reached ? 1 : 0.4 }} transition={{ duration: 0.3 }} />
-      {reached && <span className={cn("flow-dot", toneText[tone])} />}
     </div>
   );
 }
@@ -78,7 +82,7 @@ export function TransactionPath({ view, evidence, stage, onStage }:
   const diffText = (f: FieldDiff["field"]) => { const d = diffs.get(f); return d ? diffValue(d, "approved", a.asset) : undefined; };
 
   return (
-    <div className="flex items-stretch">
+    <div className="flex items-stretch max-lg:flex-col max-lg:gap-3">
       <StageCard index={1} stage="approved" selected={stage === "approved"} onSelect={onStage} tone={approvedTone} status={approvedStatus}>
         <Fact label={tc("field.recipient")}><Ident value={a.recipient} display={short(a.recipient)} /></Fact>
         <Fact label={tc("field.amount")}><span className="tabular">{fmtAsset(a.amount, a.asset)}</span></Fact>
@@ -93,7 +97,7 @@ export function TransactionPath({ view, evidence, stage, onStage }:
           <Fact label={tc("field.operation")} diff={diffs.get("operation")} approvedText={diffText("operation")}><Ident value={at.operation} /></Fact>
           <Fact label={tc("field.continuingAllowance")} diff={diffs.get("continuingAllowance")} approvedText={diffText("continuingAllowance")}>
             <span className="tabular">{at.continuingAllowance === "0" ? t("path.none") : fmtAsset(at.continuingAllowance, a.asset)}</span></Fact>
-        </>) : <p className="px-2 text-[13px] text-muted">{t("path.noAttemptHint")}</p>}
+        </>) : <p className="pt-1 text-[13px] leading-5 text-muted">{t("path.noAttemptHint")}</p>}
       </StageCard>
       <Connector tone={execTone} reached={!!evidence} />
       <StageCard index={3} stage="executed" selected={stage === "executed"} onSelect={onStage} tone={execTone} status={execStatus}>
@@ -105,7 +109,7 @@ export function TransactionPath({ view, evidence, stage, onStage }:
             {rc ? <Ident value={rc.kind === "ledger" ? rc.transferId : rc.txHash} display={short(rc.kind === "ledger" ? rc.transferId : rc.txHash)} />
               : <span className="text-muted">{t("path.noReceipt")}</span>}
           </Fact>
-        </>) : <p className="px-2 text-[13px] text-muted">{t("path.notExecutedHint")}</p>}
+        </>) : <p className="pt-1 text-[13px] leading-5 text-muted">{t("path.notExecutedHint")}</p>}
       </StageCard>
     </div>
   );

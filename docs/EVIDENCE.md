@@ -1,5 +1,7 @@
 # Evidence matrix
 
+Integrated `main` at `8043c4f` (Red Team fixes, demo-environment strip, `/evidence`, serif and clean-up pass), production build started with `pnpm demo`, run 2026-11-21 10:13 UTC on the build VM (macOS, Chromium headless): `pnpm typecheck` pass; `pnpm test` 235 passed, 52 skipped; `forge test` 21 passed; HTTP acceptance 37 passed; Playwright 17 passed. A UI walkthrough was recorded by the Devin testing agent on `6d1a1b5`, before the visual clean-up. `/evidence` was reviewed in code and loaded with empty state only. Details below were written for the earlier run at `cebeaf0`.
+
 Integrated `main` at `cebeaf0` (after the OKX-style redesign and `/shop` flow), production build started with `pnpm demo`, run 2026-11-21 09:06 UTC on the build VM (macOS, Chromium headless).
 
 | Command | Result |

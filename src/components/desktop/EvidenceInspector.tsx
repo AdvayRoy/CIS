@@ -4,7 +4,7 @@ import { useTranslations, useFormatter } from "next-intl";
 import { AnimatePresence, motion } from "motion/react";
 import type { AgreementView, ExecutionEvidence } from "@/shared/contract";
 import { cn } from "@/lib/cn";
-import { diffValue, fmtAsset, toMs, type Stage } from "./format";
+import { EASE, LABEL, diffValue, fmtAsset, toMs, type Stage } from "./format";
 import { Ident, Notice, Row } from "./ui";
 
 const STAGES: Stage[] = ["approved", "attempted", "executed"];
@@ -12,7 +12,7 @@ const STAGES: Stage[] = ["approved", "attempted", "executed"];
 function Group({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="border-t border-line px-5 py-4 first:border-t-0">
-      <h3 className="mb-1 text-[11px] font-medium tracking-wider text-muted uppercase">{title}</h3>
+      <h3 className={cn(LABEL, "mb-1.5")}>{title}</h3>
       {children}
     </div>
   );
@@ -28,22 +28,23 @@ export function EvidenceInspector({ view, evidence, stage, onStage }:
   const diffFields = new Set((evidence?.decision.diffs ?? []).map((d) => d.field));
 
   return (
-    <div className="flex h-full min-h-0 w-[340px] flex-col">
+    <div className="flex h-full min-h-0 w-full flex-col lg:w-[340px]">
       <div className="flex h-14 shrink-0 items-center justify-between border-b border-line px-5">
-        <h2 className="text-sm text-muted">{t("inspector.title")}</h2>
+        <h2 className={LABEL}>{t("inspector.title")}</h2>
       </div>
       {!view || !a ? <div className="p-5"><Notice>{t("inspector.empty")}</Notice></div> : (<>
         <div role="tablist" aria-label={t("inspector.title")} className="flex shrink-0 gap-1 border-b border-line p-2">
           {STAGES.map((s) => (
             <button key={s} role="tab" type="button" aria-selected={stage === s} onClick={() => onStage(s)}
-              className={cn("h-9 flex-1 rounded-lg text-[13px] transition-colors duration-200", stage === s ? "bg-surface-2 text-fg" : "text-muted hover:text-fg")}>
-              {t(`path.${s}`)}
+              className={cn("relative h-9 flex-1 rounded-lg text-[13px] transition-colors duration-200", stage === s ? "text-fg" : "text-muted hover:text-fg")}>
+              {stage === s && <motion.span layoutId="inspector-tab" aria-hidden transition={{ duration: 0.3, ease: EASE }} className="absolute inset-0 rounded-lg border border-line bg-white/[0.07]" />}
+              <span className="relative">{t(`path.${s}`)}</span>
             </button>
           ))}
         </div>
         <div className="min-h-0 flex-1 overflow-y-auto">
           <AnimatePresence mode="wait" initial={false}>
-            <motion.div key={`${a.id}:${stage}`} role="tabpanel" initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.18 }}>
+            <motion.div key={`${a.id}:${stage}`} role="tabpanel" initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} transition={{ duration: 0.22, ease: EASE }}>
               {stage === "approved" && (<>
                 <Group title={t("inspector.terms")}>
                   <dl>

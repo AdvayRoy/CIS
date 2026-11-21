@@ -4,7 +4,11 @@ import { useCallback, useState } from "react";
 import Link from "next/link";
 import { api, ApiFailure, type ExecuteResult } from "@/lib/api";
 import { usePoll } from "@/lib/usePoll";
+import { ArrowRight } from "lucide-react";
 import { BANK_ACCOUNTS, formatUnitsStr, type AgreementView, type Overview } from "@/shared/contract";
+import { ProductBar } from "@/components/product/Journey";
+
+const label = "text-[11px] font-medium uppercase tracking-[0.14em] text-muted";
 
 const TOKEN_100 = "100000000000000000000";
 const SUBSTITUTE_ADDR = "0x000000000000000000000000000000000000dEaD";
@@ -13,13 +17,13 @@ type Log = { at: number; label: string; ok: boolean; detail: string };
 
 function Btn({ children, onClick, tone = "default", disabled }: { children: React.ReactNode; onClick: () => void; tone?: "default" | "danger" | "ok"; disabled?: boolean }) {
   const toneCls = tone === "danger" ? "border-coral/50 text-coral hover:bg-coral/10" : tone === "ok" ? "border-mint/50 text-mint hover:bg-mint/10" : "border-line text-fg hover:bg-surface-2";
-  return <button disabled={disabled} onClick={onClick} className={`min-h-10 rounded-full border bg-white/5 px-4 py-2 text-sm transition-colors disabled:opacity-40 ${toneCls}`}>{children}</button>;
+  return <button type="button" disabled={disabled} onClick={onClick} className={`min-h-10 rounded-full border px-4 py-2 text-start text-[13px] transition-colors duration-200 disabled:opacity-40 ${toneCls}`}>{children}</button>;
 }
 function Section({ title, note, step, children }: { title: string; note?: string; step?: number; children: React.ReactNode }) {
   return (
-    <section className="rounded-[16px] border border-line bg-surface p-6">
-      <h2 className="flex items-center gap-3 text-sm font-medium text-fg">{step && <span aria-hidden className="tabular flex size-7 items-center justify-center rounded-full border border-line bg-white/10 text-xs text-iris">{step}</span>}{title}</h2>
-      {note && <p className="mt-1 text-xs text-muted">{note}</p>}
+    <section className="rounded-[16px] border border-line bg-surface p-5 sm:p-6">
+      <h2 className="flex items-center gap-3 text-[15px] font-medium text-fg">{step && <span aria-hidden className="tabular flex size-7 shrink-0 items-center justify-center rounded-full border border-line text-xs text-fg">{step}</span>}{title}</h2>
+      {note && <p className="mt-2 max-w-3xl text-xs leading-relaxed text-muted">{note}</p>}
       <div className="mt-4 flex flex-wrap gap-2">{children}</div>
     </section>
   );
@@ -68,22 +72,29 @@ export default function LabPage() {
   });
 
   return (
-    <main className="mx-auto w-full max-w-5xl px-6 py-8">
-      <header className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <p className="text-xs uppercase tracking-widest text-amber">Operator only · demonstration controls</p>
-          <h1 className="mt-1 text-3xl font-semibold tracking-tight"><span className="hero-amount">CounterSign Lab</span></h1>
-          <p className="mt-1 text-sm text-muted">Bank simulation · Local-chain demo · {connected === false ? "disconnected" : connected ? "connected" : "connecting"}</p>
+    <>
+    <ProductBar context="Lab" />
+    <main className="mx-auto w-full max-w-6xl px-4 py-6 sm:px-6 sm:py-10">
+      <header className="flex flex-wrap items-end justify-between gap-4">
+        <div className="min-w-0">
+          <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-amber">Operator only · demonstration controls</p>
+          <h1 className="mt-3 text-4xl leading-[1.08] sm:text-[44px]"><span className="hero-amount">CounterSign Lab</span></h1>
+          <p className="mt-2 text-sm text-muted">Bank simulation · Local-chain demo · <span className={connected === false ? "text-amber" : undefined}>{connected === false ? "disconnected" : connected ? "connected" : "connecting"}</span></p>
         </div>
-        <Link href="/command" className="btn-primary rounded-full px-5 py-2.5 text-sm">Open customer view</Link>
+        <div className="flex flex-wrap gap-3">
+          <Link href="/command" className="btn-primary inline-flex h-11 items-center gap-2 rounded-full px-5 text-sm">Open customer view<ArrowRight aria-hidden className="size-4 rtl:rotate-180" /></Link>
+          <Link href="/evidence" className="inline-flex h-11 items-center rounded-full border border-line px-5 text-sm transition-colors duration-200 hover:bg-surface-2">See the evidence</Link>
+        </div>
       </header>
 
       {!authed && (
-        <Section title="Demo sign-in" note="Role keys stand in for real authentication (disclosed demo component). Local defaults: demo-operator / demo-merchant.">
-          <input aria-label="operator key" placeholder="operator key" type="password" value={keys.operator} onChange={(e) => setKeys({ ...keys, operator: e.target.value })} className="min-h-10 rounded-[12px] border border-line bg-bg px-3 text-sm" />
-          <input aria-label="merchant key" placeholder="merchant key" type="password" value={keys.merchant} onChange={(e) => setKeys({ ...keys, merchant: e.target.value })} className="min-h-10 rounded-[12px] border border-line bg-bg px-3 text-sm" />
-          <Btn onClick={() => run("sign-in", async () => { await api.signIn("operator", keys.operator); await api.signIn("merchant", keys.merchant); return "operator + merchant capabilities granted (no customer capability)"; })}>Sign in</Btn>
-        </Section>
+        <div className="mt-6">
+          <Section title="Demo sign-in" note="Role keys stand in for real authentication (disclosed demo component). Local defaults: demo-operator / demo-merchant.">
+            <input aria-label="operator key" placeholder="operator key" type="password" value={keys.operator} onChange={(e) => setKeys({ ...keys, operator: e.target.value })} className="min-h-10 min-w-0 rounded-full border border-line bg-bg px-4 text-sm" />
+            <input aria-label="merchant key" placeholder="merchant key" type="password" value={keys.merchant} onChange={(e) => setKeys({ ...keys, merchant: e.target.value })} className="min-h-10 min-w-0 rounded-full border border-line bg-bg px-4 text-sm" />
+            <Btn onClick={() => run("sign-in", async () => { await api.signIn("operator", keys.operator); await api.signIn("merchant", keys.merchant); return "operator + merchant capabilities granted (no customer capability)"; })}>Sign in</Btn>
+          </Section>
+        </div>
       )}
 
       <div className="mt-5 grid gap-5">
@@ -97,10 +108,10 @@ export default function LabPage() {
           {ags.length === 0 && <p className="text-sm text-muted">No agreements yet.</p>}
           <div className="grid w-full gap-3">
             {ags.map((v) => (
-              <div key={v.agreement.id} className="rounded-[12px] border border-line bg-white/5 p-3">
+              <div key={v.agreement.id} className="rounded-[12px] border border-line p-4">
                 <div className="flex flex-wrap items-center justify-between gap-2 text-sm">
-                  <span><span className="ident text-muted">{v.agreement.id.slice(0, 8)}</span> · {v.agreement.rail} · {formatUnitsStr(v.agreement.amount, v.agreement.asset.decimals)} {v.agreement.asset.code}</span>
-                  <span className="text-muted">state: <span className="text-fg">{v.state}</span> · executions: {v.executionCount}</span>
+                  <span className="tabular"><span className="ident text-muted">{v.agreement.id.slice(0, 8)}</span> · {v.agreement.rail} · {formatUnitsStr(v.agreement.amount, v.agreement.asset.decimals)} {v.agreement.asset.code}</span>
+                  <span className="tabular text-muted">state: <span className={v.state === "settled" ? "text-mint" : v.state === "rejected" ? "text-coral" : v.state === "awaiting_approval" ? "text-amber" : "text-fg"}>{v.state}</span> · executions: {v.executionCount}</span>
                 </div>
                 <div className="mt-3 flex flex-wrap gap-2">
                   <Btn tone="ok" disabled={!authed || busy} onClick={() => exec(v, "honest")}>Execute as approved</Btn>
@@ -125,21 +136,22 @@ export default function LabPage() {
           <Btn disabled={!authed || busy} onClick={() => run("reset", async () => { const r = await api.labReset(); return `reset ok · chain reset ${r.chainReset}`; })}>Reset demonstration</Btn>
         </Section>
 
-        <section className="rounded-[16px] border border-line bg-surface p-6">
-          <h2 className="text-sm font-medium">Result log (server responses)</h2>
-          <ul className="mt-3 space-y-1.5 text-xs">
+        <section className="rounded-[16px] border border-line bg-surface p-5 sm:p-6" aria-live="polite">
+          <h2 className={label}>Result log (server responses)</h2>
+          <ul className="mt-4 text-xs">
             {log.length === 0 && <li className="text-muted">Nothing yet.</li>}
             {log.map((l) => (
-              <li key={l.at + l.label} className="flex gap-3">
+              <li key={l.at + l.label} className="grid gap-x-3 gap-y-1 border-t border-line py-2.5 first:border-t-0 first:pt-0 sm:grid-cols-[5.5rem_2.5rem_minmax(0,14rem)_minmax(0,1fr)]">
                 <span className="ident text-muted">{new Date(l.at).toLocaleTimeString()}</span>
-                <span className={l.ok ? "text-mint" : "text-coral"}>{l.ok ? "OK" : "ERR"}</span>
-                <span className="text-fg">{l.label}</span>
-                <span className="ident text-muted">{l.detail}</span>
+                <span className={l.ok ? "font-medium text-mint" : "font-medium text-coral"}>{l.ok ? "OK" : "ERR"}</span>
+                <span className="min-w-0 text-fg">{l.label}</span>
+                <span className="ident min-w-0 text-muted">{l.detail}</span>
               </li>
             ))}
           </ul>
         </section>
       </div>
     </main>
+    </>
   );
 }

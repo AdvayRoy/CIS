@@ -1,5 +1,9 @@
 import type { AgreementState, Asset, FieldDiff } from "@/shared/contract";
 
+/** Shared easing for every desktop transition. */
+export const EASE = [0.165, 0.84, 0.44, 1] as const;
+export const LABEL = "text-[11px] font-medium tracking-[0.12em] text-muted uppercase";
+
 export type Tone = "mint" | "amber" | "coral" | "muted";
 export type Stage = "approved" | "attempted" | "executed";
 
