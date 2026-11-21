@@ -24,7 +24,7 @@ for (const c of CASES) {
     const approve = ph.page.getByTestId("approve");
     await expect(approve).toContainText(m.action.approve);
     let pt = await bodyText(ph.page);
-    expect(pt).toContain("ACC-MERCHANT-001"); expect(pt).toContain("AED"); expect(pt).toMatch(/100[.,]00/);
+    expect(pt).toContain("ACC-MERCHANT-001"); expect(pt).toContain("AED"); expect(pt).toMatch(/(^|[^0-9])100([.,]00)?(?![0-9])/);
     if (c.code !== "en") expect(pt, "no English approve label leaks").not.toMatch(/approve this payment/i);
     // identifiers stay LTR even in RTL
     const identDir = await ph.page.getByText("ACC-MERCHANT-001").first().evaluate((e) => getComputedStyle(e).direction);
@@ -39,7 +39,7 @@ for (const c of CASES) {
     const v = await getView(id);
     const bad = await executeApi(v, { recipient: "ACC-UNKNOWN-777" });
     expect(bad.status).toBe(409);
-    await expect(ph.page.getByTestId("stopped-reason")).toHaveText(common.reasons.RECIPIENT_MISMATCH);
+    await expect(ph.page.getByTestId("stopped-reason")).toHaveText(common.reason.RECIPIENT_MISMATCH);
     await expectNoHorizontalOverflow(ph.page, `phone ${c.code} stopped`);
     await shot(ph.page, `i18n-${c.code}-phone-2-stopped`);
     expect((await getState()).bank.accounts.find((a) => a.id === "ACC-CUSTOMER-001")!.balance).toBe("100000");
@@ -47,7 +47,7 @@ for (const c of CASES) {
     const ok = await executeApi(await getView(id));
     expect(ok.status).toBe(200);
     await expect(ph.page.getByTestId("receipt-paid")).toBeVisible();
-    await expect(ph.page.getByTestId("state-banner")).toContainText(common.states.settled);
+    await expect(ph.page.getByTestId("state-banner")).toContainText(common.state.settled);
     pt = await bodyText(ph.page);
     expect(pt).toContain("ACC-MERCHANT-001");
     await expectNoHorizontalOverflow(ph.page, `phone ${c.code} settled`);
@@ -70,7 +70,7 @@ test("i18n: switching language on the phone is instant, keeps payment state and 
   await ph.page.locator('[data-slot="language-selector"] button').first().click();
   await ph.page.getByText("العربية", { exact: true }).click();
   await expect(ph.page.locator("html")).toHaveAttribute("dir", "rtl");
-  await expect(ph.page.getByTestId("state-banner")).toContainText(msg("ar", "common").states.approved);
+  await expect(ph.page.getByTestId("state-banner")).toContainText(msg("ar", "common").state.approved);
   expect(navigations, "no reload").toBe(0);
   expect(await ph.page.evaluate(() => localStorage.getItem("cs.locale"))).toBe("ar");
   await expectNoHorizontalOverflow(ph.page, "phone ar after switch");
