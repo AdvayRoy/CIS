@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
-import { ArrowLeftRight, Coins, FlaskConical, Landmark, PanelRightClose, PanelRightOpen, ShieldCheck, WifiOff } from "lucide-react";
+import { ArrowLeftRight, Coins, FlaskConical, Landmark, ShoppingBag, PanelRightClose, PanelRightOpen, ShieldCheck, WifiOff } from "lucide-react";
 import { api } from "@/lib/api";
 import { usePoll } from "@/lib/usePoll";
 import { cn } from "@/lib/cn";
@@ -16,6 +16,7 @@ import { EvidenceInspector } from "./EvidenceInspector";
 import { PairPhone } from "./PairPhone";
 import { BankPanel, ChainPanel } from "./RailPanels";
 import { Ident, Notice, Pill } from "./ui";
+import { AssetsStrip } from "./AssetsStrip";
 import { LanguageSelector } from "@/components/i18n/LanguageSelector";
 
 const noSubscribe = () => () => {};
@@ -100,7 +101,8 @@ export function CommandCenter() {
         <button type="button" className={navBtn} onClick={() => scrollTo("payment")} aria-label={t("nav.payment")} title={t("nav.payment")}><ArrowLeftRight aria-hidden className="size-[18px]" /></button>
         <button type="button" className={navBtn} onClick={() => scrollTo("chain")} aria-label={t("nav.chain")} title={t("nav.chain")}><Coins aria-hidden className="size-[18px]" /></button>
         <button type="button" className={navBtn} onClick={() => scrollTo("bank")} aria-label={t("nav.bank")} title={t("nav.bank")}><Landmark aria-hidden className="size-[18px]" /></button>
-        <Link href="/lab" className={cn(navBtn, "mt-auto")} aria-label={t("nav.lab")} title={t("nav.lab")}><FlaskConical aria-hidden className="size-[18px]" /></Link>
+        <Link href="/shop" className={cn(navBtn, "mt-auto")} aria-label="Demo Shop" title="Demo Shop"><ShoppingBag aria-hidden className="size-[18px]" /></Link>
+        <Link href="/lab" className={navBtn} aria-label={t("nav.lab")} title={t("nav.lab")}><FlaskConical aria-hidden className="size-[18px]" /></Link>
       </aside>
 
       <div className="flex min-w-0 flex-1 flex-col">
@@ -137,16 +139,17 @@ export function CommandCenter() {
 
           <main className={cn("min-w-0 flex-1 overflow-x-hidden overflow-y-auto transition-opacity duration-200", stale && "opacity-70")}>
             <div className="mx-auto flex max-w-[1000px] flex-col gap-5 p-6">
+              {overview && <AssetsStrip overview={overview} bankLabel={tc("env.bank")} chainLabel={tc("env.chain")} payLabel="Demo Shop" />}
               <section id="payment" className="flex flex-col gap-5">
                 {!overview ? <Notice tone={live.connected === false ? "coral" : "muted"}>{live.connected === false ? t("status.noData") : t("status.loading")}</Notice>
                   : !view ? (
-                    <div className="rounded-[28px] border border-line bg-surface p-10">
+                    <div className="rounded-[20px] border border-line bg-surface p-10">
                       <p className="text-lg font-medium">{t("empty.title")}</p>
                       <p className="mt-1 max-w-md text-[13px] leading-relaxed text-muted">{t("empty.body")}</p>
-                      <Link href="/lab" className="mt-4 btn-primary inline-flex h-11 items-center rounded-full px-5 text-sm">{t("empty.action")}</Link>
+                      <Link href="/shop" className="mt-4 btn-primary inline-flex h-11 items-center rounded-full px-5 text-sm">Demo Shop</Link>
                     </div>
                   ) : (<>
-                    <div key={view.agreement.id} className="tilt sheen flex items-end justify-between gap-6 rounded-[28px] border border-line bg-surface p-7">
+                    <div key={view.agreement.id} className="tilt sheen flex items-end justify-between gap-6 rounded-[20px] border border-line bg-surface p-7">
                       <div className="min-w-0">
                         <p className="flex items-center gap-2 text-[13px] text-muted">
                           <span>{tc(`rail.${view.agreement.rail}`)}</span><span aria-hidden>·</span>

@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "CounterSign enforces the payment you approved: exact recipient, exact amount, once.",
   manifest: "/manifest.webmanifest",
 };
-export const viewport: Viewport = { themeColor: "#05070D", width: "device-width", initialScale: 1, viewportFit: "cover" };
+export const viewport: Viewport = { themeColor: "#000000", width: "device-width", initialScale: 1, viewportFit: "cover" };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (

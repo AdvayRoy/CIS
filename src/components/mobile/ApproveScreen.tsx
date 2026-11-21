@@ -243,7 +243,7 @@ export function ApproveScreen({ id }: { id: string }) {
             onConfirm={() => act("approve")}
             disabled={!!busy || offline || locallyExpired}
             hint={busy === "approve" ? undefined : t("action.holdHint")}
-            className="min-h-16 rounded-[22px] px-4 text-base"
+            className="min-h-16 rounded-full px-4 text-base"
           >
             {busy === "approve" && <Loader2 aria-hidden className="size-5 animate-spin" />}
             {busy === "approve" ? t("action.approving") : t("action.approve")}

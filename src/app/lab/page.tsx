@@ -17,7 +17,7 @@ function Btn({ children, onClick, tone = "default", disabled }: { children: Reac
 }
 function Section({ title, note, step, children }: { title: string; note?: string; step?: number; children: React.ReactNode }) {
   return (
-    <section className="rounded-[24px] border border-line bg-surface p-6">
+    <section className="rounded-[16px] border border-line bg-surface p-6">
       <h2 className="flex items-center gap-3 text-sm font-medium text-fg">{step && <span aria-hidden className="tabular flex size-7 items-center justify-center rounded-full border border-line bg-white/10 text-xs text-iris">{step}</span>}{title}</h2>
       {note && <p className="mt-1 text-xs text-muted">{note}</p>}
       <div className="mt-4 flex flex-wrap gap-2">{children}</div>
@@ -125,7 +125,7 @@ export default function LabPage() {
           <Btn disabled={!authed || busy} onClick={() => run("reset", async () => { const r = await api.labReset(); return `reset ok · chain reset ${r.chainReset}`; })}>Reset demonstration</Btn>
         </Section>
 
-        <section className="rounded-[24px] border border-line bg-surface p-6">
+        <section className="rounded-[16px] border border-line bg-surface p-6">
           <h2 className="text-sm font-medium">Result log (server responses)</h2>
           <ul className="mt-3 space-y-1.5 text-xs">
             {log.length === 0 && <li className="text-muted">Nothing yet.</li>}

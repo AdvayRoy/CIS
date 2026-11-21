@@ -32,7 +32,7 @@ function StageCard({ stage, selected, onSelect, tone, status, children, index }:
   return (
     <motion.button layout="position" type="button" onClick={() => onSelect(stage)} aria-pressed={selected}
       transition={{ duration: 0.24 }}
-      className={cn("flex min-w-0 flex-1 flex-col rounded-[24px] border bg-surface p-5 text-start transition-colors duration-200 hover:-translate-y-0.5",
+      className={cn("flex min-w-0 flex-1 flex-col rounded-[16px] border bg-surface p-5 text-start transition-colors duration-200 hover:-translate-y-0.5",
         selected ? cn(toneBorder[tone], "bg-surface-2", tone === "mint" ? "glow-mint" : tone === "coral" ? "glow-coral" : tone === "amber" ? "glow-amber" : "") : "border-line hover:bg-surface-2/60")}>
       <span className="flex items-center justify-between gap-2">
         <span className="text-[11px] font-medium tracking-wider text-muted uppercase">{index}. {t(`path.${stage}`)}</span>
@@ -52,6 +52,7 @@ function Connector({ tone, reached }: { tone: Tone; reached: boolean }) {
         initial={false} animate={{ scaleX: reached ? 1 : 0 }} transition={{ duration: 0.3, ease: "easeOut" }} />
       <motion.div className={cn("absolute -end-0.5 -top-[3px] size-[7px] rounded-full", toneBg[tone])}
         initial={false} animate={{ opacity: reached ? 1 : 0.4 }} transition={{ duration: 0.3 }} />
+      {reached && <span className={cn("flow-dot", toneText[tone])} />}
     </div>
   );
 }
