@@ -1,4 +1,5 @@
 // Pure derivations over the Overview returned by GET /api/state. Nothing here is a constant result.
+import { formatUnitsStr } from "@/shared/contract";
 import type { AgreementView, ExecutionEvidence, Overview, Reason, Receipt } from "@/shared/contract";
 
 export type Row = { view: AgreementView; ev: ExecutionEvidence };
@@ -92,6 +93,8 @@ export function securityCases(ov: Overview, rows: Row[]): CaseResult[] {
   {
     const key = "allowance", name = "Crypto excess allowance", expectation = "After a protected purchase the residual allowance is 0 and a later drain reverts; the unprotected comparison account is drained.";
     const p = ov.chain.protected, v = ov.chain.vulnerable;
+    const tok = ov.chain.token;
+    const amt = (x: string) => (tok ? `${formatUnitsStr(x, tok.decimals)} ${tok.code}` : x);
     const cont = rejections(rows, ["CONTINUING_PERMISSION_NOT_ALLOWED"]);
     const produce = "Buy with CSUSD in /shop, then run the drain on both accounts in /lab.";
     if (!ov.chain.available || !p) out.push({ key, name, expectation, status: "unverified", result: "Local chain not available in this session", evidence: [], at: null, produce: "Start the demo with Anvil (pnpm demo)." });
@@ -102,14 +105,14 @@ export function securityCases(ov: Overview, rows: Row[]): CaseResult[] {
     });
     else if (!p.drainAttempt) out.push({
       key, name, expectation, status: "unverified",
-      result: `No drain attempted on the protected account yet (allowance read: ${p.allowance}${cont.length ? `; ${cont.length} continuing-permission attempt${cont.length === 1 ? "" : "s"} rejected` : ""})`,
+      result: `No drain attempted on the protected account yet (allowance read: ${amt(p.allowance)}${cont.length ? `; ${cont.length} continuing-permission attempt${cont.length === 1 ? "" : "s"} rejected` : ""})`,
       evidence: p.lastPurchaseTx ? [{ label: "protected purchase tx", id: p.lastPurchaseTx }] : [], at: cont[0]?.ev.decision.decidedAt ?? null, produce,
     });
     else {
       const ok = !p.drainAttempt.succeeded && p.allowance === "0";
       out.push({
         key, name, expectation, status: ok ? "observed" : "contradicted",
-        result: `Protected: allowance ${p.allowance}, drain ${p.drainAttempt.succeeded ? "SUCCEEDED" : "reverted"}${p.drainAttempt.revertReason ? ` (${p.drainAttempt.revertReason})` : ""}. Vulnerable comparison: ${v?.drainAttempt ? `allowance ${v.allowance}, drain ${v.drainAttempt.succeeded ? "succeeded" : "failed"}` : "not executed"}.`,
+        result: `Protected: allowance ${amt(p.allowance)}, drain ${p.drainAttempt.succeeded ? "SUCCEEDED" : "reverted"}${p.drainAttempt.revertReason ? ` (${p.drainAttempt.revertReason})` : ""}. Vulnerable comparison: ${v?.drainAttempt ? `allowance ${amt(v.allowance)}, drain ${v.drainAttempt.succeeded ? "succeeded" : "failed"}` : "not executed"}.`,
         evidence: [
           { label: "protected drain tx", id: p.drainAttempt.txHash },
           ...(p.lastPurchaseTx ? [{ label: "protected purchase tx", id: p.lastPurchaseTx }] : []),

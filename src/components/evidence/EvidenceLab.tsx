@@ -172,7 +172,7 @@ function Matrix({ ov, rows }: { ov: Overview; rows: Row[] }) {
             <tr key={c.key} className="border-b border-line/50">
               <td className={td}><span className="font-medium text-fg">{c.name}</span><span className="mt-1 block max-w-[240px] text-[11px] leading-snug text-muted">{c.expectation}</span></td>
               <td className={td}><StatusPill s={c.status} /></td>
-              <td className={`${td} max-w-[280px] font-mono text-[11px] leading-snug`}>{c.result}{c.status === "unverified" && c.produce && <span className="mt-1 block font-sans text-muted">How to produce it: {c.produce}</span>}</td>
+              <td className={`${td} max-w-[280px] font-mono text-[11px] leading-snug break-words [overflow-wrap:anywhere]`}>{c.result}{c.status === "unverified" && c.produce && <span className="mt-1 block font-sans text-muted">How to produce it: {c.produce}</span>}</td>
               <td className={`${td} max-w-[300px]`}>{c.evidence.length === 0 ? <span className="text-muted">none</span> : c.evidence.map((e, i) => (
                 <span key={i} className="mb-1 block text-[11px] text-muted">{e.label}{e.id && <span className="ident block text-[10px] text-fg">{e.id}</span>}</span>
               ))}</td>
