@@ -23,7 +23,7 @@ function Cta({ className, children = "Launch the demo" }: { className?: string; 
       className={cn("inline-flex h-11 items-center justify-center gap-2 rounded-full bg-mint px-5 text-[14px] font-semibold text-black hover:bg-[#FAF9F5]", className)}
     >
       {children}
-      <ArrowRight aria-hidden className="size-4 rtl:rotate-180" />
+      <ArrowRight aria-hidden className="size-4" />
     </Link>
   );
 }
