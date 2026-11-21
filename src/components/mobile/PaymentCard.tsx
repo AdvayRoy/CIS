@@ -3,7 +3,7 @@
 import type { ReactNode } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { formatUnitsStr, type AgreementView } from "@/shared/contract";
-import { Timer } from "lucide-react";
+import { ShieldCheck, Timer } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 export function formatCountdown(ms: number) {
@@ -16,6 +16,29 @@ export function Fact({ label, children, testId }: { label: string; children: Rea
     <div className="min-w-0 border-t border-line py-2.5" data-testid={testId}>
       <dt className="text-xs text-muted">{label}</dt>
       <dd className="mt-0.5 min-w-0 text-start text-sm text-fg">{children}</dd>
+    </div>
+  );
+}
+
+/** Label at the start, short value at the end: one line per fact, like an order-detail row. */
+export function FactRow({ label, children, testId }: { label: string; children: ReactNode; testId?: string }) {
+  return (
+    <div className="flex min-w-0 items-baseline justify-between gap-4 border-t border-line py-2.5" data-testid={testId}>
+      <dt className="shrink-0 text-xs text-muted">{label}</dt>
+      <dd className="min-w-0 text-end text-sm text-fg">{children}</dd>
+    </div>
+  );
+}
+
+/** A term the approval enforces: stated in full, marked as a protection. */
+function Guarantee({ label, children, testId }: { label: string; children: ReactNode; testId?: string }) {
+  return (
+    <div className="flex min-w-0 gap-2.5 py-1.5" data-testid={testId}>
+      <ShieldCheck aria-hidden className="mt-0.5 size-4 shrink-0 text-mint" />
+      <div className="min-w-0">
+        <dt className="text-[11px] text-muted">{label}</dt>
+        <dd className="text-sm leading-snug text-fg">{children}</dd>
+      </div>
     </div>
   );
 }
@@ -63,23 +86,22 @@ export function PaymentCard({ view, remainingMs, envLabel }: { view: AgreementVi
           <span className="ident text-[13px]">{a.recipient}</span>
           <span className="mt-1 block text-xs text-muted">{t("card.displayNameNote")}</span>
         </Fact>
-        <Fact label={t("card.payer")}><span className="ident text-[13px]">{a.payer}</span></Fact>
-
+        <div className="mt-1 mb-2 rounded-[14px] border border-mint/25 bg-mint/[0.06] px-3 py-1.5">
+          <Guarantee label={t("card.oneUse")} testId="one-use">{t("card.oneUseValue")}</Guarantee>
+          <Guarantee label={t("card.scope")} testId="scope">{t("card.scopeValue")}</Guarantee>
+        </div>
+        <FactRow label={t("card.payer")}><span className="ident text-[13px]">{a.payer}</span></FactRow>
         {a.domain && (
-          <Fact label={t("card.network")}>
+          <FactRow label={t("card.network")}>
             {t("card.networkValue", { chainId: String(a.domain.chainId) })}
             <span className="ident mt-0.5 block text-xs text-muted">{a.domain.verifyingContract}</span>
-          </Fact>
+          </FactRow>
         )}
-        {a.itemId !== null && <Fact label={t("card.item")}><span className="ident text-[13px]">{a.itemId}</span></Fact>}
-        <div className="grid grid-cols-2 gap-x-4">
-          <Fact label={t("card.rail")} testId="rail">{c(`rail.${a.rail}`)}</Fact>
-          <Fact label={t("card.expiry")} testId="expiry">
-            <span className="tabular">{t("card.expiryAt", { time: expiryAt })}</span>
-          </Fact>
-        </div>
-        <Fact label={t("card.oneUse")} testId="one-use">{t("card.oneUseValue")}</Fact>
-        <Fact label={t("card.scope")} testId="scope">{t("card.scopeValue")}</Fact>
+        {a.itemId !== null && <FactRow label={t("card.item")}><span className="ident text-[13px]">{a.itemId}</span></FactRow>}
+        <FactRow label={t("card.rail")} testId="rail">{c(`rail.${a.rail}`)}</FactRow>
+        <FactRow label={t("card.expiry")} testId="expiry">
+          <span className="tabular">{t("card.expiryAt", { time: expiryAt })}</span>
+        </FactRow>
       </dl>
     </section>
   );

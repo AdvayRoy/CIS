@@ -14,12 +14,14 @@ function Fact({ label, children, diff, approvedText }: { label: string; children
   const t = useTranslations("desktop");
   return (
     <div className={cn("rounded-lg px-2 py-1.5", diff && "bg-coral/10 ring-1 ring-coral/40")}>
-      <dt className={cn("flex items-center gap-1 text-[11px]", diff ? "text-coral" : "text-muted")}>
-        {label}{diff && <span className="font-medium">· {t("path.changed")}</span>}
-      </dt>
-      <dd className="mt-0.5 min-w-0 truncate text-[13px]">{children}</dd>
+      <div className="flex min-w-0 items-baseline justify-between gap-3">
+        <dt className={cn("shrink-0 text-[11px]", diff ? "text-coral" : "text-muted")}>
+          {label}{diff && <span className="font-medium"> · {t("path.changed")}</span>}
+        </dt>
+        <dd className="min-w-0 truncate text-end text-[13px]">{children}</dd>
+      </div>
       {diff && approvedText && (
-        <dd className="mt-0.5 truncate text-[11px] text-muted"><span>{t("path.approvedWas")} </span><span className="ident line-through">{approvedText}</span></dd>
+        <dd className="mt-0.5 truncate text-end text-[11px] text-muted"><span>{t("path.approvedWas")} </span><span className="ident line-through">{approvedText}</span></dd>
       )}
     </div>
   );
@@ -40,7 +42,7 @@ function StageCard({ stage, selected, onSelect, tone, status, children, index }:
       </span>
       <motion.span key={status} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22 }}
         className={cn("mt-1.5 min-h-10 text-sm leading-5 font-medium", toneText[tone])}>{status}</motion.span>
-      <dl className="mt-2 space-y-1">{children}</dl>
+      <dl className="mt-3 space-y-0.5 border-t border-line pt-2">{children}</dl>
     </motion.button>
   );
 }
