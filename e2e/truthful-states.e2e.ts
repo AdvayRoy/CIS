@@ -141,9 +141,11 @@ test("10 disconnected approval: tapping Approve while offline does not show appr
   if (await btn.isEnabled().catch(() => false)) await btn.click().catch(() => {});
   await ph.page.waitForTimeout(2000);
   expect((await getView(id)).state, "server never saw an approval").toBe("awaiting_approval");
+  await shot(ph.page, "phone-390x844-offline-approve");
   const pt = await bodyText(ph.page);
   expect(successClaims(pt)).toEqual([]);
-  expect(pt, "must not show the approved state label for an approval that never reached the server").not.toMatch(/^\s*approved\s*$/im);
+  // "Approved" alone is also a static stage label of the progress path, so check the state wording instead.
+  expect(pt, "must not tell the customer they approved when the approval never reached the server").not.toMatch(/you approved|approval (sent|received|recorded)/i);
   expect(pt).toMatch(DISCONNECTED_RE);
   await shot(ph.page, "phone-390x844-offline-approve");
   await ph.context.close();
