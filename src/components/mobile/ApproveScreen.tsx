@@ -1,5 +1,6 @@
 "use client";
 // OWNER: worker B. Customer approval screen; every state shown comes from the server's AgreementView.
+import { Logo } from "@/components/Logo";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
@@ -117,7 +118,7 @@ export function ApproveScreen({ id }: { id: string }) {
     >
       <header className="flex min-h-11 items-center justify-between gap-3">
         <div className="flex min-w-0 items-center gap-2">
-          <ShieldCheck aria-hidden className="size-5 shrink-0 text-mint" />
+          <Logo className="size-5 shrink-0" />
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold leading-tight">{c("brand")}</p>
             <p className="truncate text-xs leading-tight text-muted">{t("header.approval")}</p>

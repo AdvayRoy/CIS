@@ -1,4 +1,5 @@
 "use client";
+import { Logo } from "@/components/Logo";
 import { PaymentFlow } from "@/components/viz/PaymentFlow";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
@@ -112,7 +113,7 @@ export function CommandCenter() {
     <div className="flex h-[calc(100dvh-1.5rem)] min-h-0 w-full overflow-hidden text-fg">
       {/* Slim rail */}
       <aside className="glass-bar flex w-12 shrink-0 flex-col items-center gap-2 border-e border-line py-3 sm:w-16">
-        <div className="mb-2 flex size-9 items-center justify-center rounded-[14px] btn-primary" title={tc("brand")}><ShieldCheck aria-hidden className="size-5" /></div>
+        <div className="mb-2 flex size-9 items-center justify-center rounded-[14px] border border-line bg-black" title={tc("brand")}><Logo className="size-[18px]" /></div>
         <button type="button" className={navBtn} onClick={() => scrollTo("payment")} aria-label={t("nav.payment")} title={t("nav.payment")}><ArrowLeftRight aria-hidden className="size-[18px]" /></button>
         <button type="button" className={navBtn} onClick={() => scrollTo("chain")} aria-label={t("nav.chain")} title={t("nav.chain")}><Coins aria-hidden className="size-[18px]" /></button>
         <button type="button" className={navBtn} onClick={() => scrollTo("bank")} aria-label={t("nav.bank")} title={t("nav.bank")}><Landmark aria-hidden className="size-[18px]" /></button>

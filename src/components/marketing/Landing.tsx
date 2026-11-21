@@ -1,5 +1,6 @@
 "use client";
 // CounterSign marketing page (/landing). Copy is English only; every interface piece is an illustration with sample values.
+import { Logo } from "@/components/Logo";
 import Link from "next/link";
 import { MotionConfig, motion } from "motion/react";
 import { ArrowRight, ArrowUpRight, FileCheck2, Fingerprint, Landmark, Repeat1, ShieldCheck, Target } from "lucide-react";
@@ -36,7 +37,7 @@ function Nav() {
     <header className="sticky top-0 z-40 border-b border-black/10 bg-[#FAF9F5] text-[#131312]">
       <div className={cn(WRAP, "flex h-14 items-center justify-between gap-4")}>
         <Link href="/landing" className="flex items-center gap-2 text-[16px] font-semibold tracking-tight">
-          <ShieldCheck aria-hidden className="size-[18px]" />
+          <span className="flex size-7 items-center justify-center rounded-md bg-black"><Logo className="size-4" /></span>
           CounterSign
         </Link>
         <nav aria-label="Primary" className="hidden items-center gap-8 text-[14px] text-[#131312] md:flex">
@@ -220,7 +221,7 @@ function Footer() {
         </motion.div>
         <div className="mt-16 flex flex-wrap items-center justify-between gap-3 border-t border-line pt-6 text-[12px] text-muted">
           <span className="flex items-center gap-2 font-semibold text-fg">
-            <ShieldCheck aria-hidden className="size-4 text-mint" /> CounterSign
+            <Logo className="size-4" /> CounterSign
           </span>
           <span>Demo environment. All funds are simulated or local test tokens. No real transfers.</span>
         </div>
