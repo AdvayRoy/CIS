@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* CounterSign design tokens — lead-owned. Use the Tailwind names (bg-bg, bg-surface, border-line, text-fg, text-muted, text-mint, text-amber, text-coral). */
+@theme inline {
+  --color-bg: #0B0F17;
+  --color-surface: #141B26;
+  --color-surface-2: #1A2330;
+  --color-line: #273142;
+  --color-fg: #F3F5F7;
+  --color-muted: #A8B4C5;
+  --color-mint: #B7F5D5;
+  --color-amber: #FFB46C;
+  --color-coral: #EB6D76;
+  --font-sans: var(--font-geist-sans), var(--font-noto-arabic), var(--font-noto-armenian), var(--font-noto-georgian), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+  --radius-card: 16px;
+  --radius-ctl: 12px;
+}
+
+html, body { background: #0B0F17; color: #F3F5F7; }
+body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+.tabular { font-variant-numeric: tabular-nums; }
+/* identifiers/hashes stay LTR and unbroken in RTL locales */
+.ident { font-family: var(--font-mono); direction: ltr; unicode-bidi: isolate; overflow-wrap: anywhere; }
+:focus-visible { outline: 2px solid #B7F5D5; outline-offset: 2px; border-radius: 6px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

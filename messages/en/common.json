@@ -1,0 +1,67 @@
+{
+  "brand": "CounterSign",
+  "tagline": "One payment. Exactly as agreed.",
+  "env": {
+    "bank": "Bank simulation",
+    "chain": "Local-chain demo"
+  },
+  "rail": {
+    "bank": "Bank transfer",
+    "crypto": "Token purchase"
+  },
+  "field": {
+    "recipient": "Recipient",
+    "amount": "Amount",
+    "operation": "Operation",
+    "continuingAllowance": "Continuing permission",
+    "expiry": "Expires",
+    "nonce": "One-use number",
+    "domain": "Network",
+    "merchant": "Merchant",
+    "rail": "Payment rail",
+    "payer": "From",
+    "allowance": "Remaining allowance",
+    "balance": "Balance",
+    "executionCount": "Times executed"
+  },
+  "state": {
+    "awaiting_approval": "Awaiting your approval",
+    "approved": "Approved",
+    "executing": "Executing",
+    "rejected": "Stopped",
+    "settled": "Completed",
+    "declined": "Declined",
+    "expired": "Expired",
+    "failed": "Failed"
+  },
+  "reason": {
+    "OK": "Executed exactly as approved",
+    "NOT_FOUND": "Payment not found",
+    "NOT_APPROVED": "This payment was not approved",
+    "DECLINED": "You declined this payment",
+    "INVALID_SIGNATURE": "Approval could not be verified",
+    "EXPIRED": "The approval expired",
+    "REPLAYED": "This approval was already used once",
+    "RECIPIENT_MISMATCH": "Recipient differs from what you approved",
+    "AMOUNT_MISMATCH": "Amount differs from what you approved",
+    "AMOUNT_EXCEEDS_LIMIT": "Amount exceeds what you approved",
+    "OPERATION_NOT_ALLOWED": "Operation is not the one you approved",
+    "CONTINUING_PERMISSION_NOT_ALLOWED": "Extra ongoing permission was requested",
+    "RAIL_MISMATCH": "Wrong payment rail",
+    "DOMAIN_MISMATCH": "Wrong network or contract",
+    "INSUFFICIENT_FUNDS": "Insufficient funds",
+    "EXECUTION_REVERTED": "The network rejected the transaction",
+    "UNAUTHORIZED_CAPABILITY": "Not permitted from this context",
+    "RAIL_UNAVAILABLE": "Payment rail unavailable",
+    "DISCONNECTED": "Disconnected — showing last confirmed state"
+  },
+  "connection": {
+    "connected": "Connected",
+    "disconnected": "Disconnected",
+    "connecting": "Connecting"
+  },
+  "language": {
+    "label": "Language",
+    "search": "Search languages"
+  }
+}
