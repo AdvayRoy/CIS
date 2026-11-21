@@ -18,6 +18,8 @@ export function LanguageSelector({ className }: { className?: string }) {
   const [activeIndex, setActiveIndex] = useState(0);
   const listId = useId();
   const listRef = useRef<HTMLUListElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
   const current = LOCALES.find((l) => l.code === locale) ?? LOCALES[0];
 
   const results = useMemo(() => {
@@ -39,8 +41,9 @@ export function LanguageSelector({ className }: { className?: string }) {
 
   const choose = (code: LocaleCode) => { setLocale(code); setOpen(false); };
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
     if (!results.length) return;
+    if (e.key === "Enter" && (e.target as HTMLElement).tagName === "BUTTON") return;
     if (e.key === "ArrowDown") { e.preventDefault(); setActiveIndex((i) => (i + 1) % results.length); }
     else if (e.key === "ArrowUp") { e.preventDefault(); setActiveIndex((i) => (i - 1 + results.length) % results.length); }
     else if (e.key === "Home") { e.preventDefault(); setActiveIndex(0); }
@@ -71,6 +74,15 @@ export function LanguageSelector({ className }: { className?: string }) {
         <Dialog.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-[2px]" />
         <Dialog.Content
           data-testid="language-panel"
+          onKeyDown={onKeyDown}
+          onOpenAutoFocus={(e) => {
+            // Focus the search box where there is a hardware keyboard; on touch screens keep the on-screen keyboard closed.
+            e.preventDefault();
+            const fine = typeof window !== "undefined" && window.matchMedia?.("(pointer: fine)").matches;
+            (fine ? inputRef.current : contentRef.current)?.focus();
+          }}
+          ref={contentRef}
+          tabIndex={-1}
           className={cn(
             "fixed inset-x-0 bottom-0 z-50 flex max-h-[85dvh] flex-col rounded-t-[20px] border border-line bg-surface text-fg shadow-2xl outline-none",
             "pb-[env(safe-area-inset-bottom)]",
@@ -102,7 +114,7 @@ export function LanguageSelector({ className }: { className?: string }) {
               spellCheck={false}
               value={query}
               onChange={(e) => { setQuery(e.target.value); setActiveIndex(0); }}
-              onKeyDown={onKeyDown}
+              ref={inputRef}
               className="h-12 w-full rounded-[12px] border border-line bg-bg ps-11 pe-4 text-base text-fg placeholder:text-muted/70 focus:border-mint/60 focus:outline-none"
             />
           </div>
@@ -121,12 +133,12 @@ export function LanguageSelector({ className }: { className?: string }) {
                   onMouseMove={() => setActiveIndex(i)}
                   className={cn(
                     "flex min-h-12 cursor-pointer items-center gap-3 rounded-[12px] px-3 py-2 transition-colors duration-150",
-                    i === activeIndex && "bg-surface-2",
+                    i === activeIndex && "bg-line/50",
                   )}
                 >
                   <span className="min-w-0 flex-1 text-start">
-                    <bdi lang={l.code} dir={l.dir} className={cn("block truncate text-[15px] leading-6", selected ? "text-mint" : "text-fg")}>{l.name}</bdi>
-                    <bdi lang="en" dir="ltr" className="block truncate text-xs leading-4 text-muted">{l.english}</bdi>
+                    <span className={cn("block truncate text-[15px] leading-6", selected ? "text-mint" : "text-fg")}><bdi lang={l.code}>{l.name}</bdi></span>
+                    <span className="block truncate text-xs leading-4 text-muted"><bdi lang="en">{l.english}</bdi></span>
                   </span>
                   <span aria-hidden className="font-mono text-[11px] uppercase tracking-wide text-muted/80">{l.code}</span>
                   <Check aria-hidden className={cn("size-4 shrink-0 text-mint", !selected && "invisible")} strokeWidth={2} />
