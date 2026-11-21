@@ -7,7 +7,9 @@
 import { createPublicClient, http, erc20Abi, type Address } from "viem";
 import type { AgreementView, Overview, TokenScenario, Decision, ExecutionEvidence } from "../../src/shared/contract";
 
-export const BASE_URL = (process.env.BASE_URL ?? "http://localhost:3000").replace(/\/$/, "");
+// vitest itself sets process.env.BASE_URL to "/" (vite base); only accept absolute URLs. CS_BASE_URL wins if set.
+const rawBase = [process.env.CS_BASE_URL, process.env.BASE_URL].find((u) => !!u && /^https?:\/\//.test(u));
+export const BASE_URL = (rawBase ?? "http://localhost:3000").replace(/\/$/, "");
 export const ANVIL_RPC_URL = process.env.ANVIL_RPC_URL ?? "http://127.0.0.1:8545";
 export const KEYS = {
   customer: process.env.CS_CUSTOMER_KEY ?? "demo-customer",

@@ -26,7 +26,7 @@ ACCEPTANCE=1 BASE_URL=http://localhost:3000 pnpm exec vitest run tests/acceptanc
 BASE_URL=http://localhost:3000 pnpm exec playwright test
 ```
 
-Environment (all optional): `BASE_URL` (default `http://localhost:3000`), `ANVIL_RPC_URL` (default `http://127.0.0.1:8545`),
+Environment (all optional): `BASE_URL` (default `http://localhost:3000`; must be absolute, or use `CS_BASE_URL`, because vitest sets `BASE_URL=/` itself), `ANVIL_RPC_URL` (default `http://127.0.0.1:8545`),
 `CS_CUSTOMER_KEY` / `CS_MERCHANT_KEY` / `CS_OPERATOR_KEY` (defaults `demo-customer` / `demo-merchant` / `demo-operator`).
 
 ## Notes
