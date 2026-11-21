@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { ArrowLeftRight, Coins, FlaskConical, Landmark, PanelRightClose, PanelRightOpen, ShieldCheck, WifiOff } from "lucide-react";
 import { api } from "@/lib/api";
 import { usePoll } from "@/lib/usePoll";
@@ -91,6 +91,7 @@ export function CommandCenter() {
   const navBtn = "flex size-10 items-center justify-center rounded-xl text-muted transition-colors duration-200 hover:bg-surface hover:text-fg";
 
   return (
+    <MotionConfig reducedMotion="user">
     <div className="flex h-dvh min-h-0 w-full overflow-hidden bg-bg text-fg">
       {/* Slim rail */}
       <aside className="flex w-14 shrink-0 flex-col items-center gap-2 border-e border-line py-3">
@@ -198,5 +199,6 @@ export function CommandCenter() {
         </div>
       </div>
     </div>
+    </MotionConfig>
   );
 }
