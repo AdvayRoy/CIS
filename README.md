@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CounterSign
 
-## Getting Started
+**One payment. Exactly as agreed.**
 
-First, run the development server:
+CounterSign protects one narrow failure: a one-time payment that grants more authority than intended, changes destination after approval, or executes more than once. The customer approves structured facts; the infrastructure enforces exactly those facts.
+
+Hackathon prototype. It protects its supported execution paths only: one simulated bank ledger and one known token purchase on a private local chain. It does not detect scams in general, verify merchant honesty, access real banks, recover settled funds, or claim novelty.
+
+## Run
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm demo          # private Anvil + contract deploy + production build on http://localhost:3000
+DEV=1 pnpm demo    # same with the dev server
+pnpm demo:reset    # restore the deterministic starting state (server must be running)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Requires Node 20+, pnpm, and Foundry (`anvil`) for the crypto rail. Without Anvil the crypto rail is shown as unavailable; nothing is mocked in its place.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- `/command` desktop product (customer view)
+- `/approve/[id]` phone approval (opened from the pairing QR/link on `/command`)
+- `/lab` operator-only demonstration controls and checkout fixture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Local demo role keys: `demo-customer`, `demo-merchant`, `demo-operator` (override with the env names in `docs/CONTRACT.md`).
 
-## Learn More
+## Architecture
 
-To learn more about Next.js, take a look at the following resources:
+One Next.js + TypeScript app (one long-running Node process) with a SQLite ledger and a private Anvil companion.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Layer | Location |
+|---|---|
+| Shared schemas, EIP-712 binding, ports | `src/shared/` |
+| HTTP API (REST, 1 s polling, no caching) | `src/app/api/` |
+| Authorization + demo signer + sessions | `src/server/auth/` |
+| Bank simulation ledger (transactional SQLite) | `src/server/bank/` |
+| Chain adapter (viem) | `src/server/chain/` |
+| Solidity contracts + Foundry tests | `contracts/` |
+| Localization (14 languages, `next-intl`) | `src/i18n/`, `messages/` |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Trust boundary
 
-## Deploy on Vercel
+- The customer confirms structured facts in the approval context. Approval requires a short-lived pairing token minted with the customer capability and bound to one agreement.
+- The approved facts are signed as EIP-712 typed data (viem) by an isolated server-side demo signer. This is a disclosed trusted demo component, not a hardware or biometric signature.
+- The merchant/lab fixture can alter an execution proposal. It cannot mint approvals, rewrite approved facts, reach the signer, or debit the ledger directly. Capabilities are enforced on the server from signed HttpOnly cookies.
+- Bank: signature and terms are validated and the authorization is consumed in the same SQLite transaction as the debit/credit. A replay returns the existing receipt and no second debit.
+- Crypto: a minimal smart account verifies the signature on-chain, then performs exact approve, purchase and allowance removal atomically, and checks the debit and the zero residual allowance. Balances and allowance shown are read from the EVM.
+- Trusted roots: the confirmation authority (signer), the executor and the browser. Compromise of those is out of scope.
+- The recipient identifier is shown as-is. A display name is never treated as verified identity.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Known limits
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+See `docs/HANDOFF.md` for current status, the evidence matrix and what is simulated, unverified or deferred.
