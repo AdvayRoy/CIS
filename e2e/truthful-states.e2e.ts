@@ -4,7 +4,7 @@
  */
 import { test, expect } from "@playwright/test";
 import {
-  DESKTOPS, DISCONNECTED_RE, PHONES, SUCCESS_RE, bodyText, createAgreement, desktop, executeApi,
+  DESKTOPS, DISCONNECTED_RE, PHONES, successClaims, bodyText, createAgreement, desktop, executeApi,
   expectNoHorizontalOverflow, getState, getView, pairing, phone, realErrors, resetAll, shot,
 } from "./helpers";
 
@@ -19,13 +19,13 @@ test("10 pending: awaiting and approved-but-unexecuted are not shown as success"
   await desk.page.goto("/command"); await ph.page.goto(pair.approvePath);
   await expect(ph.page.getByRole("button", { name: /approve this payment/i })).toBeVisible();
   await expect(desk.page.locator("body")).toContainText("ACC-MERCHANT-001");
-  expect(await bodyText(ph.page)).not.toMatch(SUCCESS_RE);
-  expect(await bodyText(desk.page)).not.toMatch(SUCCESS_RE);
+  expect(successClaims(await bodyText(ph.page))).toEqual([]);
+  expect(successClaims(await bodyText(desk.page))).toEqual([]);
   await ph.page.getByRole("button", { name: /approve this payment/i }).click();
   await expect.poll(async () => (await getView(id)).state).toBe("approved");
   await ph.page.waitForTimeout(2500); // several polls: nothing may drift to success on its own
-  expect(await bodyText(ph.page), "approved (pending execution) on phone").not.toMatch(SUCCESS_RE);
-  expect(await bodyText(desk.page), "approved (pending execution) on desktop").not.toMatch(SUCCESS_RE);
+  expect(successClaims(await bodyText(ph.page)), "approved (pending execution) on phone").toEqual([]);
+  expect(successClaims(await bodyText(desk.page)), "approved (pending execution) on desktop").toEqual([]);
   await shot(ph.page, "phone-375x667-pending-approved");
   await shot(desk.page, "desktop-1280x800-pending-approved");
   await desk.context.close(); await ph.context.close();
@@ -49,8 +49,8 @@ test("10 stopped: a rejected recipient substitution is shown as stopped, never a
   await expect(desk.page.locator("body")).toContainText(/stopped|rejected|differs/i);
   await ph.page.waitForTimeout(2500);
   const pt = await bodyText(ph.page); const dt = await bodyText(desk.page);
-  expect(pt, "phone must not show success after a rejected attempt").not.toMatch(SUCCESS_RE);
-  expect(dt, "desktop must not show success after a rejected attempt").not.toMatch(SUCCESS_RE);
+  expect(successClaims(pt), "phone must not show success after a rejected attempt").toEqual([]);
+  expect(successClaims(dt), "desktop must not show success after a rejected attempt").toEqual([]);
   expect(dt, "desktop still shows the full 1,000.00 balance").toMatch(/1,?000(\.00)?/);
   await expectNoHorizontalOverflow(desk.page, "desktop rejected");
   await expectNoHorizontalOverflow(ph.page, "phone rejected");
@@ -70,7 +70,7 @@ test("10 expired: an expired approval request shows expired, offers no approval,
   await expect(ph.page.locator("body")).toContainText(/expired/i, { timeout: 15_000 });
   const btn = ph.page.getByRole("button", { name: /approve this payment/i });
   if (await btn.count()) await expect(btn, "approve must be disabled once expired").toBeDisabled();
-  expect(await bodyText(ph.page)).not.toMatch(SUCCESS_RE);
+  expect(successClaims(await bodyText(ph.page))).toEqual([]);
   expect((await getView(id)).state).toBe("expired");
   await shot(ph.page, "phone-390x844-expired");
   await ph.context.close();
@@ -91,8 +91,8 @@ test("10 declined: declining on the phone is shown as declined on both views", a
   await expect.poll(async () => (await getView(id)).state).toBe("declined");
   await expect(ph.page.locator("body")).toContainText(/declined/i);
   await expect(desk.page.locator("body")).toContainText(/declined/i);
-  expect(await bodyText(ph.page)).not.toMatch(SUCCESS_RE);
-  expect(await bodyText(desk.page)).not.toMatch(SUCCESS_RE);
+  expect(successClaims(await bodyText(ph.page))).toEqual([]);
+  expect(successClaims(await bodyText(desk.page))).toEqual([]);
   await shot(ph.page, "phone-390x844-declined");
   await desk.context.close(); await ph.context.close();
 });
@@ -115,8 +115,8 @@ test("10 disconnected: offline is shown as disconnected, never as success; recon
   const ex = await executeApi(await getView(id));
   expect(ex.status).toBe(200);
   await ph.page.waitForTimeout(2500);
-  expect(await bodyText(ph.page), "offline phone must not claim settlement").not.toMatch(SUCCESS_RE);
-  expect(await bodyText(desk.page), "offline desktop must not claim settlement").not.toMatch(SUCCESS_RE);
+  expect(successClaims(await bodyText(ph.page)), "offline phone must not claim settlement").toEqual([]);
+  expect(successClaims(await bodyText(desk.page)), "offline desktop must not claim settlement").toEqual([]);
   await shot(ph.page, "phone-390x844-disconnected");
   await shot(desk.page, "desktop-1440x900-disconnected");
 
@@ -142,7 +142,7 @@ test("10 disconnected approval: tapping Approve while offline does not show appr
   await ph.page.waitForTimeout(2000);
   expect((await getView(id)).state, "server never saw an approval").toBe("awaiting_approval");
   const pt = await bodyText(ph.page);
-  expect(pt).not.toMatch(SUCCESS_RE);
+  expect(successClaims(pt)).toEqual([]);
   expect(pt, "must not show the approved state label for an approval that never reached the server").not.toMatch(/^\s*approved\s*$/im);
   expect(pt).toMatch(DISCONNECTED_RE);
   await shot(ph.page, "phone-390x844-offline-approve");
@@ -162,7 +162,7 @@ test("5 (browser) the approval page without a valid pairing token offers no work
     const v = await getView(id);
     expect(v.state, label).toBe("awaiting_approval");
     expect(v.approval, label).toBeNull();
-    expect(await bodyText(w.page), label).not.toMatch(SUCCESS_RE);
+    expect(successClaims(await bodyText(w.page)), label).toEqual([]);
     await shot(w.page, `phone-390x844-${label}`);
     await w.context.close();
   }

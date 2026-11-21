@@ -18,6 +18,14 @@ export const PHONES = [{ name: "390x844", width: 390, height: 844 }, { name: "37
 
 /** Words that claim successful settlement to the person. common.json: state.settled = "Completed". */
 export const SUCCESS_RE = /\b(completed|settled|payment complete|paid|payment successful|success(ful)?)\b/i;
+const NEGATED_RE = /\b(not|nothing|no|never|until|cannot|unless|before|yet)\b|n't\b/i;
+/**
+ * Sentences on screen that claim a successful settlement. A sentence that explicitly negates it
+ * ("Nothing is paid until you approve", "It is not complete yet") is truthful and is not a claim.
+ */
+export function successClaims(text: string): string[] {
+  return text.split(/[\n.!?]+/).map((x) => x.trim()).filter((x) => x && SUCCESS_RE.test(x) && !NEGATED_RE.test(x));
+}
 export const DISCONNECTED_RE = /disconnected|offline|reconnecting|connection lost|no connection/i;
 
 export async function api(...roles: Role[]): Promise<APIRequestContext> {

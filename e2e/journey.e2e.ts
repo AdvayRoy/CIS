@@ -4,7 +4,7 @@
  */
 import { test, expect } from "@playwright/test";
 import {
-  DESKTOPS, PHONES, SUCCESS_RE, amountRe, bodyText, createAgreement, desktop, executeApi, expandAll,
+  DESKTOPS, PHONES, successClaims, amountRe, bodyText, createAgreement, desktop, executeApi, expandAll,
   expectNoHorizontalOverflow, expectUnobscured, getState, getView, pairing, phone, realErrors, resetAll, shot,
 } from "./helpers";
 
@@ -33,7 +33,7 @@ for (let i = 0; i < DESKTOPS.length; i++) {
     expect(pt, "amount 100.00").toMatch(amountRe("100"));
     expect(pt, "currency").toMatch(/AED/);
     expect(pt, "environment label").toMatch(/Bank simulation/i);
-    expect(pt, "no success before approval").not.toMatch(SUCCESS_RE);
+    expect(successClaims(pt), "no success before approval").toEqual([]);
     await expectNoHorizontalOverflow(ph.page, `phone ${p.name} awaiting`);
     await expectUnobscured(ph.page, ph.page.getByText("ACC-MERCHANT-001").first(), "recipient identifier");
     await expectUnobscured(ph.page, approveBtn, "Approve button");
@@ -48,7 +48,7 @@ for (let i = 0; i < DESKTOPS.length; i++) {
     await approveBtn.click();
     await expect.poll(async () => (await getView(id)).state, { message: "phone approval must reach the server" }).toBe("approved");
     await expect(ph.page.locator("body")).toContainText(/approved/i);
-    expect(await bodyText(ph.page), "approved is not settled").not.toMatch(SUCCESS_RE);
+    expect(successClaims(await bodyText(ph.page)), "approved is not settled").toEqual([]);
     await shot(ph.page, `phone-${p.name}-2-approved`);
     await expect(desk.page.locator("body")).toContainText(/approved/i);
     await shot(desk.page, `desktop-${d.name}-2-approved`);
