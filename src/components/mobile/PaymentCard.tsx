@@ -3,6 +3,7 @@
 import type { ReactNode } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import { formatUnitsStr, type AgreementView } from "@/shared/contract";
+import { Timer } from "lucide-react";
 import { cn } from "@/lib/cn";
 
 export function formatCountdown(ms: number) {
@@ -12,7 +13,7 @@ export function formatCountdown(ms: number) {
 
 export function Fact({ label, children, testId }: { label: string; children: ReactNode; testId?: string }) {
   return (
-    <div className="border-t border-line py-3" data-testid={testId}>
+    <div className="min-w-0 border-t border-line py-2.5" data-testid={testId}>
       <dt className="text-xs text-muted">{label}</dt>
       <dd className="mt-0.5 min-w-0 text-start text-sm text-fg">{children}</dd>
     </div>
@@ -30,7 +31,7 @@ export function PaymentCard({ view, remainingMs, envLabel }: { view: AgreementVi
   const expiryAt = format.dateTime(new Date(a.expiry * 1000), { hour: "2-digit", minute: "2-digit", second: "2-digit" });
 
   return (
-    <section className="rounded-[20px] border border-line bg-surface p-5" data-testid="payment-card">
+    <section className="rounded-[20px] border border-line bg-surface p-4" data-testid="payment-card">
       <div className="flex items-start justify-between gap-3">
         <div className="min-w-0">
           <p className="text-xs text-muted">{t("card.payTo")}</p>
@@ -41,21 +42,29 @@ export function PaymentCard({ view, remainingMs, envLabel }: { view: AgreementVi
         )}
       </div>
 
-      <div className="mt-5">
-        <p className="text-xs text-muted">{a.rail === "bank" ? t("card.amountExact") : t("card.amountMax")}</p>
+      <div className="mt-4">
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-xs text-muted">{a.rail === "bank" ? t("card.amountExact") : t("card.amountMax")}</p>
+          {counting && remainingMs !== null && (
+            <p className={cn("tabular inline-flex items-center gap-1 text-xs", urgent || expired ? "text-amber" : "text-muted")} data-testid="countdown">
+              <Timer aria-hidden className="size-3.5" />
+              {expired ? t("card.expiryReached") : t("card.expiresIn", { time: formatCountdown(remainingMs) })}
+            </p>
+          )}
+        </div>
         <p className="tabular mt-1 flex flex-wrap items-baseline gap-x-2 break-all text-[40px] font-semibold leading-none tracking-tight" data-testid="amount">
           <bdi>{formatUnitsStr(a.amount, a.asset.decimals)}</bdi>
           <span className="text-lg font-medium text-muted">{a.asset.code}</span>
         </p>
       </div>
 
-      <dl className="mt-5">
+      <dl className="mt-4">
         <Fact label={t("card.recipient")} testId="recipient">
           <span className="ident text-[13px]">{a.recipient}</span>
           <span className="mt-1 block text-xs text-muted">{t("card.displayNameNote")}</span>
         </Fact>
         <Fact label={t("card.payer")}><span className="ident text-[13px]">{a.payer}</span></Fact>
-        <Fact label={t("card.rail")} testId="rail">{c(`rail.${a.rail}`)}</Fact>
+
         {a.domain && (
           <Fact label={t("card.network")}>
             {t("card.networkValue", { chainId: String(a.domain.chainId) })}
@@ -63,19 +72,13 @@ export function PaymentCard({ view, remainingMs, envLabel }: { view: AgreementVi
           </Fact>
         )}
         {a.itemId !== null && <Fact label={t("card.item")}><span className="ident text-[13px]">{a.itemId}</span></Fact>}
+        <div className="grid grid-cols-2 gap-x-4">
+          <Fact label={t("card.rail")} testId="rail">{c(`rail.${a.rail}`)}</Fact>
+          <Fact label={t("card.expiry")} testId="expiry">
+            <span className="tabular">{t("card.expiryAt", { time: expiryAt })}</span>
+          </Fact>
+        </div>
         <Fact label={t("card.oneUse")} testId="one-use">{t("card.oneUseValue")}</Fact>
-        <Fact label={t("card.expiry")} testId="expiry">
-          {counting && remainingMs !== null ? (
-            expired ? (
-              <span className="text-amber">{t("card.expiryReached")}</span>
-            ) : (
-              <span className={cn("tabular", urgent && "text-amber")}>
-                {t("card.expiresIn", { time: formatCountdown(remainingMs) })}
-              </span>
-            )
-          ) : null}
-          <span className={cn("tabular text-muted", counting && remainingMs !== null && "ms-2")}>{t("card.expiryAt", { time: expiryAt })}</span>
-        </Fact>
         <Fact label={t("card.scope")} testId="scope">{t("card.scopeValue")}</Fact>
       </dl>
     </section>

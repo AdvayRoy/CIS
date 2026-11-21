@@ -24,7 +24,7 @@ export function PaymentPath({ view }: { view: AgreementView }) {
     },
   ];
   return (
-    <ol aria-label={t("path.label")} className="mt-4 flex items-start" data-testid="payment-path">
+    <ol aria-label={t("path.label")} className="mt-3 flex items-start" data-testid="payment-path">
       {steps.map((s, i) => (
         <li key={s.key} className="flex min-w-0 flex-1 flex-col gap-1.5" data-step={s.key} data-tone={s.tone}>
           <div className="flex items-center">
