@@ -8,6 +8,7 @@ import { cn } from "@/lib/cn";
 import { EASE, Pill, SAMPLE } from "./pieces";
 import { PANEL, ProductPanel, RailsGlobe, RuleBuilder, SampleNote } from "./HeroPanels";
 import { ScrollStory } from "./ScrollStory";
+import { PaymentGraph } from "./PaymentGraph";
 
 const WRAP = "mx-auto w-full max-w-[1240px] px-5 sm:px-8";
 const H1 = "font-sans text-[38px] font-medium leading-[1.02] tracking-[-0.035em] sm:text-[76px] lg:text-[92px]";
@@ -230,6 +231,24 @@ function Footer() {
   );
 }
 
+function Graph() {
+  return (
+    <section className="bg-[#FAF9F5] pb-20 text-[#131312] sm:pb-28">
+      <div className={WRAP}>
+        <motion.div {...reveal} className="mx-auto max-w-[820px] text-center">
+          <p className={EYEBROW}>The payment graph</p>
+          <h2 className={cn(H2, "mt-4")}>
+            <span className="block">Every attempt meets the approval.</span> <span className="block text-[#77756D]">Only a match gets through.</span>
+          </h2>
+        </motion.div>
+        <motion.div {...reveal} className="mt-12 sm:mt-16">
+          <PaymentGraph />
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
 export function Landing() {
   return (
     <MotionConfig reducedMotion="user">
@@ -238,6 +257,7 @@ export function Landing() {
         <main>
           <Hero />
           <Bento />
+          <Graph />
           <ScrollStory />
           <Editorial />
         </main>
