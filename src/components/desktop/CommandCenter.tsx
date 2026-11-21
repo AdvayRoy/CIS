@@ -1,4 +1,5 @@
 "use client";
+import { PaymentFlow } from "@/components/viz/PaymentFlow";
 import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useTranslations } from "next-intl";
@@ -208,7 +209,7 @@ export function CommandCenter() {
                     )}
 
                     {/* PAYMENT FLOW SLOT: mount the full-width Payer -> CounterSign -> Recipient component here, e.g. <PaymentFlow view={view} evidence={evidence} />. */}
-                    <div data-slot="payment-flow" className="contents" />
+                    <div data-slot="payment-flow" className="contents"><PaymentFlow view={view} evidence={evidence} /></div>
 
                     <TransactionPath view={view} evidence={evidence} stage={stage} onStage={pickStage} />
 
