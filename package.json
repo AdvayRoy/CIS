@@ -9,7 +9,9 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "demo": "bash scripts/demo.sh",
+    "demo:reset": "curl -s -c /tmp/cs.jar -X POST -H 'content-type: application/json' -d '{\"role\":\"operator\",\"key\":\"'${CS_OPERATOR_KEY:-demo-operator}'\"}' http://localhost:${PORT:-3000}/api/session >/dev/null && curl -s -b /tmp/cs.jar -X POST http://localhost:${PORT:-3000}/api/lab/reset"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.6.1",
