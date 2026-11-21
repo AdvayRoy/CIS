@@ -1,10 +1,10 @@
 "use client";
 import { useTranslations } from "next-intl";
-import { motion } from "motion/react";
 import type { Asset, Overview, TokenScenario } from "@/shared/contract";
 import { cn } from "@/lib/cn";
 import { fmtAmount, fmtAsset, short, type Tone } from "./format";
 import { Ident, Notice, Panel, Pill } from "./ui";
+import { CountUp } from "@/components/fx/CountUp";
 
 /** Fixed scenario start from docs/CONTRACT.md: each account starts with 1,000 tokens. */
 const scenarioStart = (asset: Asset) => `1000${"0".repeat(asset.decimals)}`;
@@ -40,9 +40,9 @@ function Scenario({ s, token }: { s: TokenScenario; token: Asset }) {
         <span aria-hidden className="pb-1 text-muted rtl:rotate-180">→</span>
         <div className="min-w-0">
           <p className="text-[11px] text-muted">{t("chain.now")}</p>
-          <motion.p key={s.customerBalance} initial={{ opacity: 0.4, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}
-            className="tabular truncate text-3xl font-medium tracking-tight">{fmtAmount(s.customerBalance, token.decimals)}
-            <span className="ms-1.5 text-sm font-normal text-muted">{token.code}</span></motion.p>
+          <p className={cn("ticker truncate text-3xl font-medium transition-colors duration-500", d?.succeeded && "text-coral")}>
+            <CountUp value={s.customerBalance} format={(v) => fmtAmount(v, token.decimals)} />
+            <span className="ms-1.5 text-sm font-normal text-muted">{token.code}</span></p>
         </div>
       </div>
       <dl className="mt-3">
@@ -94,9 +94,9 @@ export function BankPanel({ bank, label }: { bank: Overview["bank"]; label: stri
             {bank.accounts.map((acc) => (
               <li key={acc.id} className="min-w-0 rounded-[20px] border border-line bg-white/[0.04] p-5">
                 <p className="truncate text-[13px] text-muted">{acc.displayName}</p>
-                <motion.p key={acc.balance} initial={{ opacity: 0.4, y: 4 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}
-                  className="tabular mt-1 truncate text-2xl font-medium tracking-tight">{fmtAmount(acc.balance, acc.asset.decimals)}
-                  <span className="ms-1.5 text-sm font-normal text-muted">{acc.asset.code}</span></motion.p>
+                <p className="ticker mt-1 truncate text-2xl font-medium">
+                  <CountUp value={acc.balance} format={(v) => fmtAmount(v, acc.asset.decimals)} />
+                  <span className="ms-1.5 text-sm font-normal text-muted">{acc.asset.code}</span></p>
                 <Ident value={acc.id} className="mt-2 block truncate text-[11px] text-muted" />
               </li>
             ))}

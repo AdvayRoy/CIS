@@ -29,6 +29,7 @@ const STATE_UI: Record<AgreementState, { tone: Tone; Icon: typeof Clock; spin?: 
   failed: { tone: "coral", Icon: CircleAlert },
 };
 const TONE_TEXT: Record<Tone, string> = { mint: "text-mint", amber: "text-amber", coral: "text-coral", muted: "text-muted" };
+const TONE_GLOW: Record<Tone, string> = { mint: "glow-mint", amber: "", coral: "glow-coral cs-stop", muted: "" };
 const TONE_BORDER: Record<Tone, string> = { mint: "border-mint/40", amber: "border-amber/40", coral: "border-coral/40", muted: "border-line" };
 
 export function ApproveScreen({ id }: { id: string }) {
@@ -158,7 +159,7 @@ export function ApproveScreen({ id }: { id: string }) {
         {!view && !offline && (notFound || loadError) && (
           <section role="alert" className="rounded-2xl border border-line bg-surface p-5" data-testid={notFound ? "not-found" : "load-error"}>
             <CircleAlert aria-hidden className="size-6 text-coral" />
-            <h1 className="mt-3 text-lg font-semibold">{t(notFound ? "notFound.title" : "loadError.title")}</h1>
+            <h1 className="font-sans mt-3 text-lg font-semibold">{t(notFound ? "notFound.title" : "loadError.title")}</h1>
             <p className="mt-1 text-sm text-muted">{t(notFound ? "notFound.body" : "loadError.body")}</p>
             <p className="ident mt-3 text-xs text-muted">{id}</p>
           </section>
@@ -176,7 +177,7 @@ export function ApproveScreen({ id }: { id: string }) {
               aria-live="polite"
               data-testid="state-banner"
               data-state={state}
-              className={cn("rounded-2xl border bg-surface p-4 transition-colors duration-200", TONE_BORDER[ui.tone])}
+              className={cn("rounded-2xl border bg-surface p-4 transition-colors duration-200", TONE_BORDER[ui.tone], TONE_GLOW[ui.tone])}
             >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
@@ -185,7 +186,10 @@ export function ApproveScreen({ id }: { id: string }) {
                   transition={{ duration: dur }}
                   className="flex items-start gap-3"
                 >
-                  <ui.Icon aria-hidden className={cn("mt-0.5 size-6 shrink-0", TONE_TEXT[ui.tone], ui.spin && "animate-spin")} />
+                  <motion.span className="mt-0.5 shrink-0" initial={{ scale: reduce ? 1 : 0.4 }} animate={{ scale: 1 }}
+                    transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 420, damping: 16 }}>
+                    <ui.Icon aria-hidden className={cn("size-6", TONE_TEXT[ui.tone], ui.spin && "animate-spin")} />
+                  </motion.span>
                   <div className="min-w-0">
                     <h1 className={cn("text-lg font-semibold leading-snug", TONE_TEXT[ui.tone])}>{c(`state.${state}`)}</h1>
                     <p className="mt-0.5 text-sm text-muted">{t(`status.${state}`)}</p>

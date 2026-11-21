@@ -5,10 +5,8 @@ import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { AnimatePresence, MotionConfig, motion } from "motion/react";
 import { ArrowRight, Check, FlaskConical, ListChecks, ShieldCheck, ShoppingBag, Smartphone, X } from "lucide-react";
-import { api } from "@/lib/api";
-import { usePoll } from "@/lib/usePoll";
 import { cn } from "@/lib/cn";
-import { BANK_ACCOUNTS, type Overview } from "@/shared/contract";
+import { BANK_ACCOUNTS } from "@/shared/contract";
 import { LanguageSelector } from "@/components/i18n/LanguageSelector";
 
 type Field = "recipient" | "amount" | "permission" | "use";
@@ -50,7 +48,7 @@ function RuleDemo() {
   return (
     <section aria-labelledby="rule-title" className="rounded-[24px] border border-line bg-surface p-5 sm:p-6">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
-        <h2 id="rule-title" className="text-[13px] font-medium tracking-wide text-muted uppercase">Try the rule</h2>
+        <h2 id="rule-title" className="text-sm text-muted">Try the rule</h2>
         <p className="text-xs text-muted">Illustration. The live rails are in Checkout and Lab.</p>
       </div>
       <div role="radiogroup" aria-label="Request sent to the rail" className="mt-4 flex flex-wrap gap-2">
@@ -94,24 +92,6 @@ function RuleDemo() {
   );
 }
 
-function LiveStrip() {
-  const tc = useTranslations("common");
-  const { data, connected } = usePoll<Overview>(api.state, 3000);
-  const dot = connected === true ? "bg-mint" : connected === false ? "bg-coral" : "bg-muted";
-  const conn = connected === true ? tc("connection.connected") : connected === false ? tc("connection.disconnected") : tc("connection.connecting");
-  const items = [
-    { k: tc("env.bank"), v: !data ? "…" : data.bank.available ? "Available" : "Unavailable" },
-    { k: tc("env.chain"), v: !data ? "…" : data.chain.available ? "Available" : "Unavailable" },
-    { k: "Payments on the server", v: !data ? "…" : String(data.agreements.length) },
-  ];
-  return (
-    <div className="flex flex-wrap items-center gap-x-6 gap-y-2 rounded-[16px] border border-line bg-surface px-4 py-3 text-xs text-muted">
-      <span role="status" aria-live="polite" className="flex items-center gap-2 text-fg"><span aria-hidden className={cn("size-1.5 rounded-full", dot)} />{conn}</span>
-      {items.map((i) => <span key={i.k}>{i.k}: <span className="tabular text-fg">{connected === false ? "not confirmed" : i.v}</span></span>)}
-    </div>
-  );
-}
-
 export function Entry() {
   const tc = useTranslations("common");
   const navLink = "rounded-full px-3 py-2 text-[13px] text-muted transition-colors duration-200 hover:bg-surface hover:text-fg";
@@ -126,6 +106,7 @@ export function Entry() {
           <nav aria-label="Product" className="hidden items-center sm:flex">
             <Link href="/shop" className={navLink}>Checkout</Link>
             <Link href="/command" className={navLink}>Payments</Link>
+            <Link href="/evidence" className={navLink}>Evidence</Link>
           </nav>
           <div className="ms-auto flex items-center gap-2">
             <LanguageSelector />
@@ -137,8 +118,7 @@ export function Entry() {
       <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 sm:py-12">
         <section className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)]">
           <div>
-            <p className="text-xs tracking-widest text-muted uppercase">Payment approval infrastructure · hackathon prototype</p>
-            <h1 className="mt-3 text-4xl leading-[1.05] font-semibold tracking-tight sm:text-6xl"><span className="hero-amount">{tc("tagline")}</span></h1>
+            <h1 className="mt-3 text-5xl leading-[1.04] sm:text-[64px]"><span className="hero-amount">{tc("tagline")}</span></h1>
             <p className="mt-4 text-lg text-fg">This recipient. This amount. Once.</p>
             <p className="mt-3 max-w-xl text-[15px] leading-relaxed text-muted">
               You approve the facts of one payment on your phone. The rail executes exactly those facts and refuses any request that differs, with evidence either way.
@@ -147,23 +127,23 @@ export function Entry() {
               <Link href="/shop" className="btn-primary inline-flex h-12 items-center gap-2 rounded-full px-6 text-sm">Start a payment<ArrowRight aria-hidden className="size-4 rtl:rotate-180" /></Link>
               <Link href="/command" className="inline-flex h-12 items-center gap-2 rounded-full border border-line px-6 text-sm text-fg transition-colors duration-200 hover:bg-surface-2"><ListChecks aria-hidden className="size-4" />View payments</Link>
             </div>
-            <div className="mt-6"><LiveStrip /></div>
+            
           </div>
           <RuleDemo />
         </section>
 
         <section aria-labelledby="journey-title">
-          <h2 id="journey-title" className="text-[13px] font-medium tracking-wide text-muted uppercase">How one payment goes</h2>
+          <h2 id="journey-title" className="text-sm text-muted">How one payment goes</h2>
           <ol className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             {STEPS.map((s) => {
               const inner = (<>
                 <span className="flex items-center justify-between">
                   <span className="tabular flex size-8 items-center justify-center rounded-full border border-line bg-white/10 text-xs text-fg">{s.n}</span>
-                  <s.icon aria-hidden className="size-5 text-muted transition-colors duration-200 group-hover:text-mint" />
+                  <s.icon aria-hidden className="size-5 text-muted transition-colors duration-200 group-hover:text-fg" />
                 </span>
                 <span className="mt-4 block text-[15px] font-medium text-fg">{s.title}</span>
                 <span className="mt-1.5 block text-[13px] leading-relaxed text-muted">{s.body}</span>
-                <span className={cn("mt-4 flex items-center gap-1.5 text-[13px]", s.href ? "text-mint" : "text-muted")}>{s.cta}{s.href && <ArrowRight aria-hidden className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180" />}</span>
+                <span className={cn("mt-4 flex items-center gap-1.5 text-[13px]", s.href ? "text-fg" : "text-muted")}>{s.cta}{s.href && <ArrowRight aria-hidden className="size-3.5 transition-transform duration-200 group-hover:translate-x-0.5 rtl:rotate-180" />}</span>
               </>);
               const cls = "group flex h-full flex-col rounded-[24px] border border-line bg-surface p-5 transition-transform duration-200";
               return <li key={s.n}>{s.href ? <Link href={s.href} className={cn(cls, "hover:-translate-y-0.5")}>{inner}</Link> : <div className={cls}>{inner}</div>}</li>;
@@ -172,7 +152,7 @@ export function Entry() {
         </section>
 
         <section aria-labelledby="who-title">
-          <h2 id="who-title" className="text-[13px] font-medium tracking-wide text-muted uppercase">Who gets what</h2>
+          <h2 id="who-title" className="text-sm text-muted">Who gets what</h2>
           <dl className="mt-4 grid gap-3 lg:grid-cols-3">
             {AUDIENCES.map((a) => (
               <div key={a.who} className="rounded-[24px] border border-line bg-surface p-5">

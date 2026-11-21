@@ -2,30 +2,30 @@
 
 **Lead re-run on integrated `main` `1fe6cae`, 2026-11-21 08:53 UTC, production build (`pnpm demo`): V 37 passed / 0 failed; P 16 passed / 0 failed (the 12 below plus 4 localization flows in `e2e/i18n.e2e.ts`); `pnpm test` 235 passed, 52 skipped (absent `lab` dictionaries); `forge test` 21 passed. (Paragraph added by the lead, not by worker E.)**
 
-Last updated: 2026-11-21 09:51 UTC. `main` tested: `6d1a1b5` (merged into `w/verify`; earlier runs on 316138b, 1fe6cae, f352aff, 9f86af6 and 4d81075 had the same 12 PASS).
+Last updated: 2026-11-21 10:18 UTC (final run). `main` tested: `8043c4f` (merged into `w/verify`; earlier runs on 316138b, 1fe6cae, f352aff, 9f86af6, 4d81075 and 6d1a1b5 had the same 12 PASS).
 
 Server: `pnpm demo` via `bash docs-verify/run.sh` (`next build` + `next start` on :3000, Anvil on :8545, health `chain.available=true, chainId=31337`).
 
 Commands:
 
 - V = `ACCEPTANCE=1 CS_BASE_URL=http://localhost:3000 pnpm exec vitest run tests/acceptance` → 37 passed, 0 failed, 0 skipped
-- P = `BASE_URL=http://localhost:3000 pnpm exec playwright test` → 17 passed (1.6m): 12 from this suite + 5 from `e2e/i18n.e2e.ts` and `e2e/shop.e2e.ts` (not worker E, not mapped to a check)
+- P = `BASE_URL=http://localhost:3000 pnpm exec playwright test` → 17 passed (1.5m): 12 from this suite + 5 from `e2e/i18n.e2e.ts` and `e2e/shop.e2e.ts` (not worker E, not mapped to a check)
 - `pnpm typecheck` → clean
 
 | # | Check | Result | Evidence | main SHA |
 |---|---|---|---|---|
-| 1 | Approved legitimate bank transfer settles once | PASS | V, 4/4: ledger receipt persisted, customer 100000→90000, merchant +10000, executionCount 1 | 6d1a1b5 |
-| 2 | Recipient/amount mutations move no money | PASS | V, 9/9: recipient, amount, operation, continuing-permission mutations rejected with field diffs; balances unchanged; no receipt | 6d1a1b5 |
-| 3 | Expired authorization rejected | PASS | V, 2/2: ttlSeconds 5 waited out, approved and unapproved; no debit | 6d1a1b5 |
-| 4 | Replay/concurrent → one debit | PASS | V, 3/3: 20 concurrent executes and replay after settlement → one ledger transfer, balance 90000 | 6d1a1b5 |
-| 5 | Merchant/lab capability cannot approve | PASS | V, 8/8 (merchant/operator/anonymous cookies, body/query/header role claims, forged cookies, forged/absent/tampered/cross-agreement pairing tokens); P, 1/1 (phone without token, forged token, merchant cookies) | 6d1a1b5 |
-| 6 | Protected crypto purchase completes for agreed amount | PASS | V, 3/3: viem-read customer balance 900 CSUSD, shop +100, on-chain tx receipt status success | 6d1a1b5 |
-| 7 | Residual allowance 0; later drain fails | PASS | V, 1/1: viem-read allowance 0; drain executed and reverted; balance still 900 | 6d1a1b5 |
-| 8 | Vulnerable comparison: same attack succeeds | PASS | V, 1/1: vulnerable account left with standing allowance; drain succeeds, balance read from EVM drops | 6d1a1b5 |
-| 9 | Phone/desktop agree with receipts and balances | PASS | P, 3/3 (bank at 1440x900+390x844 and 1280x800+375x667, crypto at 1440x900+390x844): both views show the persisted ledger transfer id / tx hash and balances from `/api/state`, also after reload | 6d1a1b5 |
-| 10 | Failed/pending/disconnected never shown as success | PASS | P, 7/7: awaiting, approved-not-executed, rejected mutation, expired, declined, offline (both views), offline approve; no `/api/*` in any service-worker cache | 6d1a1b5 |
-| 11 | Reset restores deterministic state | PASS | V, 3/3: bank and chain state identical after two resets; agreements cleared | 6d1a1b5 |
-| 12 | Journey at 1440x900, 1280x800, 390x844, 375 wide without overflow | PASS | P, 4/4 (the three journeys + static pages): scrollWidth ≤ viewport, critical details unobscured, zero console/page errors. Screenshots in `docs-verify/screenshots/` | 6d1a1b5 |
+| 1 | Approved legitimate bank transfer settles once | PASS | V, 4/4: ledger receipt persisted, customer 100000→90000, merchant +10000, executionCount 1 | 8043c4f |
+| 2 | Recipient/amount mutations move no money | PASS | V, 9/9: recipient, amount, operation, continuing-permission mutations rejected with field diffs; balances unchanged; no receipt | 8043c4f |
+| 3 | Expired authorization rejected | PASS | V, 2/2: ttlSeconds 5 waited out, approved and unapproved; no debit | 8043c4f |
+| 4 | Replay/concurrent → one debit | PASS | V, 3/3: 20 concurrent executes and replay after settlement → one ledger transfer, balance 90000 | 8043c4f |
+| 5 | Merchant/lab capability cannot approve | PASS | V, 8/8 (merchant/operator/anonymous cookies, body/query/header role claims, forged cookies, forged/absent/tampered/cross-agreement pairing tokens); P, 1/1 (phone without token, forged token, merchant cookies) | 8043c4f |
+| 6 | Protected crypto purchase completes for agreed amount | PASS | V, 3/3: viem-read customer balance 900 CSUSD, shop +100, on-chain tx receipt status success | 8043c4f |
+| 7 | Residual allowance 0; later drain fails | PASS | V, 1/1: viem-read allowance 0; drain executed and reverted; balance still 900 | 8043c4f |
+| 8 | Vulnerable comparison: same attack succeeds | PASS | V, 1/1: vulnerable account left with standing allowance; drain succeeds, balance read from EVM drops | 8043c4f |
+| 9 | Phone/desktop agree with receipts and balances | PASS | P, 3/3 (bank at 1440x900+390x844 and 1280x800+375x667, crypto at 1440x900+390x844): both views show the persisted ledger transfer id / tx hash and balances from `/api/state`, also after reload | 8043c4f |
+| 10 | Failed/pending/disconnected never shown as success | PASS | P, 7/7: awaiting, approved-not-executed, rejected mutation, expired, declined, offline (both views), offline approve; no `/api/*` in any service-worker cache | 8043c4f |
+| 11 | Reset restores deterministic state | PASS | V, 3/3: bank and chain state identical after two resets; agreements cleared | 8043c4f |
+| 12 | Journey at 1440x900, 1280x800, 390x844, 375 wide without overflow | PASS | P, 4/4 (the three journeys + static pages): scrollWidth ≤ viewport, critical details unobscured, zero console/page errors. Screenshots in `docs-verify/screenshots/` | 8043c4f |
 
 ## Limits of this evidence
 

@@ -31,7 +31,7 @@ export function Panel({ id, title, aside, children, className }:
   return (
     <section id={id} className={cn("rounded-[16px] border border-line bg-surface p-6", className)}>
       <header className="mb-4 flex items-center justify-between gap-3">
-        <h2 className="text-[13px] font-medium tracking-wide text-muted uppercase">{title}</h2>
+        <h2 className="text-sm text-muted">{title}</h2>
         {aside}
       </header>
       {children}
