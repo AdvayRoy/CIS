@@ -1,9 +1,9 @@
 "use client";
 // Scroll-driven section: the approved terms, the app's attempt and the enforcement result come together as the reader scrolls.
 import { useRef, useState } from "react";
-import { motion, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react";
+import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { cn } from "@/lib/cn";
-import { AttemptCard, EASE, FlowRail, Label, PhoneApproval, SERIF, TermsCard } from "./pieces";
+import { AttemptCard, EASE, FlowRail, Label, PhoneApproval, SERIF, TermsCard, usePrefersReducedMotion } from "./pieces";
 
 const STEPS = [
   { k: "Intended", t: "The customer approves one payment", d: "Recipient, amount and permissions are shown on the phone. Press and hold to approve." },
@@ -16,7 +16,7 @@ const T = { duration: 0.4, ease: EASE };
 
 export function ScrollStory() {
   const ref = useRef<HTMLDivElement>(null);
-  const reduce = useReducedMotion();
+  const reduce = usePrefersReducedMotion();
   const [step, setStep] = useState(0);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
   useMotionValueEvent(scrollYProgress, "change", (v) => {
